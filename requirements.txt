@@ -41,3 +41,4 @@ reportlab
 python-dotenv
 scikit-learn
 
+pymongo[srv]

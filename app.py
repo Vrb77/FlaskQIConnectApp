@@ -2093,5 +2093,5 @@ if __name__ == '__main__':
     # DB.saveDB()  
     DB.loadDB()
     app.debug=True
-    app.run(host='0.0.0.0', port=5005,debug=True)
+    app.run()
 

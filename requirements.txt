@@ -39,4 +39,5 @@ yarl==1.9.8
 gunicorn
 reportlab
 python-dotenv
+scikit-learn
 

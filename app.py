@@ -1086,6 +1086,8 @@ def advertisementForm():
 def getAdvertisement():
     advertisement=DB.getAllAdvertisement(session['email'])
     print("in route Advertisement  ",advertisement)
+    for email, ids in advertisement.items():
+        advertisement[email] = [DB.getAdvertisementName(ad_id) for ad_id in ids]
     return render_template("Common/advertisement.html",advertisement=advertisement)
 
 @app.route('/getAdvertisementName',methods=['POST','GET'])

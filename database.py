@@ -19,6 +19,7 @@ Collections in MongoDB:
 
 import base64
 import os
+import ssl
 import uuid
 import smtplib
 from datetime import date, datetime, timedelta
@@ -31,10 +32,17 @@ from pymongo import MongoClient
 from flask import Flask
 
 # ---------------------------------------------------------------------------
-# MongoDB connection
+# MongoDB connection  (SSL fix for Render / Atlas compatibility)
 # ---------------------------------------------------------------------------
 MONGO_URI = os.environ.get("MONGO_URI", "mongodb://localhost:27017/qiconnect")
-_client = MongoClient(MONGO_URI)
+_client = MongoClient(
+    MONGO_URI,
+    tls=True,
+    tlsAllowInvalidCertificates=True,
+    serverSelectionTimeoutMS=30000,
+    connectTimeoutMS=20000,
+    socketTimeoutMS=20000,
+)
 _db = _client.get_default_database() if "/" in MONGO_URI.split("@")[-1] else _client["qiconnect"]
 
 col_users        = _db["users"]

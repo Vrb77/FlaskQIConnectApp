@@ -1,0 +1,21 @@
+<ul class="breadcrumbs">
+  {% for breadcrumb in breadcrumbs %} {% if loop.first %}
+  <a href="{{ breadcrumb.url }}">
+    <li>
+      <img src="{{ url_for('static', filename='images/wired-flat-63-home.gif') }}" style="width: 40px" /><i
+        class="fa-solid fa-chevron-right"
+      ></i>
+    </li>
+  </a>
+  {% elif loop.last %}
+  <a href="{{ breadcrumb.url }}">
+    <li>{{ breadcrumb.name }}</li>
+  </a>
+  {% else %}
+  <li>
+    <a href="{{ breadcrumb.url }}"
+      >{{ breadcrumb.name }} <i class="fa-solid fa-chevron-right"></i
+    ></a>
+  </li>
+  {% endif %} {% endfor %}
+</ul>

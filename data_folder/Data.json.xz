@@ -1,0 +1,270 @@
+{
+    "users": {
+        "vendor1@gmail.com": {
+            "pwd": {
+                "_bytes_": true,
+                "data": "JDJiJDEwJHhIY0lHSFc1STF2dVYyUnpBRkpNZmVObmRINmV1ZGdZTnNkT1JDWnVBUjYxZFZweUJvT01P"
+            },
+            "type": "vendor",
+            "firstname": "Vaishnavi",
+            "lastname": "Badade",
+            "address": {
+                "street": "Indiranagar lane1, Sangamner",
+                "city": "Sangamner",
+                "state": "Maharashtra",
+                "state_code": "MH",
+                "city_code": "Sangamner",
+                "zip": "422605",
+                "country": "India",
+                "country_code": "IN",
+                "phone": "93456 53423"
+            },
+            "currency": {
+                "country": "India",
+                "code": "INR"
+            },
+            "profileImg": "vendor1@gmail.com_b1_1.jpg",
+            "bizinfo": {
+                "bizname": "business 1",
+                "aboutme": "Website development",
+                "whytochooseme": "faster development",
+                "role": "CEO",
+                "website": "business.com",
+                "bizstate": "Michigan",
+                "bizcity": "Troy",
+                "bizzip": "23456",
+                "bizcountry": "United States",
+                "bizphone": "209-234-2364",
+                "bizstate_code": "MI",
+                "bizcity_code": "Troy",
+                "bizcountry_code": "US"
+            }
+        },
+        "customer1@gmail.com": {
+            "pwd": {
+                "_bytes_": true,
+                "data": "JDJiJDEwJHFVNm1TOUNrL0FzZ1BERU1aaTN2amVqZHJGWlJEM3JmclBqd2FPQURBQlk0MjJtYXhlbWFP"
+            },
+            "type": "customer",
+            "firstname": "devansh",
+            "lastname": "joshi",
+            "address": {
+                "street": "Pimpri , Pune",
+                "city": "Pimpri-Chinchwad",
+                "state": "Maharashtra",
+                "state_code": "MH",
+                "city_code": "Pimpri-Chinchwad",
+                "zip": "422876",
+                "country": "India",
+                "country_code": "IN",
+                "phone": "87654 36357"
+            },
+            "currency": {
+                "country": "India",
+                "code": "INR"
+            },
+            "profileImg": "customer1@gmail.com_b2_1.jpg"
+        },
+        "vaishnavi123@gmail.com": {
+            "pwd": {
+                "_bytes_": true,
+                "data": "JDJiJDEwJEdENFVBS016aGtodG9tWWpSYzBGbWVGR1FEWHouYmhVZ1JWVk9rQ0lGaGZHem90Rk1ldHlp"
+            },
+            "type": "customer",
+            "firstname": "Vaishnavi",
+            "lastname": "Badade",
+            "address": {
+                "street": "Chinchwadgaon",
+                "city": "Pune",
+                "state": "Maharashtra",
+                "state_code": "MH",
+                "city_code": "Pune",
+                "zip": "411033",
+                "country": "India",
+                "country_code": "IN",
+                "phone": "85749 63214"
+            },
+            "currency": {
+                "country": "India",
+                "code": "INR"
+            },
+            "profileImg": "vaishnavi123@gmail.com_photov.jpg"
+        }
+    },
+    "subscriptions": {},
+    "requests": {},
+    "requestDetails": {},
+    "requestResponses": {},
+    "responseDetails": {},
+    "transactionDict": {
+        "customer1@gmail.com": {
+            "336ed752-b95f-41f0-8cd2-95bbae6641e0": {
+                "order_name": "Basic Subscription",
+                "total": "10",
+                "payment_method": "stripe",
+                "date": "2024-11-11",
+                "time": "18:43:17"
+            }
+        },
+        "vendor1@gmail.com": {
+            "455febb6-c0dd-40ee-8de0-5b1f59290e5e": {
+                "order_name": "Advertisement",
+                "total": "105",
+                "payment_method": "stripe",
+                "date": "2024-11-11",
+                "time": "19:07:23"
+            }
+        }
+    },
+    "RequestFormDict": {
+        "2024-11-11-a2": {
+            "from": "customer1@gmail.com",
+            "i_need": "AC repair",
+            "PicsFiles": [
+                "isolation-transformer.jpg"
+            ],
+            "objective": "to repair",
+            "specifications": "no",
+            "where": "pune",
+            "when": "2024-11-20",
+            "tentativeWhen": "next week",
+            "additionalInfo": "no",
+            "AdditionalFiles": [
+                "Icons_design.docx"
+            ],
+            "timestamp": "2024-11-11 18:57",
+            "current_status": "Active",
+            "closeRequest": "Close Request",
+            "selectVendorServiceID": "",
+            "audio": "",
+            "adv_status": "false",
+            "combined_data_customer": "AC repair to repair no pune 2024-11-20 no"
+        },
+        "2025-11-14-a4": {
+            "from": "vaishnavi123@gmail.com",
+            "i_need": "AC not working",
+            "PicsFiles": [],
+            "objective": "AC produce noise",
+            "specifications": "",
+            "where": "pimpri",
+            "when": "2025-11-20",
+            "tentativeWhen": "afternoon",
+            "additionalInfo": "",
+            "AdditionalFiles": [],
+            "timestamp": "2025-11-14 09:33",
+            "current_status": "Active",
+            "closeRequest": "Close Request",
+            "selectVendorServiceID": "",
+            "audio": "",
+            "adv_status": "false",
+            "combined_data_customer": "AC not working AC produce noise  pimpri 2025-11-20 "
+        },
+        "2025-12-17-a5": {
+            "from": "vaishnavi123@gmail.com",
+            "i_need": "ac",
+            "PicsFiles": [],
+            "objective": "",
+            "specifications": "",
+            "where": "",
+            "when": "",
+            "tentativeWhen": "",
+            "additionalInfo": "",
+            "AdditionalFiles": [],
+            "timestamp": "2025-12-17 10:39",
+            "current_status": "Active",
+            "closeRequest": "Close Request",
+            "selectVendorServiceID": "",
+            "audio": "",
+            "adv_status": "false",
+            "combined_data_customer": "ac     "
+        }
+    },
+    "ServiceFormDict": {
+        "2024-11-11-a3": {
+            "serviceName": "AC repair",
+            "from": "vendor1@gmail.com",
+            "specificFeature": "repair",
+            "benefits": "quick repair",
+            "bestFor": "AC",
+            "where": "pune",
+            "relatedProduct": "",
+            "additionalProductRelatedFiles": [],
+            "ProductPics": [
+                "home-deep-cleaning-870x500.jpg"
+            ],
+            "selectedPrImg": "home-deep-cleaning-870x500.jpg",
+            "myServicesInfo": "",
+            "current_status": "Active",
+            "timestamp": "2024-11-11 19:01",
+            "allocatedReqIDs": [],
+            "combined_data_vendor": "AC repair repair AC pune  ",
+            "when": null
+        }
+    },
+    "MessagesDict": {
+        "2025-11-14 09:36-39d7cdbd-5d7f-4e0f-ab8e-ffc9230a92c9": {
+            "from": "vendor1@gmail.com",
+            "to": "vaishnavi123@gmail.com",
+            "message": "hello",
+            "file": "",
+            "audioFile_name": "",
+            "videoFile_name": "",
+            "timestamp": "2025-11-14 09:36",
+            "request_id": "2025-11-14-a4",
+            "service_id": "2024-11-11-a3"
+        },
+        "2025-11-14 09:37-6410523b-8531-41c7-adc1-7112f9127ed9": {
+            "from": "vaishnavi123@gmail.com",
+            "to": "vendor1@gmail.com",
+            "message": "Please add date and price",
+            "file": "",
+            "audioFile_name": "",
+            "videoFile_name": "",
+            "timestamp": "2025-11-14 09:37",
+            "request_id": "2025-11-14-a4",
+            "service_id": "2024-11-11-a3"
+        },
+        "2025-11-14 09:38-a3553bb0-077e-41d3-80c5-ef4ffeab3563": {
+            "from": "vendor1@gmail.com",
+            "to": "vaishnavi123@gmail.com",
+            "message": "ok",
+            "file": "",
+            "audioFile_name": "",
+            "videoFile_name": "",
+            "timestamp": "2025-11-14 09:38",
+            "request_id": "2025-11-14-a4",
+            "service_id": "2024-11-11-a3"
+        }
+    },
+    "VendorContractDetDict": {
+        "2024-11-11-a3_2025-11-14-a4": {
+            "when": "2025-11-17",
+            "price": 200
+        }
+    },
+    "OrderByCustomer": {
+        "vaishnavi123@gmail.com": {}
+    },
+    "ProjectReceivedToVendor": {
+        "vendor1@gmail.com": {}
+    },
+    "AdvertisementDict": {
+        "vendor1@gmail.com": {
+            "2024-11-11-a3": {
+                "email": "vendor1@gmail.com",
+                "sid": "2024-11-11-a3",
+                "AdDuration": 30,
+                "price": "105",
+                "AdvertisementName": "Doorstep AC Repair",
+                "AdvertisementHeading": "Doorstep AC Repair and Servicing",
+                "AdvertisementSubHeading": "Assured air conditioner ServicesCarlcare offers a wide range of AC repair and maintenance services at Special Discounts!",
+                "paymentStatus": "successful",
+                "advertisementStatus": "active",
+                "ad_date": "2024-11-11 19:07",
+                "expiry_date": "2024-12-11"
+            }
+        }
+    },
+    "contactDict": {},
+    "notificationDict": {}
+}

@@ -1,0 +1,564 @@
+{% extends 'base.html' %} {% block title %} Fill Business Info {% endblock title
+%} {% block navContent %} {% include 'Common/navbar_without_login.html' %} {%
+endblock navContent %} {% block body %} {% include "Common/flashMsg.html" %}
+<h3 class="form-heading">
+  Fill Business Information<img
+    src="{{ url_for('static', filename='images/fill profile info.svg') }}"
+    style="margin-left: 10px; width: 40px" />
+</h3>
+{% endblock body %} {% block card_content %}
+<form action="/process_fill_business_info" method="post" id="businessInfoForm">
+  <div class="stepInForm active">
+    <span class="stepNumber">1/2</span><br />
+
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+    <label for="bizname" class="headingFormField required"
+      ><img
+        src="{{ url_for('static', filename='images/business name.svg') }}"
+        style="margin-right: 5px; margin-bottom: 5px; width: 30px" />Business
+      Name</label
+    >
+    <input
+      type="text"
+      class="w3-input"
+      placeholder="Enter Business Name"
+      id="bizname"
+      name="bizname"
+      required />
+    <br />
+    <!-- Add a line break for better spacing -->
+    <label for="bizaboutme" class="headingFormField required"
+      ><img
+        src="{{ url_for('static', filename='images/website.svg') }}"
+        style="margin-right: 5px; margin-bottom: 5px; width: 30px" />About
+      Us</label
+    >
+    <textarea
+      class="full-width-input"
+      placeholder="About Us"
+      id="bizaboutme"
+      name="bizaboutme"
+      required></textarea>
+    <br />
+    <!-- Add a line break for better spacing -->
+    <label for="bizwhytochooseme" class="headingFormField required"
+      ><img
+        src="{{ url_for('static', filename='images/website.svg') }}"
+        style="margin-right: 5px; margin-bottom: 5px; width: 30px" />Why To
+      Choose Us</label
+    >
+    <textarea
+      class="full-width-input"
+      placeholder="Why To Choose Us"
+      id="bizwhytochooseme"
+      name="bizwhytochooseme"
+      required></textarea>
+    <br />
+    <!-- Add a line break for better spacing -->
+
+    <div id="biznameError" class="error"></div>
+    <button type="button" id="nextBtn1" class="w3-btn w3-green w3-round-large">
+      Next
+    </button>
+  </div>
+
+  <div class="stepInForm">
+    <span class="stepNumber">2/2</span><br />
+
+    <label for="bizwebsite" class="headingFormField required"
+      ><img
+        src="{{ url_for('static', filename='images/website.svg') }}"
+        style="
+          margin-right: 5px;
+          margin-bottom: 5px;
+          width: 30px;
+        " />Website</label
+    >
+    <input
+      type="text"
+      class="w3-input"
+      placeholder="Enter Website"
+      id="bizwebsite"
+      name="bizwebsite"
+      required />
+    <br />
+    <!-- Add a line break for better spacing -->
+
+    <label for="bizcountry" class="headingFormField required"
+      ><img
+        src="{{ url_for('static', filename='images/country.svg') }}"
+        style="margin-right: 5px; margin-bottom: 5px; width: 30px" />Business
+      Country</label
+    >
+    <select
+      class="form-select bizcountry full-width-input"
+      id="bizcountry"
+      name="bizcountry"
+      aria-label="Default select example"
+      onchange="loadBizStates()" required>
+      <option value="" selected>Select Country</option>
+    </select>
+    <br />
+    <!-- Add a line break for better spacing -->
+
+    <label for="bizstate" class="headingFormField required"
+      ><img
+        src="{{ url_for('static', filename='images/address1.svg') }}"
+        style="margin-right: 5px; margin-bottom: 5px; width: 30px" />Business
+      Address State</label
+    >
+    <select
+      class="form-select bizstate full-width-input"
+      id="bizstate"
+      name="bizstate"
+      aria-label="Default select example"
+      onchange="loadBizCities()" required>
+      <option value="" selected>Select State</option>
+    </select>
+    <br />
+    <!-- Add a line break for better spacing -->
+
+    <label for="bizcity" class="headingFormField required"
+      ><img
+        src="{{ url_for('static', filename='images/city1.svg') }}"
+        style="margin-right: 5px; margin-bottom: 5px; width: 30px" />Business
+      City</label
+    >
+    <select
+      class="form-select bizcity full-width-input"
+      id="bizcity"
+      name="bizcity"
+      aria-label="Default select example" required>
+      <option value="" selected>Select City</option>
+    </select>
+    <br />
+    <!-- Add a line break for better spacing -->
+
+    <label for="bizphone" class="headingFormField required"
+      ><img
+        src="{{ url_for('static', filename='images/phone.svg') }}"
+        style="margin-right: 5px; margin-bottom: 5px; width: 30px" />Phone
+      Number</label
+    >
+    <input
+      type="text"
+      class="w3-input"
+      placeholder="Enter Phone Number"
+      id="bizphone"
+      name="bizphone"
+      required/>
+    <br />
+    <!-- Add a line break for better spacing -->
+
+    <label for="bizzip" class="headingFormField required"
+      ><img
+        src="{{ url_for('static', filename='images/zip.svg') }}"
+        style="margin-right: 5px; margin-bottom: 5px; width: 30px" />Zip
+      Code</label
+    >
+    <input
+      type="text"
+      class="w3-input"
+      placeholder="Enter Zip Code"
+      id="bizzip"
+      name="bizzip"
+      required />
+    <br />
+    <!-- Add a line break for better spacing -->
+    <label for="role" class="headingFormField required"
+      ><img
+        src="{{ url_for('static', filename='images/customer icon1.svg') }}"
+        style="margin-right: 5px; margin-bottom: 5px; width: 30px" />Your
+      Role</label
+    >
+    <input
+      type="text"
+      class="w3-input"
+      placeholder="Enter Your Role"
+      id="role"
+      name="role"
+      required/>
+    <br />
+    <!-- Add a line break for better spacing -->
+
+    <div id="bizaddressError" class="error"></div>
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Back</button
+    >&emsp;
+
+    <button type="submit" class="nextBtn w3-btn w3-green w3-round" style="float: right">
+      Save Business Information
+    </button>
+  </div>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/intlTelInput.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script> -->
+
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/css/intlTelInput.css" />
+<script>
+  // Initialize the plugin
+  const bizPhoneInput = document.querySelector("#bizphone");
+  var bizCountryData = null;
+  // Initialize the plugin
+  const Biziti = window.intlTelInput(bizPhoneInput, {
+    // Options
+    loadUtilsOnInit:
+      "https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/utils.js",
+    strictMode: true,
+    autoFormat: true,
+    initialCountry: "in",
+    nationalMode: false,
+    // preferredCountries: ['in'], // Set India as the preferred country
+    separateDialCode: true,
+    onlyCountries: ["in",'us'],
+  });
+
+  // Biziti.promise.then(() => {
+  //     const iti_container = bizPhoneInput.closest('.Biziti');
+  //     if (iti_container) {
+  //         iti_container.style.width = '100%';
+  //         iti_container.style.display = 'block';
+  //     }
+  // });
+
+  var config = {
+    cUrl: "https://api.countrystatecity.in/v1/countries",
+    ckey: "NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA==",
+  };
+
+  var bizCountrySelect = document.querySelector(".bizcountry"),
+    bizStateSelect = document.querySelector(".bizstate"),
+    bizCitySelect = document.querySelector(".bizcity");
+
+  // Add event listener when country changes in phone input
+  bizPhoneInput.addEventListener("countrychange", function () {
+    bizCountryData = Biziti.getSelectedCountryData();
+    const bizCountryIso = bizCountryData.iso2.toUpperCase();
+    console.log("Phone country changed to:", bizCountryIso);
+
+    // Automatically select the corresponding country in the dropdown
+
+    for (let option of bizCountrySelect.options) {
+      if (option.value === bizCountryIso) {
+        bizCountrySelect.value = bizCountryIso;
+        bizCountryNameInput.value = bizCountryData.name;
+        loadBizStates(); // Update the state dropdown
+        break;
+      }
+    }
+  });
+
+  // Add hidden input fields to store the full names
+  const bizCountryNameInput = document.createElement("input");
+  bizCountryNameInput.type = "hidden";
+  bizCountryNameInput.name = "bizcountryName";
+  bizCountrySelect.parentNode.appendChild(bizCountryNameInput);
+
+  const bizStateNameInput = document.createElement("input");
+  bizStateNameInput.type = "hidden";
+  bizStateNameInput.name = "bizstateName";
+  bizStateSelect.parentNode.appendChild(bizStateNameInput);
+
+  const bizCityNameInput = document.createElement("input");
+  bizCityNameInput.type = "hidden";
+  bizCityNameInput.name = "bizcityName";
+  bizCitySelect.parentNode.appendChild(bizCityNameInput);
+
+  function loadBizCountries() {
+    let apiEndPoint = config.cUrl;
+
+    fetch(apiEndPoint, { headers: { "X-CSCAPI-KEY": config.ckey } })
+      .then((Response) => Response.json())
+      .then((data) => {
+         // Specify the countries you want to keep (using iso2 codes here)
+    const specificCountries = ['US', 'IN']; // USA, India, Canada
+
+// Filter the data to only include these countries
+const filteredCountries = data.filter(country => specificCountries.includes(country.iso2));
+
+// Populate the dropdown
+const dropdown = document.getElementById('bizcountry');
+filteredCountries.forEach((country) => {
+          const option = document.createElement("option");
+          option.value = country.iso2;
+          option.textContent = country.name;
+          dropdown.appendChild(option);
+        });
+      })
+      .catch((error) => console.error("Error loading countries:", error));
+
+    bizStateSelect.disabled = true;
+    bizCitySelect.disabled = true;
+    bizStateSelect.style.pointerEvents = "none";
+    bizCitySelect.style.pointerEvents = "none";
+  }
+
+  function loadBizStates() {
+    bizStateSelect.disabled = false;
+    bizCitySelect.disabled = true;
+    bizStateSelect.style.pointerEvents = "auto";
+    bizCitySelect.style.pointerEvents = "none";
+
+    const selectedCountryCode = bizCountrySelect.value;
+    bizStateSelect.innerHTML =
+      '<option value="">Select Business State</option>'; // for clearing the existing states
+    bizCitySelect.innerHTML = '<option value="">Select Business City</option>'; // Clear existing city options
+
+    fetch(`${config.cUrl}/${selectedCountryCode}/states`, {
+      headers: { "X-CSCAPI-KEY": config.ckey },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        data.forEach((state) => {
+          const option = document.createElement("option");
+          option.value = state.iso2;
+          option.textContent = state.name;
+          bizStateSelect.appendChild(option);
+        });
+      })
+      .catch((error) => console.error("Error loading states:", error));
+  }
+
+  function loadBizCities() {
+    bizCitySelect.disabled = false;
+    bizCitySelect.style.pointerEvents = "auto";
+
+    const selectedCountryCode = bizCountrySelect.value;
+    const selectedStateCode = bizStateSelect.value;
+    bizCitySelect.innerHTML = '<option value="">Select Business City</option>'; // Clear existing city options
+
+    fetch(
+      `${config.cUrl}/${selectedCountryCode}/states/${selectedStateCode}/cities`,
+      { headers: { "X-CSCAPI-KEY": config.ckey } }
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        data.forEach((city) => {
+          const option = document.createElement("option");
+          option.value = city.name;
+          option.textContent = city.name;
+          bizCitySelect.appendChild(option);
+        });
+      });
+  }
+
+  // Update the hidden input fields whenever the selected option changes
+  bizCountrySelect.addEventListener("change", () => {
+    const selectedOption =
+      bizCountrySelect.options[bizCountrySelect.selectedIndex];
+    bizCountryNameInput.value = selectedOption.textContent;
+    
+    Biziti.setCountry(selectedOption.value);
+    loadBizStates();
+  });
+
+  bizStateSelect.addEventListener("change", () => {
+    const selectedOption = bizStateSelect.options[bizStateSelect.selectedIndex];
+    bizStateNameInput.value = selectedOption.textContent;
+    loadBizCities();
+  });
+
+  bizCitySelect.addEventListener("change", () => {
+    const selectedOption = bizCitySelect.options[bizCitySelect.selectedIndex];
+    bizCityNameInput.value = selectedOption.textContent;
+  });
+
+  loadBizCountries();
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const steps = document.querySelectorAll(".stepInForm");
+    const prevBtns = document.querySelectorAll(".prevBtn");
+    const nextBtns = document.querySelectorAll(".nextBtn");
+    let currentStep = 0;
+
+    function showStep(stepIndex) {
+      steps.forEach((step, index) => {
+        if (index === stepIndex) {
+          console.log("index value: ",index,"stepIndex value: ",stepIndex)
+          step.classList.add("active");
+        } else {
+          console.log("index value else: ",index,"stepIndex value else: ",stepIndex)
+          step.classList.remove("active");
+        }
+      });
+    }
+
+    // ZIP Code validation function without API using regular expressions
+    function validateZipCode(country, zipCode) {
+      let regex;
+
+      switch (country) {
+        case "US": // United States ZIP code: 5 digits or 5 digits + hyphen + 4 digits (e.g., 12345 or 12345-6789)
+          regex = /^\d{5}(-\d{4})?$/;
+          break;
+
+        case "CA": // Canada ZIP code: Letter-number-letter space number-letter-number (e.g., K1A 0B1)
+          regex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+          break;
+
+        case "DE": // Germany ZIP code: 5 digits (e.g., 12345)
+          regex = /^\d{5}$/;
+          break;
+
+        case "IN": // India PIN code: 6 digits (e.g., 110001)
+          regex = /^\d{6}$/;
+          break;
+
+        // Add more countries and their postal code patterns if needed
+
+        default:
+          return false; // Invalid country
+      }
+
+      return regex.test(zipCode); // Test the ZIP code against the regex for the selected country
+    }
+    function validateStep(stepIndex) {
+      let isValid = true;
+      console.log("in validateStep function ",stepIndex)
+      switch (stepIndex) {
+        case 0:
+        if (!document.getElementById("bizname").value.trim()) {
+            document.getElementById("biznameError").textContent =
+              "Business Name is required.";
+            isValid = false;
+          } else if (!document.getElementById("bizaboutme").value.trim()) {
+            document.getElementById("biznameError").textContent =
+              "About Us is required.";
+            isValid = false;
+          } else if (
+            !document.getElementById("bizwhytochooseme").value.trim()
+          ) {
+            document.getElementById("biznameError").textContent =
+              "Why To Choose Us is required.";
+            isValid = false;
+          } else {
+            document.getElementById("biznameError").textContent = "";
+          }
+
+          break;
+        case 1: 
+       
+         if (!document.getElementById("bizwebsite").value.trim()) {
+            document.getElementById("bizaddressError").textContent =
+              "Business Website is required.";
+            isValid = false;
+          }  else if (
+            !document.getElementById("bizcountry").value.trim()
+          ) {
+            document.getElementById("bizaddressError").textContent =
+              "Business Country is required.";
+            isValid = false;
+          } else if (!document.getElementById("bizstate").value.trim()) {
+            document.getElementById("bizaddressError").textContent =
+              "Business state is required.";
+            isValid = false;
+          } else if (!document.getElementById("bizcity").value.trim()) {
+            document.getElementById("bizaddressError").textContent =
+              "Business city is required.";
+            isValid = false;
+          }else if (!Biziti.isValidNumber()) {
+            document.getElementById("bizaddressError").textContent =
+              "Business phone number is invalid";
+            isValid = false;
+          }  else if (!document.getElementById("bizzip").value.trim()) {
+            document.getElementById("bizaddressError").textContent =
+              "Business zip code is required.";
+            isValid = false;
+          } 
+          else if (!document.getElementById("role").value.trim()) {
+            document.getElementById("bizaddressError").textContent =
+              "role is required.";
+            isValid = false;
+          }
+          else if (document.getElementById("bizzip").value.trim()) {
+            const country = document.getElementById("bizcountry").value;
+            console.log("for zip code country value", country);
+            const zipCode = document.getElementById("bizzip").value;
+            console.log("zip code value", zipCode);
+            const errorMessage = document.getElementById("bizaddressError");
+            if (country == "Select Country") {
+              errorMessage.textContent = "Country is required";
+            }
+            const zipCountry=document.getElementById("bizcountry").value.trim()
+            // Call the ZIP code validation function based on the country
+            if( zipCountry=="IN" || zipCountry=="US" || zipCountry=="CA" || zipCountry=="DE"){
+            isValid = validateZipCode(country, zipCode);
+            console.log("zip is valid or not", isValid);
+            if (isValid) {
+              errorMessage.textContent = ""; // Clear error message
+              isValid = true;
+            } else {
+              errorMessage.textContent =
+                "Invalid ZIP code for the selected country.";
+              isValid = false;
+            }
+          } 
+        }
+       
+        else {
+            document.getElementById("bizaddressError").textContent = "";
+          }
+          break;
+        case 2:
+          if (!document.getElementById("image").value.trim()) {
+            document.getElementById("imageError").textContent =
+              "Address is required.";
+            isValid = false;
+          } else {
+            document.getElementById("imageError").textContent = "";
+          }
+          break;
+      }
+      return isValid;
+    }
+
+    function nextStep() {
+      console.log("currentStep value",currentStep,"steps value:",steps)
+      const validateValue=validateStep(currentStep)
+      console.log("valid value",validateValue)
+      if (currentStep < steps.length ) {
+        console.log("current             ",currentStep)
+       
+        if (validateStep(currentStep)) {
+          currentStep++;
+          showStep(currentStep);
+        }
+      }
+      return validateValue;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("businessInfoForm");
+    
+    form.addEventListener("submit", function (event) {
+      console.log("hwdohalkdnas,nc,asznca",validateStep(1))
+        if (validateStep(1)=='false') {
+            event.preventDefault(); // Stop form submission if validation fails
+        }
+    });
+});
+
+    function prevStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    }
+
+    document.getElementById("nextBtn1").addEventListener("click", nextStep);
+
+    prevBtns.forEach((btn, index) => {
+      btn.addEventListener("click", prevStep);
+    });
+
+    nextBtns.forEach((btn, index) => {
+      btn.addEventListener("click", nextStep);
+    });
+    // Show the first step initially
+    showStep(currentStep);
+  });
+</script>
+{% endblock card_content%}

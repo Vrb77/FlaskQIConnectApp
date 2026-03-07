@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}Contact Us{% endblock %}
+
+{% block navContent %}
+{% include "Common/navbar_content.html" %}
+{% endblock navContent %}
+
+{% block body %}
+{% include "Common/flashMsg.html" %}
+<h1>Contact Us form</h1>
+{% endblock body %}
+
+{% block card_content %}
+<form action="{{url_for('contact_us')}}" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <p>
+    <label class="headingFormField">
+      Name</label>
+    <input class="w3-input" name="name" type="text" placeholder="Enter name" />
+  </p>
+  <p>
+    <label class="headingFormField">
+      Mail ID</label>
+    <input class="w3-input" name="mail" type="text" value="{{session['email']}}" />
+  </p>
+  <p>
+    <label class="headingFormField">
+      Phone</label>
+    <input class="w3-input" name="phone" type="text" placeholder="Enter the phone number" required />
+  </p>
+  <p>
+    <label class="headingFormField"> Select Subject </label>
+    <div>
+      <select name="subject" class="w3-input w3-border" placeholder="Select Subject" id="subject" onchange='CheckSubject(this.value);'>
+        <option value="" selected disabled hidden>Select Subject</option>
+        <option value="Technical">Technical support</option>
+        <option value="Account">Account</option>
+        <option value="Product">Product/service related</option>
+        <option value="Billing">Billing related</option>
+        <option value="Order">Order & delivery related</option>
+        <option value="Complaint">Complaint </option>
+        <option value="Business">Feedback</option>
+        <option value="Others" id="oth">Others</option>
+      </select>
+      <div id="otherSubject" style='display:none;'>
+        <p class="headingFormField">Please enter other subject</p>
+        <input type="text" class="w3-input" name="otherSubject" onchange="othersInputValue(this.value);"
+          placeholder="Enter other subject" maxlength="30" />
+      </div>
+    </div>
+  </p>
+  <p>
+    <label class="headingFormField required">
+      Message </label>
+    <textarea rows="3" style="width: 100%" name="message" class="w3-input" placeholder="Enter Message"
+      required></textarea>
+  </p>
+
+  <p class="w3-center">
+    <button class="w3-btn w3-green w3-block w3-round">Submit</button>
+  </p>
+</form>
+<script>
+  function CheckSubject(val) {
+    var element = document.getElementById('otherSubject');
+    if (val == 'Others')
+      element.style.display = 'block';
+    else
+      element.style.display = 'none';
+  }
+
+  function othersInputValue(val) {
+    val != '' ? document.getElementById('oth').setAttribute("value", val) : document.getElementById('oth').setAttribute("value", "Others")
+  }
+</script>
+{% endblock card_content%}

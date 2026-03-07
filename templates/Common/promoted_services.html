@@ -1,0 +1,214 @@
+{% extends "base.html" %} {% block title %}Promoted services page{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %} {% include "Common/flashMsg.html" %}
+<center>
+  <h1>Promoted services</h1>
+</center><br>
+{% endblock %}
+
+{% block card_content %}
+
+<div class="w3-container">
+        <img src="" alt="AdImg" id="selectedPrImg" class="responsive_img">
+      <center>
+        <strong>{{Ad.AdvertisementName}}</strong>
+        <p class="card-description">{{Ad.AdvertisementHeading}}</p>
+        <p class="card-description" >{{Ad.AdvertisementSubHeading}}</p>
+      </center>
+    
+    <div >
+      <form class="w3-container" id="form" action="{{url_for('request_form')}}" method="POST"
+        enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div style="display: none;">
+          <input type="text" name="closeButton" value="Close Request"
+            class="w3-btn w3-hover-indigo w3-indigo w3-round-xxlarge" id="closeReqBtn" title="close the request"
+            style="display: none;">
+          <input type="text" name="selectVendorServiceID" style="display: none;">
+          <p>
+            <label class="headings required">
+              <img src="static\iconsByillustrator\looking_for.svg" alt="Icon" class="w3-margin-right"
+                style="width: 40px" />
+              <b>Looking for </b></label>
+            <textarea class="w3-input" name="i_need" id="i_need" rows="1" style="width: 100%"
+              placeholder="Enter the problem you want to solve" spellcheck="true" required> </textarea>
+
+          </p>
+          <p>
+            <label class="headings">
+              <img src="static\iconsByillustrator\looking_for2.svg" alt="Icon" class="w3-margin-right"
+                style="width: 40px" />
+              Purpose </label>
+            <textarea rows="3" class="w3-input" style="width: 100%" name="objective" id="objective"
+              spellcheck="true" placeholder="Describe the purpose you want to achieve"></textarea>
+          </p>
+          <p>
+            <label class="headings">
+              <img src="static\iconsByillustrator\Service_image.svg" alt="Icon" class="w3-margin-right"
+                style="width: 40px" />
+              <input type="file" id="AddPics" name="AddPics" multiple="true" accept="image/*" hidden>
+              <button type="button" class="w3-btn w3-black w3-round-xlarge" id="uploadBtn">
+                <label for="AddPics"><i class="fa-solid fa-upload"></i> Add Pictures</label>
+              </button>
+              <input type="text" id="LenPics" name="LenPics" value="" hidden>
+              <ul style="text-align: left;">
+                <li>Only image files are accepted.</li>
+                <li>File size should be less than 2kb</li>
+                <li>Maximum 5 files can be uploaded</li>
+              </ul>
+            </label>
+          <div id="wrapper" class="w3-row"></div>
+          </p>
+          <!--audio code starts-->
+
+          <div class="w3-col s3  w3-center">
+            <p>
+              <button type="button" onclick="document.getElementById('RecordAudio').style.display='block'"
+                title="Start recording audio" id="microphoneBtn"><i class="fa-solid fa-microphone fa-xl"></i></button>
+            </p>
+            <div id="playAudio" style="display: none;">
+              <audio class="playbackPreview" controls></audio>
+              <button class="w3-red" id="audioFileClear">delete audio</button>
+            </div>
+            <input type="file" id="audioBlob" name="AudioFile" hidden>
+            <div id="RecordAudio" class="w3-modal">
+              <div class="w3-modal-content w3-pale-blue">
+                <div class="w3-container">
+                  <span onclick="document.getElementById('RecordAudio').style.display='none'"
+                    class="w3-btn w3-display-topright">&times;</span>
+                  <h2>Record Audio</h2>
+                  <main>
+                    <button type="button" class="mic-toggle" id="mic">
+                      <span><i class="fa-solid fa-microphone fa-2xs"></i></span>
+                    </button>
+                    <audio class="playback" controls></audio>
+
+                    <button class="w3-btn w3-hover-green w3-green w3-round-xxlarge w3-right" id="sendRecording"
+                      type="button" onclick="document.getElementById('RecordAudio').style.display='none';
+                           document.getElementById('playAudio').style.display='';" disabled>Send Recording</button>
+
+                  </main>
+                </div>
+              </div>
+            </div>
+          </div>
+          <br><br>
+
+          <!--audio code ends-->
+          <p>
+            <label class="headings">
+              <img src="static\iconsByillustrator\Calender.svg" alt="Icon" class="w3-margin-right"
+                style="width: 40px" />
+              <b>Date</b></label>
+            <input class="w3-input datepicker" name="when" type="date" placeholder="Enter the date when you need" />
+          </p>
+          <p>
+            <label class="headings">
+              <img src="static\iconsByillustrator\Location.svg" alt="Icon" class="w3-margin-right"
+                style="width: 40px" />
+              <b>Location</b></label>
+            <input class="w3-input" name="where" type="text" placeholder="Enter the location" />
+          </p>
+          <p>
+            <label class="headings">
+              <img src="static\iconsByillustrator\related_service.svg" alt="Icon" class="w3-margin-right"
+                style="width: 40px" />
+              <b>Specific requirements</b></label>
+            <textarea rows="3" class="w3-input" style="width: 100%" spellcheck="true" name="specifications"
+              id="specifications" placeholder="Enter any specific requirement you want"></textarea>
+          </p>
+
+          <p>
+            <label class="headings">
+              <img src="static\iconsByillustrator\Service_info.svg" alt="Icon" class="w3-margin-right"
+                style="width: 40px" />
+              <b>Additional Info</b></label>
+            <textarea rows="3" class="w3-input" style="width: 100%" spellcheck="true" name="additionalInfo"
+              id="additionalInfo" placeholder="Enter any additional info"></textarea>
+          </p>
+          <p>
+            <label class="headings">
+              <img src="static\iconsByillustrator\Additional_file.svg" alt="Icon" class="w3-margin-right"
+                style="width: 40px" />
+              <input type="file" id="additionalFiles" name="additionalFiles" accept=".pdf,.ppt,.pptx,.doc,.docx"
+                multiple="true" hidden>
+              <button type="button" class="w3-btn w3-black w3-round-xlarge">
+                <label for="additionalFiles"><i class="fa-solid fa-upload"></i> Add additional files</label>
+              </button>
+            </label>
+            <input type="text" id="LenAddFiles" name="LenAddFiles" value="" hidden>
+          <ul style="text-align: left;">
+            <li>Only PDF,Doc,PPT files are accepted.</li>
+            <li>File size should be less than 200kb</li>
+            <li>Maximum 5 files can be uploaded</li>
+          </ul></label>
+          <div id="filewrapper" class="w3-row"></div>
+          </p>
+          <p>
+            <label for="status" hidden>Choose the status:</label>
+            <select name="status" id="current_status" hidden>
+              <option value="Active">Active</option>
+            </select>
+          </p>
+          <input type="text" name="adv_status" value="true" style="display: none;">
+
+        </div>
+        <button class="w3-btn w3-block w3-green w3-round" id="notification">Request for
+          service</button>
+      </form>
+
+    </div>
+
+  <br>
+  <p></p>
+
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+
+    var Ad = JSON.parse('{{ Ad | tojson | safe}}');
+    console.log("in fun",Ad)
+      // var selectedPrImg = `selectedPrImg`;
+      // var notification = `notification`;
+      // var serviceName = `serviceName`;
+      // var formId = `form`;
+      // var i_need = `i_need`;
+      // var objective = `objective`;
+      // var specifications = `specifications`;
+      // var additionalInfo = `additionalInfo`;
+      var Url = "/getServiceDetails?service_id=" + Ad.sid;
+
+      console.log("url", Url);
+      fetch(Url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+        .then(response => response.json())
+        .then(responseData => {
+          const notificationStr = "{{session.email}} is interested in your " + responseData.serviceName + "(ID: " + Ad.sid + ")";
+          const notificationSrc = "location.href='" + "/addNotification?vendorMail=" + responseData.from + "&notificationStr=" + notificationStr + "'";
+          console.log("notification", notificationSrc);
+          console.log("Response data service name", responseData.serviceName);
+          const imgName = responseData.selectedPrImg;
+          console.log("in fun",responseData.selectedPrImg)
+          const src = "/view_file_vendor?fname=" + imgName;
+          // document.getElementById(notification).setAttribute("onclick", notificationSrc);
+          console.log("src",src)
+       
+          document.getElementById('selectedPrImg').src = src;
+
+          document.getElementById('i_need').innerText = responseData.serviceName;
+          document.getElementById('objective').innerText = responseData.specificFeature;
+          document.getElementById('specifications').innerText = responseData.bestFor;
+          document.getElementById('additionalInfo').innerText = responseData.benefits;
+
+        })
+        .catch(error => {
+          console.error("Error fetching data from API:", error);
+        });
+ 
+  });
+</script>
+{% endblock card_content%}

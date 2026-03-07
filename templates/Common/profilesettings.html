@@ -1,0 +1,645 @@
+{% extends 'base.html' %}
+{% block title %} Profile {% endblock title %}
+
+{% block navContent %} {% include "Common/navbar_content.html" %}
+{% endblock navContent %}
+
+{% block body %}
+{% include "Common/profile_sub_menu.html" %}
+{% include "Common/flashMsg.html" %}
+<h3 class="form-heading">Profile Information <img
+        src="{{ url_for('static', filename='images/profile information.svg') }}"
+        style="margin-bottom: 10px; width:40px"></h3>
+{% endblock body %}
+
+{% block card_content %}
+<!-- <div class="w3-center w3-small">Type:{{ current_user.type }}.</div> -->
+<form action="/Common/profilesettings" id="profileupdateform" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="">
+        {% if user_email and filename %}
+        <img src="{{ url_for('uploaded_file', filename=user_img.get('profileImg')) }}" alt="Uploaded Image"
+            class="profileImgCircle">
+        {% else %}
+        <!-- If no image is uploaded, display a default image or a message -->
+        <img src="{{ url_for('uploaded_file', filename= user_img.get('profileImg') ) }}" alt="Default Image"
+            class="profileImgCircle">
+        {% endif %}
+
+    </div>
+    <br>
+    <label for="firstname" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/customer icon1.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">First Name:</label>
+    <input type="text" class="w3-input" id="firstname" name="firstname" value="{{ user_name.firstname }}" required><br>
+
+    <label for="lastname" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/customer icon1.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Last Name:</label>
+    <input type="text" class="w3-input" id="lastname" name="lastname" value="{{ user_name.lastname }}" required><br>
+
+    <label for="phone" class="headingFormField required"><img src="{{ url_for('static', filename='images/phone.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Phone:</label>
+    <input type="tel" class="w3-input" id="phone" name="phone" required><br>
+
+    <label for="street" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/address1.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Street:</label>
+    <input type="text" class="w3-input" id="street" name="street" value="{{ user_address.street }}" required><br>
+
+    <label for="country" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/country.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Country:</label>
+    <select class="form-select country full-width-input" id="country" name="country" aria-label="Default select example"
+        onchange="loadStates()">
+        <option value="{{ user_address.country_code }}" selected>{{ user_address.country }}</option>
+    </select>
+    <br>
+    <label for="state" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/state1.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">State:</label>
+    <select class="form-select state full-width-input" id="state" name="state" aria-label="Default select example"
+        onchange="loadCities()" required>
+        <option value="{{ user_address.state_code }}" selected>{{ user_address.state }}</option>
+    </select>
+    <br>
+    <label for="city" class="headingFormField required"><img src="{{ url_for('static', filename='images/city1.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">City:</label>
+    <select class="form-select city full-width-input" id="city" name="city" aria-label="Default select example" required>
+        <option value="{{ user_address.city_code }}" selected>{{ user_address.city }}</option>
+    </select>
+    <br>
+    <label for="zip" class="headingFormField required"><img src="{{ url_for('static', filename='images/zip.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">ZIP:</label>
+    <input type="text" class="w3-input" id="zip" name="zip" value="{{ user_address.zip }}" required><br>
+
+    {% if session['userType']=="vendor" %}
+    <!-- Render business information fields only if business_info is present -->
+    <h3>Business Profile</h3>
+    <label for="bizname" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/business name.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Business Name:</label>
+    <input type="text" class="w3-input" id="bizname" name="bizname" value="{{ business_info.bizname }}" required>
+
+    <label for="bizaboutme" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/website.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">About Me:</label>
+    <textarea class="full-width-input w3-input" id="bizaboutme" name="bizaboutme" value="{{ business_info.aboutme }}"
+        required>{{ business_info.aboutme }}</textarea>
+
+
+    <label for="bizwhytochooseme" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/website.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Why To Choose Me:</label>
+    <textarea class="full-width-input w3-input" id="bizwhytochooseme" name="bizwhytochooseme"
+        value="{{ business_info.whytochooseme }}" required>{{ business_info.whytochooseme }}</textarea>
+
+    <label for="bizwebsite" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/website.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Website:</label>
+    <input type="text" class="w3-input" id="bizwebsite" name="bizwebsite" value="{{ business_info.website }}" required>
+    <br>
+    <label for="role" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/customer icon1.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Role:</label>
+    <input type="text" class="w3-input" id="role" name="role" value="{{ business_info.role }}" required>
+    <br>
+    <label for="bizcountry" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/country.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Business
+        country</code>:</label>
+    <select class="form-select bizcountry full-width-input" id="bizcountry" name="bizcountry" aria-label="Default select example"
+        onchange="loadBizStates()">
+        <option value="{{ business_info.bizcountry_code }}" selected>{{ business_info.bizcountry }}</option>
+    </select>
+    <br>
+    <label for="bizstate" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/address1.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Business state:</label>
+    <select class="form-select bizstate full-width-input" name="bizstate" aria-label="Default select example"
+        onchange="loadBizCities()">
+        <option value="{{ business_info.bizstate }}" selected>{{ business_info.bizstate }}</option>
+    </select>
+    <br>
+    <label for="bizcity" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/city1.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Business city:</label>
+    <select class="form-select bizcity full-width-input" name="bizcity" aria-label="Default select example">
+        <option value="{{ business_info.bizcity }}" selected>{{ business_info.bizcity }}</option>
+    </select>
+    <br>
+    <label for="bizphone" class="headingFormField required"><img
+            src="{{ url_for('static', filename='images/phone.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Business phone:</label>
+    <input type="text" class="w3-input" id="bizphone" name="bizphone" value="{{ business_info.bizphone }}" required>
+
+    <br>
+
+    <label for="bizzip" class="headingFormField required"><img src="{{ url_for('static', filename='images/zip.svg') }}"
+            style="margin-right: 5px; margin-bottom: 5px; width:30px">Business zip
+        code</code>:</label>
+    <input type="text" class="w3-input" id="bizzip" name="bizzip" value="{{ business_info.bizzip }}" required>
+    <br>
+
+    <!-- Add more business-related fields as needed -->
+    {% endif %}
+    <div id="errorMessage" class="error"></div>
+    <button type="submit" class="w3-btn w3-green w3-block w3-round" id="updateBtn" >Save Changes</button>
+</form>
+
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/intlTelInput.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script> -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/css/intlTelInput.css">
+<script>
+ 
+document.getElementById("updateBtn").addEventListener("click", validateFields);
+function validateFields(){
+    console.log("in validefields fun",document.getElementsByName("stateName")[0].value)
+        let isValid = true;
+        if (!document.getElementById("firstname").value.trim()) {
+            document.getElementById("errorMessage").textContent = "First name is required.";
+            isValid = false;
+        }
+        
+        else if (!document.getElementById("lastname").value.trim()) {
+            document.getElementById("errorMessage").textContent = "Last name is required.";
+            isValid = false;
+        }
+        
+        else if (!iti.isValidNumber()) {
+            document.getElementById("errorMessage").textContent = "phone number is invalid";
+            console.log(document.getElementById("country").value)
+            isValid = false;
+        }
+        else if (!document.getElementById("street").value.trim()) {
+            document.getElementById("errorMessage").textContent = "Address is required.";
+            isValid = false;
+        }
+        else if (document.getElementById("country").value.trim() == "Select Country") {
+            document.getElementById("errorMessage").textContent = "country is required.";
+            isValid = false;
+        }
+        else if (document.getElementsByName("stateName")[0].value== '') {
+            document.getElementById("errorMessage").textContent = "state is required.";
+            isValid = false;
+        }
+
+        else if (document.getElementsByName("cityName")[0].value== '') {
+            document.getElementById("errorMessage").textContent = "city is required.";
+            isValid = false;
+        }
+        else if (!document.getElementById("zip").value.trim()) {
+            document.getElementById("errorMessage").textContent = "zip code is required.";
+            isValid = false;
+        }
+        else if (document.getElementById("zip").value.trim()) {
+
+            const country = document.getElementById("country").value
+            console.log("for zip code country value", country)
+            const zipCode = document.getElementById('zip').value;
+            console.log("zip code value", zipCode)
+            const errorMessage = document.getElementById('errorMessage');
+            if (country == "Select Country") {
+                errorMessage.textContent = "Country is required";
+            }
+            const zipCountry=document.getElementById("country").value.trim()
+            // Call the ZIP code validation function based on the country
+            if( zipCountry=="IN" || zipCountry=="US" || zipCountry=="CA" || zipCountry=="DE"){
+                isValid = validateZipCode(country, zipCode);
+            console.log("zip is valid or not", isValid);
+            if (isValid) {
+
+                errorMessage.textContent = ""; // Clear error message
+                isValid = true;
+            } else {
+                errorMessage.textContent = "Invalid ZIP code for the selected country.";
+                isValid = false;
+            }
+        }
+
+        }
+        else {
+            document.getElementById("errorMessage").textContent = "";
+        }
+        return isValid;
+    }
+   
+</script>
+{% if session['userType']=="vendor" %}
+<script>
+    
+    // Initialize the plugin
+const bizPhoneInput = document.querySelector('#bizphone');     
+ var bizCountryData = null;
+ // Initialize the plugin 
+ const Biziti = window.intlTelInput(bizPhoneInput, {
+     // Options
+     loadUtilsOnInit: "https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/utils.js",
+     strictMode: true,
+     autoFormat: true,
+     initialCountry: "in",
+     nationalMode: false,
+     // preferredCountries: ['in'], // Set India as the preferred country
+     separateDialCode: true,
+      onlyCountries: ["in",'us'],
+ });
+
+ // Biziti.promise.then(() => {
+ //     const iti_container = bizPhoneInput.closest('.Biziti');
+ //     if (iti_container) {
+ //         iti_container.style.width = '100%';
+ //         iti_container.style.display = 'block';
+ //     }
+ // });
+
+ 
+ var config = {
+     cUrl: 'https://api.countrystatecity.in/v1/countries',
+     ckey: 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA=='
+ }
+
+ var bizCountrySelect = document.querySelector('.bizcountry'),
+     bizStateSelect = document.querySelector('.bizstate'),
+     bizCitySelect = document.querySelector('.bizcity')
+
+    
+    var bizCountryCode =JSON.parse('{{ business_info.bizcountry_code | tojson | safe}}') 
+    var bizCountryName = JSON.parse('{{business_info.bizcountry | tojson | safe}}')
+    var bizStateCode = JSON.parse('{{business_info.bizstate_code | tojson | safe}}')
+    var bizStateName = JSON.parse('{{business_info.bizstate | tojson | safe}}')
+    var bizCityCode = JSON.parse('{{business_info.bizcity_code | tojson | safe}}')
+    var bizCityName = JSON.parse('{{business_info.bizcity | tojson | safe}}')
+
+
+// Add event listener when country changes in phone input
+bizPhoneInput.addEventListener("countrychange", function () {
+     
+     bizCountryData = Biziti.getSelectedCountryData();
+     const bizCountryIso = bizCountryData.iso2.toUpperCase();
+     console.log("Phone country changed to:", bizCountryIso);
+
+     // Automatically select the corresponding country in the dropdown
+    
+
+     for (let option of bizCountrySelect.options) {
+         if (option.value === bizCountryIso) {
+
+             bizCountrySelect.value = bizCountryIso;
+             bizCountryNameInput.value = bizCountryData.name;
+             loadBizStates();  // Update the state dropdown
+             break;
+         }
+     }
+ });
+
+ 
+
+ // Add hidden input fields to store the full names
+ const bizCountryNameInput = document.createElement('input')
+ bizCountryNameInput.type = 'hidden'
+ bizCountryNameInput.name = 'bizcountryName'
+ bizCountrySelect.parentNode.appendChild(bizCountryNameInput)
+
+ const bizStateNameInput = document.createElement('input')
+ bizStateNameInput.type = 'hidden'
+ bizStateNameInput.name = 'bizstateName'
+ bizStateSelect.parentNode.appendChild(bizStateNameInput)
+
+ const bizCityNameInput = document.createElement('input')
+ bizCityNameInput.type = 'hidden'
+ bizCityNameInput.name = 'bizcityName'
+ bizCitySelect.parentNode.appendChild(bizCityNameInput)
+
+ function loadBizCountries() {
+    console.log("in  biz loadcountry")
+     let apiEndPoint = config.cUrl
+
+     fetch(apiEndPoint, { headers: { "X-CSCAPI-KEY": config.ckey } })
+         .then(Response => Response.json())
+         .then(data => {
+             // Specify the countries you want to keep (using iso2 codes here)
+    const specificCountries = ['US', 'IN']; // USA, India, Canada
+
+// Filter the data to only include these countries
+const filteredCountries = data.filter(country => specificCountries.includes(country.iso2));
+
+// Populate the dropdown
+const dropdown = document.getElementById('bizcountry');
+filteredCountries.forEach(country => {
+                 const option = document.createElement('option');
+                 option.value = country.iso2;
+                 option.textContent = country.name;
+                 dropdown.appendChild(option);
+             })
+         })
+         .catch(error => console.error('Error loading countries:', error))
+
+     bizStateSelect.disabled = true
+     bizCitySelect.disabled = true
+     bizStateSelect.style.pointerEvents = 'none'
+     bizCitySelect.style.pointerEvents = 'none'
+ }
+
+ function loadBizStates() {
+     bizStateSelect.disabled = false
+     bizCitySelect.disabled = true
+     bizStateSelect.style.pointerEvents = 'auto'
+     bizCitySelect.style.pointerEvents = 'none'
+
+     const selectedCountryCode = bizCountrySelect.value
+     bizStateSelect.innerHTML = '<option value="">Select Business State</option>' // for clearing the existing states
+     bizCitySelect.innerHTML = '<option value="">Select Business City</option>' // Clear existing city options
+
+     fetch(`${config.cUrl}/${selectedCountryCode}/states`, { headers: { "X-CSCAPI-KEY": config.ckey } })
+         .then(response => response.json())
+         .then(data => {
+             data.forEach(state => {
+                 const option = document.createElement('option')
+                 option.value = state.iso2
+                 option.textContent = state.name
+                 bizStateSelect.appendChild(option)
+             });
+             console.log("country bizStateCode", bizStateCode);
+               // Set the state select value to user's state code
+            if (bizStateCode) {
+                bizStateSelect.value = bizStateCode;
+                bizStateNameInput.value = bizStateName;
+            }
+            // Load cities after setting state
+            loadBizCities();
+         })
+         .catch(error => console.error('Error loading states:', error))
+ }
+
+ function loadBizCities() {
+     bizCitySelect.disabled = false
+     bizCitySelect.style.pointerEvents = 'auto'
+
+     const selectedCountryCode = bizCountrySelect.value
+     const selectedStateCode = bizStateSelect.value
+     bizCitySelect.innerHTML = '<option value="">Select Business City</option>' // Clear existing city options
+
+     fetch(`${config.cUrl}/${selectedCountryCode}/states/${selectedStateCode}/cities`, { headers: { "X-CSCAPI-KEY": config.ckey } })
+         .then(response => response.json())
+         .then(data => {
+             data.forEach(city => {
+                 const option = document.createElement('option')
+                 option.value = city.name
+                 option.textContent = city.name
+                 bizCitySelect.appendChild(option)
+             });
+               // Set the state select value to user's state code
+            if (bizCityCode) {
+                bizCitySelect.value = bizCityCode;
+                bizCityNameInput.value = bizCityName;
+            }
+         });
+ }
+
+ // Update the hidden input fields whenever the selected option changes
+ bizCountrySelect.addEventListener('change', () => {
+     const selectedOption = bizCountrySelect.options[bizCountrySelect.selectedIndex]
+     bizCountryNameInput.value = selectedOption.textContent
+     Biziti.setCountry(selectedOption.value);
+     loadBizStates()
+    
+ })
+
+ bizStateSelect.addEventListener('change', () => {
+     const selectedOption = bizStateSelect.options[bizStateSelect.selectedIndex]
+     bizStateNameInput.value = selectedOption.textContent
+     loadBizCities()
+     })
+
+ bizCitySelect.addEventListener('change', () => {
+     const selectedOption = bizCitySelect.options[bizCitySelect.selectedIndex]
+     bizCityNameInput.value = selectedOption.textContent
+    })
+
+ loadBizCountries()
+
+ Biziti.setNumber(JSON.parse('{{business_info.bizphone | tojson | safe}}'))
+    Biziti.setCountry(JSON.parse('{{business_info.bizcountry_code | tojson | safe}}'))
+
+</script>
+{% endif %}
+<script>
+    // Initialize the plugin
+    const phoneInput = document.querySelector('#phone');
+    var countryData = null;
+    const iti = window.intlTelInput(phoneInput, {
+        // Options
+
+        loadUtilsOnInit: "https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/utils.js",
+        strictMode: true,
+        autoFormat: true,
+        initialCountry: "in",
+        nationalMode: false,
+        // preferredCountries: ['in'], // Set India as the preferred country
+        separateDialCode: true,
+        onlyCountries: ["in",'us'],
+
+    });
+     // Fetch and load country, state, and city data
+     var config = {
+        cUrl: 'https://api.countrystatecity.in/v1/countries',
+        ckey: 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA=='
+    };
+
+    var countrySelect = document.querySelector('.country'),
+        stateSelect = document.querySelector('.state'),
+        citySelect = document.querySelector('.city');
+
+    var userCountryCode =JSON.parse('{{ user_address.country_code | tojson | safe}}') 
+    var userCountryName = JSON.parse('{{user_address.country | tojson | safe}}')
+    var userStateCode = JSON.parse('{{user_address.state_code | tojson | safe}}')
+    var userStateName = JSON.parse('{{user_address.state | tojson | safe}}')
+    var userCityCode = JSON.parse('{{user_address.city_code | tojson | safe}}')
+    var userCityName = JSON.parse('{{user_address.city | tojson | safe}}')
+
+    // Add event listener when country changes in phone input
+    phoneInput.addEventListener("countrychange", function () {
+        
+        countryData = iti.getSelectedCountryData();
+        const countryIso = countryData.iso2.toUpperCase();
+        console.log("Phone country changed to:", countryIso);
+
+        // Automatically select the corresponding country in the dropdown
+       
+
+        for (let option of countrySelect.options) {
+            if (option.value === countryIso) {
+
+                countrySelect.value = countryIso;
+                countryNameInput.value = countryData.name;
+                loadStates();  // Update the state dropdown
+                break;
+            }
+        }
+    });
+
+    const countryNameInput = document.createElement('input');
+    countryNameInput.type = 'hidden';
+    countryNameInput.name = 'countryName';
+    countrySelect.parentNode.appendChild(countryNameInput);
+
+    const stateNameInput = document.createElement('input');
+    stateNameInput.type = 'hidden';
+    stateNameInput.name = 'stateName';
+    stateSelect.parentNode.appendChild(stateNameInput);
+
+    const cityNameInput = document.createElement('input');
+    cityNameInput.type = 'hidden';
+    cityNameInput.name = 'cityName';
+    citySelect.parentNode.appendChild(cityNameInput);
+
+    function loadCountries() {
+        console.log("in loadcountry")
+        let apiEndPoint = config.cUrl;
+
+        fetch(apiEndPoint, { headers: { "X-CSCAPI-KEY": config.ckey } })
+            .then(Response => Response.json())
+            .then(data => {
+                 // Specify the countries you want to keep (using iso2 codes here)
+    const specificCountries = ['US', 'IN']; // USA, India, Canada
+
+// Filter the data to only include these countries
+const filteredCountries = data.filter(country => specificCountries.includes(country.iso2));
+
+// Populate the dropdown
+const dropdown = document.getElementById('country');
+filteredCountries.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.iso2;
+                    option.textContent = country.name;
+                    dropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading countries:', error));
+        stateSelect.disabled = true;
+        citySelect.disabled = true;
+        stateSelect.style.pointerEvents = 'none';
+        citySelect.style.pointerEvents = 'none';
+    }
+
+    function loadStates() {
+        stateSelect.disabled = false;
+        citySelect.disabled = true;
+        stateSelect.style.pointerEvents = 'auto';
+        citySelect.style.pointerEvents = 'none';
+
+        const selectedCountryCode = countrySelect.value;
+        stateSelect.innerHTML = '<option value="">Select State</option>';
+        citySelect.innerHTML = '<option value="">Select City</option>';
+        console.log("country userStateCode");
+        fetch(`${config.cUrl}/${selectedCountryCode}/states`, { headers: { "X-CSCAPI-KEY": config.ckey } })
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(state => {
+                    const option = document.createElement('option');
+                    option.value = state.iso2;
+                    option.textContent = state.name;
+                    stateSelect.appendChild(option);
+                });
+                // Set the state select value to user's state code
+                console.log("country userStateCode", userStateCode);
+
+            if (userStateCode) {
+                stateSelect.value = userStateCode;
+                stateNameInput.value = userStateName;
+            }
+            // Load cities after setting state
+            loadCities();
+            })
+            .catch(error => console.error('Error loading states:', error));
+
+            
+    }
+
+    function loadCities() {
+        citySelect.disabled = false;
+        citySelect.style.pointerEvents = 'auto';
+
+        const selectedCountryCode = countrySelect.value;
+        const selectedStateCode = stateSelect.value;
+        citySelect.innerHTML = '<option value="">Select City</option>';
+
+        fetch(`${config.cUrl}/${selectedCountryCode}/states/${selectedStateCode}/cities`, { headers: { "X-CSCAPI-KEY": config.ckey } })
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city.name;
+                    option.textContent = city.name;
+                    citySelect.appendChild(option);
+                });
+               // Set the state select value to user's state code
+            if (userCityCode) {
+                citySelect.value = userCityCode;
+                cityNameInput.value = userCityName;
+            }
+            });
+    }
+
+
+    // Sync hidden input fields with country, state, and city selections
+    countrySelect.addEventListener('change', () => {
+        const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+        countryNameInput.value = selectedOption.textContent;
+        iti.setCountry(selectedOption.value);
+        loadStates();
+    });
+
+    stateSelect.addEventListener('change', () => {
+        const selectedOption = stateSelect.options[stateSelect.selectedIndex];
+        stateNameInput.value = selectedOption.textContent;
+        loadCities();
+    });
+
+    citySelect.addEventListener('change', () => {
+        const selectedOption = citySelect.options[citySelect.selectedIndex];
+        cityNameInput.value = selectedOption.textContent;
+    });
+
+
+    loadCountries();
+
+    iti.setNumber(JSON.parse('{{user_address.phone | tojson | safe}}'))
+    iti.setCountry(JSON.parse('{{user_address.country_code | tojson | safe}}'))
+
+    // ZIP Code validation function without API using regular expressions
+    function validateZipCode(country, zipCode) {
+        let regex;
+
+        switch (country) {
+            case 'US': // United States ZIP code: 5 digits or 5 digits + hyphen + 4 digits (e.g., 12345 or 12345-6789)
+                regex = /^\d{5}(-\d{4})?$/;
+                break;
+
+            case 'CA': // Canada ZIP code: Letter-number-letter space number-letter-number (e.g., K1A 0B1)
+                regex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+                break;
+
+            case 'DE': // Germany ZIP code: 5 digits (e.g., 12345)
+                regex = /^\d{5}$/;
+                break;
+
+            case 'IN': // India PIN code: 6 digits (e.g., 110001)
+                regex = /^\d{6}$/;
+                break;
+
+            // Add more countries and their postal code patterns if needed
+
+            default:
+                return false; // Invalid country
+        }
+
+        return regex.test(zipCode); // Test the ZIP code against the regex for the selected country
+    }
+    
+</script>
+
+
+
+{% endblock card_content%}

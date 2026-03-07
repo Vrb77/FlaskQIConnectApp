@@ -1,0 +1,271 @@
+{% extends "base.html" %}
+{% block title %}Messaging{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock
+navContent%} {% block body %} {% include "Common/flashMsg.html" %} {% include
+"Vendor/sub_menu.html" %}
+<meta id="my-data" data-name="{{service_id}}" data-other="{{service_id}}">
+<h3 class="form-heading">
+  <i class="fa-solid fa-comments fa-xl"></i>&emsp;Messaging to {{rd['from']}}
+</h3>
+
+{% endblock body %} {% block card_content %}
+<div class="flex-container">
+  <a href="/updateProduct?sid={{service_id}}">
+    Service Details
+  </a> &emsp;&emsp;
+  <a href="/customer_profile?email={{cd.mail}}&sid={{service_id}}">
+    Customer Profile
+  </a>
+</div>
+<br>
+<!--flex container-->
+{% set id=service_id+"_"+request_id %}
+<input type="text" value="/updateVendorContract?id={{id}}" id="urlForContractDetForm" hidden>
+<form method="POST" action="/updateVendorContract?id={{id}}" id="contractDetForm">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="flex-container">
+    <label class="headings">
+      <b>Schedule date</b></label>
+    <input class="w3-input w3-third datepicker" type="date" name="when" id="when"
+      placeholder="Enter date and time when you are available" value="{{vendorContractDet['when']}}">
+    &emsp;&emsp;
+    <label class="headings">
+      <b>Price</b></label>
+    <input class="w3-input w3-third" type="number" name="price" id="price" placeholder="Enter price for this service"
+      value="{{vendorContractDet['price']}}">
+    &emsp;&emsp;
+    <button class="w3-btn w3-hover-green w3-green w3-round-xxlarge w3-right" title="submit" type="submit"
+      id="submitContract">submit</button>
+  </div>
+</form>
+<br>
+
+
+<div class="w3-round-xlarge" style="border: 2px solid black">
+  <div class="message-card-head w3-padding w3-round-xlarge">
+    <!--div for avatar and contacting person starts-->
+    <img src="/static/images/user.avif" alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width: 60px" />
+    <h3><strong>{{rd['from']}}</strong></h3>
+  </div>
+  <!--div for avatar and contacting person ends-->
+  <!--Message part starts-->
+  <div>
+    <form class="w3-container" id="postForm" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <br />
+      <div class="w3-responsive">
+        <textarea rows="6" style="width: 100%" name="message" placeholder="Type a message here" title="type a message"
+          id="messageInput"></textarea>
+      </div>
+      <!-- attachment code starts -->
+      <div class="w3-row">
+        <div class="w3-col s3  w3-center">
+          <p><input type="file" name="messageFile" id="fileInput" hidden />
+            <button type="button">
+              <label for="fileInput" title="Add files">
+                <i class="fa-solid fa-paperclip fa-xl"></i></label></button>
+            <br>
+          <div id="fileName">No file Selected</div>
+          </p>
+        </div>
+        <!--Audio input starts-->
+        <div class="w3-col s3  w3-center">
+          <p>
+            <button type="button" onclick="document.getElementById('RecordAudio').style.display='block'"
+              id="microphoneBtn" title="Start recording audio"><i class="fa-solid fa-microphone fa-xl"></i></button>
+          </p>
+          <div id="RecordAudio" class="w3-modal">
+            <div class="w3-modal-content w3-pale-blue">
+              <div class="w3-container">
+                <span onclick="document.getElementById('RecordAudio').style.display='none'"
+                  class="w3-btn w3-display-topright">&times;</span>
+                <h2>Record Audio</h2>
+                <form class="w3-container" id="postForm" method="POST" enctype="multipart/form-data">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <main>
+                    <button type="button" class="mic-toggle" id="mic">
+                      <span><i class="fa-solid fa-microphone fa-2xs"></i></span>
+                    </button>
+                    <audio class="playback" controls></audio>
+                    <input type="file" id="audioBlob" name="AudioFile" hidden>
+                    <button class="w3-btn w3-hover-green w3-green w3-round-xxlarge w3-right" id="sendRecording"
+                      type="submit" onclick="document.getElementById('RecordAudio').style.display='none'" disabled>Send
+                      Recording</button>
+
+                  </main>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--Audio input ends-->
+        <!--Video input starts-->
+        <div class="w3-col s3  w3-center">
+          <p>
+            <button type="button" onclick="document.getElementById('RecordVideo').style.display='block'" id="videoBtn"
+              title="Start recording video"><i class="fa-solid fa-video fa-xl"></i></button>
+          </p>
+          <div id="RecordVideo" class="w3-modal">
+            <div class="w3-modal-content w3-pale-blue">
+              <div class="w3-container">
+                <span onclick="document.getElementById('RecordVideo').style.display='none'"
+                  class="w3-btn w3-display-topright">&times;</span>
+                <h2>Record Video</h2>
+                <main>
+                  <div class="w3-row">
+                    <div class="w3-col s6  w3-left">
+                      <button type="button" id="btnStart" class="w3-btn w3-hover-green w3-green w3-round-xxlarge"
+                        name="b1">START RECORDING</button> &emsp;&emsp;
+                    </div>
+                    <div class="w3-col s6  w3-left">
+                      <button type="button" id="btnStop" class="w3-btn w3-hover-red w3-red w3-round-xxlarge"
+                        name="b2" disabled>STOP RECORDING</button>
+                    </div>
+                  </div>
+
+                  <div class="w3-row">
+                    <div class="w3-center" id="camera">
+                      <p>Camera<i class="fa-solid fa-arrow-down-long fa-xl"></i></p> <video width="320"
+                        height="240"></video>
+                    </div>
+                    <div class="w3-center" id="cameraPreview" hidden>
+                      <p>Preview <i class="fa-solid fa-arrow-down-long fa-xl"></i></p><video width="320" height="240"
+                        id="vid2" controls></video>
+                    </div>
+                  </div>
+                  <!-- could save to canvas and do image manipulation and saving too -->
+
+                  <input type="file" id="videoBlob" name="VideoFile" hidden>
+                  <button class="w3-btn w3-hover-green w3-green w3-round-xxlarge w3-center" id="sendVideoRecording"
+                    type="submit" onclick="document.getElementById('RecordVideo').style.display='none'" disabled>Send
+                    Video</button>
+
+                </main>
+    </form>
+  </div>
+</div>
+</div>
+</div>
+<!--Video input ends-->
+<div class="w3-col s3  w3-center">
+  <p> <button class="w3-btn w3-hover-green w3-green w3-round-xxlarge w3-right" title="send message" type="submit"
+      id="sendMessage">
+      Send Message</button>
+  </p>
+</div>
+</div>
+
+
+</form>
+</div>
+
+<!-- attachment code ends -->
+
+
+</div>
+<!--Message part ends-->
+<div class="msgVendor message-container w3-round-xlarge">
+  <!--View messages between vendor and customer starts-->
+  <div class="" id="message-container">
+    {% for key in Messages %} {% if rd['from'] ==key['to']%}
+
+    <div class="message sent">
+      {{key['message']}}
+      {% if key['file']!='' %}
+      <div class="w3-border w3-round-large w3-padding w3-border-black">
+        {{key['file']}}
+        <a href="{{url_for('download_file',fname=key['file'])}}"><i class="fa-solid fa-download"></i></a>
+        <a href="{{url_for('view_file',fname=key['file'])}}"><i class="fa-solid fa-eye"></i></a>
+      </div>
+
+      {% endif %}
+
+      {% if key['audioFile_name']!='' %}
+      <div class="w3-border w3-round-large w3-padding w3-border-black">
+        {{key['audioFile_name']}}
+        <audio src="{{url_for('view_file',fname=key['audioFile_name'])}}" controls></audio>
+        <a href="{{url_for('download_file',fname=key['audioFile_name'])}}"><i class="fa-solid fa-download"></i></a>
+        <a href="{{url_for('view_file',fname=key['audioFile_name'])}}"><i class="fa-solid fa-eye"></i></a>
+      </div>
+
+      {% endif %}
+
+      {% if key['videoFile_name']!='' %}
+      <div class="w3-border w3-round-large w3-padding w3-border-black">
+        {{key['videoFile_name']}}
+        <video src="{{url_for('view_file',fname=key['videoFile_name'])}}" width="320" height="240" controls></video>
+        <a href="{{url_for('download_file',fname=key['videoFile_name'])}}"><i class="fa-solid fa-download"></i></a>
+        <a href="{{url_for('view_file',fname=key['videoFile_name'])}}"><i class="fa-solid fa-eye"></i></a>
+      </div>
+
+      {% endif %}
+
+      <div class="message-time">
+        {{key["timestamp"][11:16]}}
+      </div>
+    </div>
+    <!--message sent-->
+
+    <br />
+
+    {% else %}
+    <div class="message received">
+      {{key['message']}} {% if key['file']!='' %}
+      <div class="w3-border w3-round-large w3-padding w3-border-black">
+        {{key['file']}}
+        <a href="{{url_for('download_file',fname=key['file'])}}" title="Download file"><i
+            class="fa-solid fa-download"></i></a>
+        <a href="{{url_for('view_file',fname=key['file'])}}" title="View file"><i class="fa-solid fa-eye"></i></a>
+      </div>
+
+      {% endif %}
+      {% if key['audioFile_name']!='' %}
+      <div class="w3-border w3-round-large w3-padding w3-border-black">
+        {{key['audioFile_name']}}
+        <audio src="{{url_for('view_file',fname=key['audioFile_name'])}}" controls></audio>
+        <a href="{{url_for('download_file',fname=key['audioFile_name'])}}"><i class="fa-solid fa-download"></i></a>
+        <a href="{{url_for('view_file',fname=key['audioFile_name'])}}"><i class="fa-solid fa-eye"></i></a>
+      </div>
+
+      {% endif %}
+      {% if key['videoFile_name']!='' %}
+      <div class="w3-border w3-round-large w3-padding w3-border-black">
+        {{key['videoFile_name']}}
+        <video src="{{url_for('view_file',fname=key['videoFile_name'])}}" width="320" height="240" controls></video>
+        <a href="{{url_for('download_file',fname=key['videoFile_name'])}}"><i class="fa-solid fa-download"></i></a>
+        <a href="{{url_for('view_file',fname=key['videoFile_name'])}}"><i class="fa-solid fa-eye"></i></a>
+      </div>
+
+      {% endif %}
+
+      <div class="message-time">
+        {{key["timestamp"][11:16]}}
+      </div>
+    </div>
+    <!--message received-->
+    <br />
+    {% endif %} {% endfor %}
+  </div>
+  <!--Message container-->
+
+  <!--View messages between vendor and customer ends-->
+</div>
+</div>
+<script type="text/javascript">
+  window.appConfig = {
+    request_id: '{{ request_id }}',
+    service_id: '{{ service_id }}',
+    userMail: '{{rd.from}}',
+  }
+
+</script>
+<script src="/static/messageVendor.js" type="text/javascript">
+
+</script>
+
+
+{% endblock card_content %}
+{% block AD_content %}
+{% include "Common/advertisement.html" %}
+
+{% endblock AD_content %}

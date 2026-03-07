@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% block title %}Vendor Home{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %} {% include "Common/flashMsg.html" %} {% include
+"Vendor/sub_menu.html" %}
+<h3 class="form-heading">Responses for {{sd['serviceName']}}</h3>
+{% endblock body %} {% block card_content %}
+
+<center>
+  <h2>Responses({{count}})</h2>
+</center>
+{% if count==0 %}
+<center>
+  <h4>No Conversation Yet!</h4>
+</center>
+{% else %}
+<div class="w3-container table-container">
+  <table class="w3-border w3-round-xlarge w3-hoverable w3-border-black" id="searchTable">
+    <tr class="w3-grey">
+      <th>Sr.No </th>
+      <th>customer mail</th>
+      <th>customer name</th>
+      <th>Last Message</th>
+      <th>Contact</th>
+
+    </tr>
+    {% for key,value in responses.items() %}
+    <tr onclick="location.href='/customer_profile?email={{value.id}}&rid={{rid}}&sid={{key}}'">
+      <td>{{loop.index}}</td>
+      <td>
+        {{value['id']}}
+      </td>
+      <td>{{value['customerName']}}</td>
+      <td>
+        {% set url="/lastMessage?request_id="+key+"&service_id="+sid %}
+        <div class="lastMsg">
+          <input type="text" id="url" value="{{url}}" style=" display: none;">
+          <span class="LastMsgHolder"></span>
+        </div>
+      </td>
+      <td>
+        <a href="/messagingFromVendor?service_id={{sid}}&request_id={{key}}" title="Message to customer"><i
+            class="fa-solid fa-comments"></i></a>
+      </td>
+
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+{% endif %}
+
+<script>
+  $(document).ready(function () {
+    $('.lastMsg').each(function (index, element) {
+      var row = $(this);
+      var url = element.children[0].value
+      console.log("URL", url);
+      // var url=document.getElementById('url').value
+      $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          row.find('.LastMsgHolder').text(data);
+        },
+        error: function (xhr, status, error) {
+          console.error(error);
+        }
+      });
+    })
+  })
+</script>
+{% endblock card_content %}

@@ -1,0 +1,92 @@
+{% extends "base.html" %} {% block title %}All Request{% endblock %} {% block
+navContent %}
+{% include "Common/navbar_content.html" %} {% endblock
+navContent%}
+
+{% block body %}
+
+{% include "Customer/sub_menu.html" %}
+
+{% include "Common/flashMsg.html" %}
+<h3 class="form-heading">All Requests ({{ count }})</h3>
+
+{% endblock body %}
+
+{% block card_content %}
+<!--My(Customer) requests starts-->
+{% if count==0 %}
+<h3>No requests added</h3>
+<h4>
+  To add Requests
+  <a href="/request_form" style="color: blue">click here</a>
+</h4>
+{% else %}
+<input type="text" class="w3-round-xxlarge" id="searchInput" onkeyup="searchFunction()" placeholder="Search..."
+  title="Type in a name">
+
+<div class="w3-container">
+  <div id="myRequests">
+    <table class="w3-table-all w3-hoverable w3-responsive table-container w3-round-xlarge  w3-border-black"
+      id="searchTable">
+      <thead class="sticky">
+        <tr class="w3-black">
+          <!-- <th>Key</th> -->
+          <th>Sr.No</th>
+          <th>Request</th>
+          <th style="width: 200px;">Date of request</th>
+          <th>Current Status</th>
+          <th>Matching Vendors & Responses</th>
+          <!-- <th>Delete Request</th> -->
+          <!-- <th>close Request</th> -->
+        </tr>
+      </thead>
+      {% for key,value in myRequests %}
+      <tr onclick="location.href='/updateRequest?rid={{ key }}'">
+        <!-- <td>{{key}}</td> -->
+        <td>{{count - loop.index0}}</td>
+        <td>{{ value['i_need'] }}</td>
+        <td>{{ value['timestamp'][:10] }}</td>
+        <td><span id="status">{{value['current_status']}}</span></td>
+        {% set url="countOfMatchVendors?rid="+key %}
+        <td>
+          <button class="w3-btn w3-hover-indigo w3-indigo w3-round-xxlarge">
+            <div class="countOfMatch">
+            <input type="text" id="url" value="{{url}}" style=" display: none;">
+            <a href="/vendor_responses_details?rid={{ key }}" class="countOfMatchVendorHolder"></a>
+          </div>
+          </button>
+  </div>
+  </td>
+  <!-- <td>
+          <a href="/deleteRequest?rid={{ key }}"><img src="static\Icon_images\delete_icon.svg" style="width: 40px" /><i></i></a>
+        </td> -->
+  <!-- <td> <button class="w3-btn w3-hover-indigo w3-indigo w3-round-xxlarge " title="close the request"
+            name="submit" type="submit" id="close-btn">close</button></td> -->
+  </tr>
+  {% endfor %}
+  </table>
+</div>
+</div>
+{% endif %}
+<!--My(Customer) requests ends-->
+<script>
+  $(document).ready(function () {
+    $('.countOfMatch').each(function (index, element) {
+      var row = $(this);
+      var url = element.children[0].value
+      // var url=document.getElementById('url').value
+      $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          row.find('.countOfMatchVendorHolder').text(data);
+        },
+        error: function (xhr, status, error) {
+          console.error(error);
+        }
+      });
+    })
+  })
+</script>
+{% endblock card_content %}

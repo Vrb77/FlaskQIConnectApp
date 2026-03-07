@@ -1,0 +1,94 @@
+{% extends "base.html" %} {% block title %}Vendor Home{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %} {% include "Common/flashMsg.html" %} {% include
+"Vendor/adv_sub_menu.html" %} {% endblock body %} {% block card_content %}
+<script>
+  document.getElementById("card").style.display = "none";
+</script>
+{% endblock card_content%} {% block ad_content %}
+<center>
+  <div style="margin-bottom: 64px" class="formcard">
+    {% if count==0 %}
+    <h3>No Products/Service Added</h3>
+    <h4>
+      To add Product
+      <a href="/register_product_form" style="color: blue">click here</a>
+    </h4>
+    {% else %} {% for key,value in myProducts %} {% if countAd!=0%} {% if key is
+    in AdPlaced.keys() %}
+
+    <div class="card">
+      <div class="column">
+        <div class="box2 box1 w3-col w3-round-xlarge">
+          <div id="tag">Promoted</div>
+          <img
+            src="{{url_for('view_file_vendor',fname=value['selectedPrImg'])}}"
+            alt="AdImg" />
+        </div>
+      </div>
+      <div class="column w3-left">
+        <h2 class="card-title">{{value['serviceName']}}</h2>
+        <p class="card-description">{{value['specificFeature']}}</p>
+
+        <button
+          type="button"
+          class="w3-btn w3-hover-green w3-green w3-round-xxlarge"
+          style="float: center"
+          onclick="location.href='/advertisementForm?sid={{key}}'"
+          disabled>
+          Promoted
+        </button>
+      </div>
+    </div>
+    <br />
+    {% else %}
+    <div class="card">
+      <div class="column">
+        <div class="box2 box1 w3-col w3-round-xlarge">
+          <img
+            src="{{url_for('view_file_vendor',fname=value['selectedPrImg'])}}"
+            alt="AdImg" />
+        </div>
+      </div>
+      <div class="column">
+        <h2 class="card-title">{{value['serviceName']}}</h2>
+        <p class="card-description">{{value['specificFeature']}}</p>
+
+        <button
+          type="button"
+          class="w3-btn w3-hover-green w3-green w3-round-xxlarge"
+          style="float: center"
+          onclick="location.href='/advertisementForm?sid={{key}}'">
+          Promote
+        </button>
+      </div>
+    </div>
+    <br />
+    {% endif %} {% else %}
+    <div class="card">
+      <div class="column">
+        <div class="box2 box1 w3-col w3-round-xlarge">
+          <img
+            src="{{url_for('view_file_vendor',fname=value['selectedPrImg'])}}"
+            alt="AdImg" />
+        </div>
+      </div>
+      <div class="column">
+        <h2 class="card-title">{{value['serviceName']}}</h2>
+        <p class="card-description">{{value['specificFeature']}}</p>
+
+        <button
+          type="button"
+          class="w3-btn w3-hover-green w3-green w3-round-xxlarge"
+          style="float: center"
+          onclick="location.href='/advertisementForm?sid={{key}}'">
+          Promote
+        </button>
+      </div>
+    </div>
+    <br />
+    {% endif %} {% endfor %} {% endif %}
+  </div>
+</center>
+
+{% endblock ad_content %}

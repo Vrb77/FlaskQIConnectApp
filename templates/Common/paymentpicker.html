@@ -1,0 +1,117 @@
+{% extends 'base.html' %} {% block title %} Payment Page {% endblock title %} {%
+block navContent %} {% include "Common/navbar_content.html" %} {% endblock
+navContent %} {% block body %} {% include "Common/flashMsg.html" %}
+<h3 class="form-heading">
+  Order Payment &ensp;<i class="fa-solid fa-money-check-dollar"></i>
+</h3>
+
+{% endblock body %} {% block card_content %}
+<div class="container">
+  <div>
+    <h2 class="w3-center">Order Summary</h2>
+    <!-- <div class="currency-selector">
+        <label for="currency-select">Select Currency:</label>
+        <select id="currency-select" onchange="updateCurrency()">
+          <option value="USD">USD</option>
+          <option value="INR">INR</option>
+        </select>
+      </div> -->
+    <div id="order-summary">
+      <span class="order-name">
+        <h3>Plan: {{plan}}</h3>
+      </span>
+{% if plan=="Advertisement" %}
+Service Name: <a href="/updateProduct?sid={{sid}}" class="w3-hover-text-blue">{{sd.serviceName}} </a>
+{% endif %}
+{% if plan=="Service" %}
+Service Name: {{sd.serviceName}} 
+Request For: {{rd.i_need}}
+{% endif %}
+{% if plan=="Basic Subscription" or plan=="Premium Subscription" %}
+<a href="/Common/subscriptionsettings" class="w3-hover-text-blue">See subscription details</a>
+{% endif %}
+<br><br>
+      <div class="w3-row">
+        <div class="w3-col s6 w3-left-align">
+          <span>Subtotal</span>
+        </div>
+        <div class="w3-col s6 w3-right-align">
+          $<span id="order-subtotal">{{price}}</span>
+        </div>
+      </div>
+
+      <div class="w3-row w3-left-align">
+        <div class="w3-col s6">
+          <span>Service Fees</span>
+        </div>
+        <div class="w3-col s6 w3-right-align">
+          $<span id="order-service-fee">5</span>
+        </div>
+      </div>
+<hr class="hrLine">
+      <div class="w3-row ">
+        <div class="w3-col s6">
+          <strong>Total</strong>
+        </div>
+        <div class="w3-col s6 w3-right-align">
+          $<strong id="order-total"></strong>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<form id="stripe-form" action="/create-checkout-session" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <input type="hidden" name="order_name" id="order_name" value="{{plan}}" />
+  <input type="hidden" name="total" id="total" value="" />
+  <input type="hidden" name="payment_method" value="Stripe" />
+  <input type="hidden" name="currency" id="stripe-currency" value="USD" />
+  <input type="hidden" name="sid" id="sid" value="{{sid}}" />
+  <input type="hidden" name="rid" id="rid" value="{{rid}}" />
+  <input type="hidden" name="AdvertisementName" id="AdvertisementName" value="{{AdvertisementName}}" />
+
+  <input type="hidden" name="AdvertisementHeading" id="AdvertisementHeading" value="{{AdvertisementHeading}}" />
+  <input type="hidden" name="AdvertisementSubHeading" id="AdvertisementSubHeading" value="{{AdvertisementSubHeading}}" />
+  <input
+    type="hidden"
+    name="AdDuration"
+    id="AdDuration"
+    value="{{AdDuration}}" />
+  <button type="submit" class="w3-btn w3-green w3-round">Pay</button>
+</form>
+
+<script>
+  // const exchangeRates = {
+  //   USD: 1,
+  //   INR: 82.5  // Example rate, update this regularly
+  // };
+
+  // function updateCurrency() {
+  //   const selectedCurrency = document.getElementById('currency-select').value;
+  //   const rate = exchangeRates[selectedCurrency];
+  //   // Update Stripe form currency
+  //   document.getElementById('stripe-currency').value = selectedCurrency;
+  //   function convertAmount(id) {
+  //     const originalValue = originalValues[id] || 0;
+  //     return `${selectedCurrency} ${(originalValue * rate).toFixed(2)}`;
+  //   }
+  // }
+
+  // Function to calculate total dynamically
+  function calculateTotal() {
+    let subtotal, serviceFee, total;
+    // On order page
+    subtotal = parseFloat(document.getElementById("order-subtotal").innerText);
+    serviceFee = parseFloat(
+      document.getElementById("order-service-fee").innerText
+    );
+    total = subtotal + serviceFee;
+    document.getElementById("order-total").innerText = total;
+    //set stripe form values
+    document.getElementById("total").value = total;
+  }
+  // Call the function initially to set the total value when the page loads
+  calculateTotal();
+</script>
+{% endblock card_content%}

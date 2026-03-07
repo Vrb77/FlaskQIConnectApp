@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+{% block title %}Customer Home{% endblock %}
+
+{% block navContent %}
+{% include "Common/navbar_content.html" %}
+{% endblock navContent %}
+
+{% block body %}
+{% include "Customer/sub_menu.html" %}
+
+<h3 class="form-heading">Request details</h3>
+{% endblock body %}
+
+{% block card_content %}
+<form action="/updateRequest?rid={{rid}}" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <div class="w3-container">
+    <div class="grid-container">
+      <div class="grid-item" style="text-align: left;">
+        <b>Date of Request</b><br> {{rd['timestamp']}}
+      </div>
+      <div class="grid-item" style="text-align: right;">
+        <b>Customer Mail ID:</b><br> {{rd['from']}}
+      </div>
+      <div class="grid-item" style="text-align: left;">
+        <b>Status: </b><b id="change_status">{{rd.current_status}}</b><br>
+        
+      </div>
+      <div class=" grid-item" style="text-align: right;"><br>
+      
+      </div>
+    </div>
+  </div>
+
+  <input type="text" class="w3-btn w3-round-xxlarge w3-hover-indigo w3-indigo w3-medium"
+  value="See Matching Vendors" onclick="location.href='/vendor_responses_details?rid={{rid}}'" readonly>
+
+  <input type="text" name="selectVendorServiceID" value="{{rd.selectVendorServiceID}}" style="display: none;">
+
+  <br>
+  <p>
+    <label class="headingFormField required">
+      <img src="static\img\search.png" style="width:50px;" >
+      <b>Problem Overview </b></label>
+    <input class="w3-input w3-border" name="i_need" type="text" value="{{rd['i_need']}}" placeholder="Describe the issue you want to solve" required />
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\target.png" alt="Avatar" class="w3-margin-right" style="width: 40px" />
+      <b>Purpose</b> </label>
+    <textarea rows="3" class="w3-input" style="width: 100%" name="objective"
+      placeholder="Describe the purpose you want to achieve">{{rd['objective']}}</textarea>
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\photo.png" alt="Avatar" class="w3-margin-right" style="width: 40px" />
+      <input type="file" id="AddPics" name="AddPics" multiple="true" accept="image/*" hidden>
+      <button type="button" class="w3-btn w3-orange w3-round-large w3-small" id="uploadBtn">
+        <label for="AddPics"><i class="fa-solid fa-upload"></i> Add Photos</label>
+      </button>
+    </label>
+    <input type="text" id="LenPics" name="LenPics" value="{{LenPicsFiles}}" hidden>
+
+    <input type="hidden" id="prevFiles" value="" class="w3-input" name="prevFiles" >
+  <div style="text-align: left;">
+    <!-- <p><strong>Previous Files</strong></p> -->
+    <div id="dispPrevPics"></div>
+  </div>
+
+  <div style="text-align: left;">
+    <!-- <p><strong>Newly added files</strong></p> -->
+    <div id="wrapper" class="w3-row"></div>
+  </div>
+
+  <!-- <div style=" text-align: left;">
+    {% for item in rd['PicsFiles'] %}
+    <li>{{ item }} <a href="{{url_for('view_file_customer',fname=item)}}" title="View file"><i
+          class="fa-solid fa-eye"></i></a></li>
+    {% endfor %}
+  </div> -->
+  <!-- <div id="wrapper" class="w3-row"></div> -->
+  </p>
+
+  <!--audio code starts-->
+  <label class="headingFormField"><img src="static\img\rec-button.png" style="width:50px;" >&emsp;<b>Record</b></label>
+
+  <div class="w3-col s3  w3-center">
+    <p>
+      <button type="button" onclick="document.getElementById('RecordAudio').style.display='block'"
+        title="Start recording audio" id="microphoneBtn"><i class="fa-solid fa-microphone fa-xl"></i></button>
+    </p>
+    <div id="playAudio" style="display: none;">
+      <audio class="playbackPreview" controls></audio>
+      <button class="w3-red" id="audioFileClear" type=button>delete audio</button>
+    </div>
+    <input type="file" id="audioBlob" name="AudioFile" hidden>
+
+    <div id="RecordAudio" class="w3-modal">
+
+      <div class="w3-modal-content w3-pale-blue">
+        <div class="w3-container">
+          <span onclick="document.getElementById('RecordAudio').style.display='none'"
+            class="w3-btn w3-display-topright">&times;</span>
+          <h2>Record Audio</h2>
+          <main>
+            <button type="button" class="mic-toggle" id="mic">
+              <span><i class="fa-solid fa-microphone fa-2xs"></i></span>
+            </button>
+            <p><i>Tap to Record or Stop</i></p>
+            <audio class="playback" controls></audio>
+            <input type="file" id="audioBlob" name="AudioFile" hidden>
+            <button class="w3-btn w3-hover-green w3-green w3-round-xxlarge w3-right" id="sendRecording" type="button"
+              onclick="document.getElementById('RecordAudio').style.display='none';
+         document.getElementById('playAudio').style.display='';" disabled>Send Recording</button>
+
+          </main>
+
+        </div>
+      </div>
+    </div>
+  </div>
+ 
+{% if rd['audio']!="" %}
+  <div style="float: left;">
+    <h3>Audio file</h3> {{rd['audio']}}
+    <audio src="{{url_for('view_file_customer',fname=rd['audio'])}}" controls></audio>
+  </div>
+{% endif %}
+  <!--audio code ends-->
+
+  <br><br>
+  <p>
+    <label class="headingFormField">
+      <label class="headingFormField">
+        <img src="static\img\calendar.png" style="width:50px;" >
+        <b>Preferred Date for Service Request</b></label>
+      <input class="w3-input datepicker" name="when" type="date" placeholder="Enter the time when you need"
+        value="{{rd['when']}}" />
+<br>
+        <label class="headingFormField">
+          <img src="static\img\calendar.png" style="width:50px;" >
+          <b>Tentative Date</b></label>
+          <input class="w3-input" name="tentativeWhen" type="text" value="{{rd['tentativeWhen']}}"  placeholder="Enter the timeframe when you need this service" />
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\gps.png" style="width:50px;" >
+      <b>Location for Service Delivery</b></label>
+    <input class="w3-input" name="where" type="text" placeholder="Enter the location" value="{{rd['where']}}" />
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\checklist.png" style="width:50px;" >
+      <b>Specific requirements</b></label>
+    <textarea rows="3" class="w3-input" style="width: 100%" name="specifications"
+      placeholder="Please provide detailed specifications for the request">{{rd['specifications']}}</textarea>
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\info.png" style="width:50px;" >
+            <b>Additional Information</b></label>
+    <textarea rows="3" class="w3-input" style="width: 100%" name="additionalInfo"
+      placeholder="Enter any additional info">{{rd['additionalInfo']}}</textarea>
+
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\file.png" alt="Avatar" class="w3-margin-right"
+        style="width: 40px" />
+        <button type="button" class="w3-btn w3-orange w3-round-large w3-small" id="uploadBtn">
+          <label for="additionalFiles">Add files &emsp;<i class="fa-solid fa-arrow-up fa-sm"></i></label></button>
+      
+    </label>
+    <input class="w3-input" type="file" id="additionalFiles" name="additionalFiles" accept=".pdf,.ppt,.pptx,.doc,.docx"
+      multiple="true" style="display: none;">
+
+    <input type="text" id="LenAddFiles" name="LenAddFiles" value="{{LenAdditionalFiles}}" style="display: none;">
+
+    <input type="text" id="addPrevFiles" value="" class="w3-input" name="addPrevFiles" style="display: none;">
+  <div style="text-align: left;">
+    <!-- <p><strong>Previous Files</strong></p> -->
+    <div id="dispAddPrevFiles"></div>
+  </div>
+
+  <div style="text-align: left;">
+    <!-- <p><strong>Newly added files</strong></p> -->
+    <div id="filewrapper" class="w3-row"></div>
+  </div>
+
+  <!-- <div style=" text-align: left;">
+    {% for item in rd['AdditionalFiles'] %}
+    <li>{{ item }} <a href="{{url_for('view_file_customer',fname=item)}}" title="View file"><i
+          class="fa-solid fa-eye"></i></a></li>
+    {% endfor %}
+  </div>
+  
+  <div id="filewrapper" class="w3-row"></div> -->
+  </p>
+
+  <p>
+    <label class="headingFormField">
+      <img src="static\uxWingIcons\current_status_icon.svg" alt="icon" class="w3-margin-right" style="width: 40px">
+      <b>Update current status</b></label>
+  <div style=" text-align: left;">
+    <label for="status">Choose the current status</label>
+    <select name="status" class="w3-input" id="current_status" onchange='CheckStatus(this.value);'>
+      <option value="{{rd.current_status}}" id="new_status">{{rd.current_status}}</option>
+      <option value="Waiting for vendor responses">Waiting for vendor responses</option>
+      <option value="Review the progress">Review the progress</option>
+      <option value="Customer selects a vendor">Customer selects a vendor</option>
+      <option value="Vendor requests a preliminary visit">Vendor requests a preliminary visit</option>
+      <option value="Vendor completes a preliminary visit">Vendor completes a preliminary visit</option>
+      <option value="Others" id="oth">Others</option>
+    </select>
+    <div id="otherStatus" style='display:none;'>
+      <p>Please enter other status</p>
+      <input type="text" class="w3-input" name="otherStatus" onchange="othersInputValue(this.value);"
+        placeholder="Enter other status" maxlength="30" />
+    </div>
+  </div>
+  </p>
+<p>
+  <input type="text" name="closeButton" value="{{rd['closeRequest']}}"
+          class="w3-btn w3-hover-indigo w3-indigo w3-round-xxlarge " title="change Request status" id="closeReqBtn"
+          onclick="closeReqButton()" readonly style="float: left;">
+</p>
+<br>
+<br>
+  <input type="text" name="adv_status" value="{{rd.adv_status}}" style="display: none;">
+
+  <button class="w3-btn w3-green w3-block w3-round">Save Changes</button></p>
+
+</form>
+<!-- <button class="w3-btn w3-red w3-block w3-round"><a href="/deleteRequest?rid={{rid}}" title="Delete Request"
+    style=" text-decoration: none;">Delete Request</a></button> -->
+
+<!--Request form ends-->
+
+<script type="text/javascript">
+  let current_status = document.getElementById("current_status");
+  console.log(current_status.value);
+  function closeReqButton() {
+    let closeButton = document.getElementById("closeReqBtn");
+    let change_status = document.getElementById("change_status");
+    let new_status = document.getElementById("new_status");
+    console.log(new_status.value);
+    if (closeButton.value == "Close Request") {
+      closeButton.value = "Reinitiate Request";
+      new_status.value = "Request is closed";
+      new_status.innerHTML = "Request is closed";
+      change_status.innerHTML = "Request is closed";
+    }
+    else if (closeButton.value == "Reinitiate Request") {
+      closeButton.value = "Close Request";
+      new_status.value = "Request is reinitiated";
+      new_status.innerHTML = "Request is reinitiated";
+      change_status.innerHTML = "Request is reinitiated";
+
+    }
+
+  }
+  var LenPics = document.getElementById("LenPics");
+  var prPics = JSON.parse('{{ rd.PicsFiles | tojson | safe}}');
+  var prevFiles = document.getElementById("prevFiles");
+  prevFiles.setAttribute("value", prPics);
+
+  var LenAddFiles = document.getElementById("LenAddFiles");
+  var addPrPics = JSON.parse('{{ rd.AdditionalFiles | tojson | safe}}');
+  var addPrevFiles = document.getElementById("addPrevFiles");
+  addPrevFiles.setAttribute("value", addPrPics);
+
+  function CheckStatus(val) {
+    var element = document.getElementById('otherStatus');
+    if (val == 'Others')
+      element.style.display = 'block';
+    else
+      element.style.display = 'none';
+  }
+
+  function othersInputValue(val) {
+    val != '' ? document.getElementById('oth').setAttribute("value", val) : document.getElementById('oth').setAttribute("value", "Others")
+  }
+</script>
+<script src="static/addFile.js" type="text/javascript">
+</script>
+<script src="/static/audioRecorder.js" type="text/javascript">
+</script>
+{% endblock card_content%}

@@ -1,0 +1,104 @@
+{% extends "base.html" %} {% block title %}Vendor Home{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %} {% include "Vendor/sub_menu.html" %} {% include
+"Common/flashMsg.html" %}
+<h3 class="form-heading">All Services({{count}})</h3>
+{% endblock body %} {% block card_content %}
+<!--My(Vendor) Products starts-->
+{% if count==0 %}
+<h3>No Products/Service Added</h3>
+<h4>
+  To add Product
+  <a href="/register_product_form" style="color: blue">click here</a>
+</h4>
+{% else %}
+<input
+  type="text"
+  class="w3-round-xxlarge"
+  id="searchInput"
+  onkeyup="searchFunction()"
+  placeholder="Search..."
+  title="Type in a name" />
+
+<div class="w3-container">
+  <table
+    class="w3-table-all w3-hoverable w3-responsive table-container w3-round-xlarge w3-border-black"
+    id="searchTable">
+    <thead class="sticky">
+      <tr class="w3-black">
+        <th>Sr. No</th>
+        <th>Product/Service Name</th>
+        <th>Date of registration</th>
+        <th>Current Status</th>
+        <th>Matching Customers</th>
+        <th>Promote the service</th>
+        <!-- <th>Delete Product/ Service</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for key,value in myProducts %}
+      <tr onclick="location.href='/updateProduct?sid={{key}}'">
+        <td>{{count - loop.index0}}</td>
+        <td>{{value['serviceName']}}</td>
+        <td>{{value['timestamp']}}</td>
+        <td>{{value.current_status}}</td>
+        {% set url="countOfMatchCustomers?sid="+key %}
+        <td>
+          <button class="w3-btn w3-hover-indigo w3-indigo w3-round-xxlarge">
+            <div class="countMatchCustomers">
+            <input type="text" id="url" value="{{url}}" style=" display: none;">
+            <a href="/matchingCustomers?sid={{key}}" class="countOfMatchCustomerHolder"></a>
+          </div>
+          </button>
+  </div>
+  </td>
+
+        <td>
+          {% if AdPlaced=="No Projects" %}
+          <button class="w3-btn w3-hover-green w3-green w3-round-xxlarge">
+            <a href="/advertisementForm?sid={{key}}">Promote</a>
+          </button>
+          {%else%}
+          {% if key is in AdPlaced.keys() %}          
+            Promoted
+          {% else %}
+          <button class="w3-btn w3-hover-green w3-green w3-round-xxlarge">
+            <a href="/advertisementForm?sid={{key}}">Promote</a>
+          </button>
+          {% endif %}
+          {% endif %}
+        </td>
+
+        <!-- <td>
+          <a href="/deleteProduct?sid={{key}}" title="Delete Product"><i class="fa-solid fa-trash"></i></a>
+        </td> -->
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+<!--My(Customer) requests ends-->
+<script>
+  $(document).ready(function () {
+    $(".countMatchCustomers").each(function (index, element) {
+      var row = $(this);
+      var url = element.children[0].value;
+      // var url=document.getElementById('url').value
+
+      $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        success: function (data) {
+          row.find(".countOfMatchCustomerHolder").text(data);
+        },
+        error: function (xhr, status, error) {
+          console.error(error);
+        },
+      });
+    });
+  });
+</script>
+{% endblock card_content%}

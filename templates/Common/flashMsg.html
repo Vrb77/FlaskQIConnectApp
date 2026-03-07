@@ -1,0 +1,26 @@
+{% with errors = get_flashed_messages(category_filter=["error"]) %}
+{% if errors %}
+
+{% for message in get_flashed_messages() %}
+<div class="w3-panel w3-pale-red w3-border alert">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+  <center>
+    <p style="color: rgb(252, 4, 4)">{{message}}</p>
+  </center>
+</div>
+{% endfor %}
+
+{% else %}
+
+{% for message in get_flashed_messages() %}
+<div class="w3-panel w3-pale-green w3-border alert">
+  <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
+  <center>
+    <p style="color: green">{{message}}</p>
+  </center>
+</div>
+{% endfor %}
+{% endif %}
+
+{% endwith %}
+

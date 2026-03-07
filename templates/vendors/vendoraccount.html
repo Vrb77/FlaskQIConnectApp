@@ -1,0 +1,67 @@
+{% extends 'base.html' %} {% block title %} Sign up {% endblock title %} {%
+block navContent %} {% include 'Common/navbar_without_login.html' %} {% endblock
+navContent %} {% block body %} {% include "Common/flashMsg.html" %}
+<h3 class="form-heading">
+  Create Vendor Account <i class="fa-solid fa-shop"></i>
+</h3>
+{% endblock body %} {% block card_content %}
+<form action="/vendors/createaccount" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+  <label for="email" class="headingFormField required"
+    ><lord-icon
+      src="https://cdn.lordicon.com/nqisoomz.json"
+      trigger="in"
+      delay="1500"
+      state="in-unfold"
+      colors="primary:#121331,secondary:#eeaa66,tertiary:#4bb3fd,quaternary:#3a3347"
+      style="width: 40px; height: 50px; top: 20px">
+    </lord-icon>
+    <b> Email</b></label
+  ><br />
+  <input
+    type="text"
+    class="w3-input"
+    placeholder="Enter the Email"
+    name="email"
+    required />
+
+  <label for="pwd" class="headingFormField required">
+    <lord-icon
+      src="https://cdn.lordicon.com/zbbefawl.json"
+      trigger="hover"
+      style="width: 40px; height: 50px; top: 20px">
+    </lord-icon>
+    <b> Password</b></label
+  ><br />
+  <input
+    type="password"
+    class="w3-input"
+    placeholder="Enter Password"
+    name="pwd"
+    required />
+
+  <label for="pwd1" class="headingFormField required">
+    <lord-icon
+      src="https://cdn.lordicon.com/zbbefawl.json"
+      trigger="hover"
+      style="width: 40px; height: 50px; top: 20px">
+    </lord-icon>
+    <b> Confirm Password</b></label
+  ><br />
+  <input
+    type="password"
+    class="w3-input"
+    placeholder="Confirm Password"
+    name="pwd1"
+    required />
+  <br />
+  <button
+    href="/vendors/profile_info_vendor"
+    type="submit"
+    class="w3-btn w3-green w3-block w3-round">
+    Create Vendor Account
+  </button>
+</form>
+
+{% endblock card_content%}

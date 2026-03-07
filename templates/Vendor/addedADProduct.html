@@ -1,0 +1,98 @@
+{% extends "base.html" %} {% block title %}Vendor Home{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %} {% include "Common/flashMsg.html" %}
+{% include "Vendor/sub_menu.html" %}
+
+{% endblock %}
+{% block card_content %}
+{% if count==0 %}
+<h3>No Advertisement Added</h3>
+<!-- <h4>
+  To add Product
+  <a href="/register_product_form" style="color: blue">click here</a>
+</h4> -->
+{% else %}
+<div class="w3-container">
+  <table class="w3-table-all w3-hoverable w3-responsive table-container w3-round-xlarge  w3-border-black">
+    <thead class="sticky">
+      <tr class="w3-black">
+        <th>Sr. No</th>
+        <th>ID</th>
+        <!-- <th>Advertisement title</th> -->
+        <th>Date</th>
+        <th>Advertisement Duration</th>
+        <th>Price</th>
+        <th>Remaining Days</th>
+        <!-- <th>Delete Product/ Service</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      {% for key,value in AdPlaced %}
+      <tr>
+        <td>{{count - loop.index0}}</td>
+        <td>{{value['sid']}}</td>
+        <!-- <td>{{value['serviceName']}}</td>  -->
+        <td>{{value['ad_date']}}</td>
+        <td>{{value.AdDuration}} days</td>
+        <td>{{value.price}}</td>
+        <td>{{ value.expiry_date | date_diff(value.expiry_date) }} days</td>
+        {% if value.expiry_date | date_diff(value.expiry_date)==0 %}
+        <p onload="location.href='/delete_advertisement?sid={{value.sid}}'">delete AD</p>
+        {% endif %}
+        <!-- <td>
+            <a href="/updateProduct?sid={{key}}"><i class="fa-solid fa-eye"></i></a>
+          </td> -->
+
+        <!-- <td>
+            <a href="/deleteProduct?sid={{key}}" title="Delete Product"><i class="fa-solid fa-trash"></i></a>
+          </td> -->
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+<!-- <script>
+  function days(exp_date,ad_date){
+    console.log("Inside days fun");
+    var day1 = new Date(ad_date);
+var day2 = new Date(exp_date);
+var difference = Math.abs(day2 - day1);
+var days = difference / (1000 * 3600 * 24);
+console.log('Days between the two dates:', days);
+  }
+</script> -->
+<script>
+  function delete_advertisement(url) {
+    $.ajax({
+      url: url,
+      type: 'DELETE',
+      success: function (result) {
+        console.log(result);
+        // Handle success response             
+      },
+      error: function (xhr, status, error) {
+        console.error(error);
+        // Handle error response
+      }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    var adPlaced = JSON.parse('{{ AdPlaced | tojson | safe}}');;
+    var currentDate = new Date().toJSON().slice(0, 10).split('-').join('-')
+
+    adPlaced.forEach((product) => {
+      var sid = product[1]['sid']
+      console.log("sid", sid);
+      if (currentDate == product[1]['expiry_date']) {
+        const notificationStr = "Your " + sid + " advertisement is expired ";
+
+        const deleteUrl = '/delete_advertisement?sid=' + sid + '&notificationStr=' + notificationStr;
+        console.log("delete url", deleteUrl);
+        delete_advertisement(deleteUrl);
+      }
+    });
+  });
+</script>
+{% endblock card_content%}

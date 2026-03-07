@@ -1,0 +1,56 @@
+{% extends 'base.html' %} {% block title %}Thank You{% endblock title %} {%
+block navContent %} {% include "Common/navbar_content.html" %} {% endblock
+navContent %} {% block body %} {% include "Common/profile_sub_menu.html" %} {%
+include "Common/flashMsg.html" %} {% endblock body %} {% block card_content %}
+
+<h1 style="color: #4caf50">Thank You for Your Payment!</h1>
+<p style="font-size: 18px">Your transaction was successful.</p>
+<p style="font-size: 18px">
+  If you have any questions, please contact our support team.
+</p>
+
+<h2>Transaction details</h2>
+<br />
+<div>
+  order_name: {{order_name}}<br />
+  total: {{total}}<br />
+  payment_method: {{payment_method}}<br />
+  date_time_str: {{date_time_str}}<br />
+</div>
+<br />
+<button
+  class="w3-btn w3-green w3-round"
+  onclick="location.href='/transaction-history'">
+  View Transaction History
+</button>
+<br /><br />
+{% if order_name=="Advertisement" %}
+<button
+  class="w3-btn w3-green w3-round"
+  onclick="location.href='/addedADProduct'">
+  Added advertisement
+</button>
+<br /><br />
+{% elif order_name=="Service" %}
+<button
+  class="w3-btn w3-green w3-round"
+  onclick="location.href='/customer_orders'">
+  See Orders
+</button>
+<br /><br />
+{% endif %} {% if session.userType=="vendor" %}
+<button class="w3-btn w3-green w3-round" onclick="location.href='/vendor_home'">
+  Vendor Home
+</button>
+<br /><br />
+{% elif session.userType=="customer" %}
+<button
+  class="w3-btn w3-green w3-round"
+  onclick="location.href='/customer_home'">
+  Customer Home
+</button>
+<br /><br />
+{% endif %}
+<br />
+
+{% endblock card_content%}

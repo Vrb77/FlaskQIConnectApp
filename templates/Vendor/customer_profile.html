@@ -1,0 +1,46 @@
+{% extends "base.html" %} {% block title %}Vendor Home{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %}{% include "Vendor/sub_menu.html" %}
+
+<h3 class="form-heading">Customer Profile</h3>
+{% endblock body %} {% block card_content %}
+<div class="w3-round-xlarge" style="border: 2px solid black">
+  <div class="message-card-head w3-padding w3-round-xlarge">
+    <!--div for avatar and contacting person starts-->
+    <img src="/static/images/user.avif" alt="Icon" class="w3-left w3-circle w3-margin-right" style="width: 60px" />
+    <h3><strong>{{cd.name}}</strong></h3>
+  </div>
+  <br>
+  <div class="w3-container">
+    <div class="w3-card-4 profile-table">
+      <table class="w3-table  w3-bordered w3-light-grey">
+        <tr>
+          <th>ID</th>
+          <td>{{cd.id}}</td>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <td>{{cd.name}}</td>
+        </tr>
+        <tr>
+          <th>Address</th>
+          <td>{{cd.address}}</td>
+        </tr>
+        <tr>
+          <th>Phone</th>
+          <td>{{cd.phone}}</td>
+        </tr>
+        <tr>
+          <th>Mail</th>
+          <td>{{cd.mail}}</td>
+
+        </tr>
+
+      </table>
+    </div>
+  </div>
+  <br>
+</div>
+
+
+{% endblock card_content%}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %} User Profile {% endblock title %}
+{% block card_content %}
+<dt>First Name:</dt>
+<dd>{{ current_user['first_name'] }}</dd>
+<dt>Last Name:</dt>
+<dd>{{ current_user['last_name'] }}</dd>
+<dt>Address:</dt>
+<dd>{{ current_user['address'] }}</dd>
+<dt>City:</dt>
+<dd>{{ current_user['city'] }}</dd>
+<dt>State:</dt>
+<dd>{{ current_user['state'] }}</dd>
+<dt>Zip Code:</dt>
+<dd>{{ current_user['zip_code'] }}</dd>
+<dt>Country:</dt>
+<dd>{{ current_user['country'] }}</dd>
+<dt>Email:</dt>
+<dd>{{ current_user['email'] }}</dd>
+<dt>Phone:</dt>
+<dd>{{ current_user['phone'] }}</dd>
+</body>
+
+</html>

@@ -1,0 +1,127 @@
+{% extends "base.html" %} {% block title %}Vendor Home{% endblock %} {% block
+  navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+  %} {% block body %} {% include "Common/flashMsg.html" %}
+  {% include "Vendor/sub_menu.html" %}
+ 
+<h3 class="form-heading">Advertisement Form
+  <img src="static\img\advertisement_1.png" alt="icon" class="w3-margin-right" style="width: 40px" />
+</h3>
+{% endblock %}
+{% block card_content %}
+
+  <input class="w3-input w3-quarter" name="sid" type="hidden" value={{sid}}>
+  <input class="w3-input w3-quarter" name="serviceName" type="hidden" value='' hidden>
+  
+    <p class="w3-left">
+      <label ><strong>Vendor Mail ID:</strong> </label>{{session['email']}}
+    </p>
+    <p class="w3-right">
+      <label> <strong>Service ID:</strong></label>
+        {{sid}}
+    </p>
+    <br><br>
+    <p>
+      <label style="font-size: large;"> <strong ><a href="/updateProduct?sid={{sid}}" class="w3-hover-text-blue">
+        {{sd.serviceName}} </a></strong></label>
+    </p>
+    <p>
+      <label class="headingFormField required"> <strong>Advertisement Name:</strong></label>
+      <p class="Descriptions">This will display on the advertisement bar</p>
+      <input type="text" id="word_count1" data-limit-count="3" class="w3-input wordCountInput" style="width: 100%" name="advertisementName"
+      placeholder="Enter advertisement name" required>
+      <div style="float: right;"><span id="display_count1"> 0</span>/3</div>
+    </p>
+    <p>
+      <label class="headingFormField required"> <strong>Advertisement heading:</strong></label>
+      <p class="Descriptions">Enter the title for your advertisement below</p>
+      <textarea name="AdvertisementHeading" id="advHeading" rows="2" placeholder="Enter adevertisement heading"  class="w3-input"  required></textarea>
+    </p>
+    <p>
+      <label class="headingFormField required"> <strong>Advertisement subheading:</strong></label>
+      <p class="Descriptions">Provide a detailed description of your product or service</p>
+      <textarea name="AdvertisementSubHeading" id="advSubHeading" rows="4" placeholder="Enter adevertisement sub heading"  class="w3-input" required></textarea>
+    </p>
+    <p class="headingFormField">
+      <label> <strong>Advertisement duration</strong></label>&emsp;
+      <select name="AdDuration" id="AdDuration" class="" onchange="selectAdDuration()">
+        <option value="30" selected>30 days</option>
+        <option value="60">60 days</option>
+        <option value="90">90 days</option>
+      </select>
+    </p>
+
+    <p class="headingFormField">
+      <label > <strong>Advertisement charges</strong></label>&emsp;
+      <input name="price" type="text" id="AdPrice" value="100" readonly />
+    </p>
+    <div id="errorMessage" class="error"></div>
+
+    <button class="w3-btn w3-green w3-block w3-round" onclick="goto_payment()">Pay Now</button></p>
+
+
+<script>
+  function goto_payment() {
+    if(validateFields()){
+    const advPrice = document.getElementById('AdPrice').value;
+    const sid = JSON.parse('{{ sid | tojson | safe}}');;
+    console.log("sid in js ", sid);
+    const AdDuration = document.getElementById('AdDuration').value;
+    const advName = document.getElementById('word_count1').value;
+    const advHeading = document.getElementById('advHeading').value;
+    const advSubHeading = document.getElementById('advSubHeading').value;
+    console.log("Ad Duration", AdDuration);
+    // Debugging: Log the selected plan details   
+    console.log('Selected Price:', advPrice);
+    // Redirect to the payment picker page with the selected plan details
+    let paymentUrl = `/Common/payment?plan=Advertisement&price=${advPrice}&sid=${sid}&AdDuration=${AdDuration}&AdvertisementHeading=${advHeading}&AdvertisementSubHeading=${advSubHeading}&AdvertisementName=${advName}`;
+    window.location.href = paymentUrl;
+    }
+  } 
+  function validateFields(){
+    const word_count1 = document.getElementById("word_count1");
+    const AdvHeading=document.getElementById("advHeading");
+    const AdvSubHeading=document.getElementById("advSubHeading");
+    
+        let isValid = true;
+        if (!word_count1.value.trim()) {
+            document.getElementById("errorMessage").textContent = "Advertisement name is required.";
+            word_count1.classList.add("highlightRequireField");
+            isValid = false;
+        }
+        else if(word_count1.value.trim()){
+          
+          word_count1.classList.remove("highlightRequireField");
+        }
+        else{
+          document.getElementById("errorMessage").textContent = "";
+        } 
+        if (!AdvHeading.value.trim()) {
+            document.getElementById("errorMessage").textContent = "Advertisement heading is required.";
+            AdvHeading.classList.add("highlightRequireField");
+            isValid = false;
+        }
+        else if (AdvHeading.value.trim()){
+          
+          AdvHeading.classList.remove("highlightRequireField");
+        }
+        else{
+          document.getElementById("errorMessage").textContent = "";
+        } 
+        if (!AdvSubHeading.value.trim()) {
+            document.getElementById("errorMessage").textContent = "Advertisement sub heading is required.";
+            AdvSubHeading.classList.add("highlightRequireField");
+            isValid = false;
+        } 
+        else if (AdvSubHeading.value.trim()){
+          
+          AdvSubHeading.classList.remove("highlightRequireField");
+        } 
+        else{
+          document.getElementById("errorMessage").textContent = "";
+        }         
+        return isValid;
+    }
+   
+</script>
+<script src="static\advetisement.js" type="text/javascript"></script>
+{% endblock card_content%}

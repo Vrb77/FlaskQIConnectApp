@@ -1,0 +1,140 @@
+{% extends "base.html" %} {% block title %}Customer Home{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %} {% include "Customer/sub_menu.html" %}
+
+<h3 class="form-heading">View Order</h3>
+{% endblock body %} {% block card_content %}
+
+<div class="w3-container">
+  <div class="grid-container-3">
+    <div class="grid-item" style="text-align: left">
+      <strong>Order placed date</strong><br />{{order.order_date}}<br />
+      <strong>Address:</strong>{{vendor_address}}
+    </div>
+    <div class="grid-item" style="text-align: left">
+      <strong>Order Details</strong><br />
+
+      <strong>Request for:</strong>&emsp14;{{rd.i_need}}<br />
+      <strong>Price:</strong>
+      {{order.price}}
+      <br />
+      <strong>Customer Current Status:</strong>{{rd.current_status}}<br />
+      <strong>Vendor Current Status:</strong>{{sd.current_status}}<br />
+    </div>
+    <div class="grid-item" style="text-align: left">
+      <strong>Order Summary</strong><br />
+      subtotal:{{order.price}}<br />
+      {%set serviceFee=(order.price)*0.05 %} Service Fee(5%):{{serviceFee}}<br />
+      Grand Total:{{order.price + serviceFee}}
+      <br />
+    </div>
+  </div>
+</div>
+<hr />
+<div class="grid-container">
+  <div class="grid-item" style="text-align: left">
+    <strong>Order ID:</strong>{{order_id}}<br />
+
+    <strong>Order Updates</strong><br />
+    <div style="margin-left: 10px">
+      <div class="StepProgresswrapper">
+        <ul class="StepProgress">
+          <div class="StepProgress-item is-done">
+            <strong>Order Placed</strong>
+          </div>
+          <div class="StepProgress-item is-done">
+            <strong>Current Status</strong>
+            <div>{{rd.current_status}}</div>
+          </div>
+          <div class="StepProgress-item current" id="paymentStepProgress">
+            <strong>Payment</strong>
+            <div id="paymentStatus">{{order.payment_status}}</div>
+            <button
+              class="w3-btn w3-green w3-round"
+              onclick="goto_payment()"
+              id="payBtn">
+              Pay Now
+            </button>
+          </div>
+          <div class="StepProgress-item current">
+            <strong>Order Completed</strong>
+          </div>
+        </ul>
+      </div>
+    </div>
+    <br /><br />
+    <p>
+      <button
+        type="button"
+        class="w3-btn w3-red w3-round"
+        onclick="document.getElementById('CancelOrder').style.display='block'"
+        title="Cancel order">
+        Cancel Order
+      </button>
+    </p>
+    <div id="CancelOrder" class="w3-modal">
+      <div class="w3-modal-content w3-pale-blue">
+        <div class="w3-container">
+          Do you really want to cancel this order?
+          <button
+            class="w3-btn w3-red w3-round"
+            onclick="location.href='/cancelOrder?rid={{rid}}&sid={{sid}}'">
+            Yes
+          </button>
+          <button
+            class="w3-btn w3-red w3-round"
+            onclick="document.getElementById('CancelOrder').style.display='none'">
+            No
+          </button>
+        </div>
+      </div>
+    </div>
+    <i class="fa-solid fa-phone"></i> Help Center
+  </div>
+</div>
+
+<script>
+  $(".price").each(function (index, element) {
+    console.log(index);
+    console.log(element);
+    var row = $(this);
+    console.log(row);
+    var url = element.children[0].value;
+    console.log(url);
+    $.ajax({
+      url: url,
+      type: "GET",
+      dataType: "json",
+      contentType: "application/json",
+      success: function (data) {
+        console.log(data);
+        row.find(".priceHolder").text(data);
+      },
+      error: function (xhr, status, error) {
+        console.error(error);
+      },
+    });
+  });
+
+  function goto_payment() {
+    const order_price = JSON.parse("{{ order.price | tojson | safe}}");
+    console.log("order_price in js ", order_price);
+    const sid = JSON.parse("{{ sid | tojson | safe}}");
+    console.log("sid", sid);
+    const rid = JSON.parse("{{ rid | tojson | safe}}");
+    console.log("rid", rid);
+
+    // Redirect to the payment picker page with the selected plan details
+    let paymentUrl = `/Common/payment?plan=Service&price=${order_price}&sid=${sid}&rid=${rid}`;
+    window.location.href = paymentUrl;
+  }
+  const paymentStatus = document.getElementById("paymentStatus").innerText;
+  console.log("pay status", paymentStatus);
+  if (paymentStatus == "Paid") {
+    const payBtn = (document.getElementById("payBtn").style.display = "none");
+    const paymentStepProgress = document.querySelector("#paymentStepProgress");
+    paymentStepProgress.classList.remove("current");
+    paymentStepProgress.classList.add("is-done");
+  }
+</script>
+{% endblock card_content%}

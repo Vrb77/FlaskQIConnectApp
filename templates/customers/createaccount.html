@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %} Sign up {% endblock title %}
+
+{% block navContent %}
+{% include 'Common/navbar_without_login.html' %}
+{% endblock navContent %}
+
+{% block body %}
+{% include "Common/flashMsg.html" %}
+<h3 class="form-heading">Create Customer Account<lord-icon src="https://cdn.lordicon.com/fmasbomy.json" trigger="in"
+    delay="1500" state="in-reveal" style="width:70px;height:60px;top:20px">
+  </lord-icon></h3>
+{% endblock body %}
+
+{% block card_content %}
+<form action='/customers/createaccount' method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <label for="email" class="headingFormField required"><lord-icon src="https://cdn.lordicon.com/nqisoomz.json" trigger="in"
+      delay="1500" state="in-unfold" colors="primary:#121331,secondary:#eeaa66,tertiary:#4bb3fd,quaternary:#3a3347"
+      style="width:40px;height:50px;top:20px;">
+    </lord-icon>Email:</label><br>
+  <input type="text" class="w3-input" placeholder="Enter Email" name="email" required>
+
+  <label for="pwd" class="headingFormField required"><lord-icon src="https://cdn.lordicon.com/zbbefawl.json" trigger="hover"
+      style="width:40px;height:50px;top:20px">
+    </lord-icon>Password:</label><br>
+  <input type="password" class="w3-input" placeholder="Enter Password" name="pwd" required>
+
+  <label for="pwd1" class="headingFormField required"><lord-icon src="https://cdn.lordicon.com/zbbefawl.json" trigger="hover"
+      style="width:40px;height:50px;top:20px">
+    </lord-icon>Confirm Password:</label><br>
+  <input type="password" class="w3-input" placeholder="Confirm Password" name="pwd1" required>
+  <br>
+  <button href="/profile_info" type="submit" class="w3-btn w3-green w3-block w3-round">Create Customer
+    Account</button>
+
+</form>
+{% endblock card_content%}

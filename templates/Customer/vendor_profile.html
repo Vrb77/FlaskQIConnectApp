@@ -1,0 +1,58 @@
+{% extends "base.html" %} {% block title %}Customer Home{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %}{% include "Customer/sub_menu.html" %}
+
+<h3 class="form-heading">Vendor Profile</h3>
+{% endblock body %} {% block card_content %}
+
+
+      {% if 'profileImg' not in vd %}
+      <img src="uploads\default_user_img.jpg" alt="Icon" class=" w3-circle w3-margin-right" style="width: 160px" />
+      {% else %}
+      <img src="{{ url_for('uploaded_file', filename= vd['profileImg']) }}" alt="Icon" class=" w3-circle w3-margin-right profileImgCircle" style="width: 160px" />
+    {% endif %}
+
+         
+    <strong>
+      {% if 'firstname' not in vd %}
+      <p>Not Known</p>
+      {% else %}
+      <p>{{vd.firstname}} {{vd.lastname}}</p>
+    {% endif %}
+    </strong> 
+      <p><i class="fa-solid fa-envelope fa-xl"></i>&emsp;{{email}}</p>
+      <i class="fa-solid fa-location-dot fa-xl"></i>&emsp;
+      {% if 'address' not in vd %}
+Not Known
+      {% else %}
+{{vd.address.street}} {{vd.address.city}} {{vd.address.state}} {{vd.address.country}}
+    {% endif %}
+
+
+
+
+<div style="text-align: left;">
+  <h3><strong>
+      <p>About me</p>
+    </strong></h3>
+  <p>
+    {% if 'bizinfo' not in vd %}
+    <p>Not Known</p>
+    {% else %}
+    <p>{{vd.bizinfo.aboutme}}</p>
+  {% endif %}
+  </p>
+  <h3><strong>
+      <p>Why Choose Me?</p>
+    </strong></h3>
+  <p>
+    {% if 'bizinfo' not in vd %}
+    <p>Not Known</p>
+    {% else %}
+    <p>{{vd.bizinfo.whytochooseme}}</p>
+  {% endif %}
+  </p>
+
+</div>
+
+{% endblock card_content%}

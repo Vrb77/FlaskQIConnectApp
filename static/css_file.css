@@ -1,0 +1,1166 @@
+#rightImg {
+  width: 80%;
+  padding-top: 50px;
+  padding-left: 50px;
+}
+@media only screen and (max-width: 700px) {
+  #rightImg {
+    width: 100%;
+    padding-top: 0px;
+    padding-left: 10px;
+    padding-bottom: 0px;
+  }
+}
+/* responsive img */
+.responsive_img {
+  width: 50%;
+  height: auto;
+}
+/*toggle switch css starts*/
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {display:none;}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+  content: attr(data-on);
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+/*toggle switch css ends*/
+.highlightRequireField {
+  border: 2px solid red; /* Red border to indicate error */
+  background-color: #FFE6E6; /* Light red background */
+}
+body{
+  font-family: sans-serif ;
+}
+ol li::marker {
+  font-size: 24px; /* Custom font size for numbers */
+  color: rgb(0, 0, 0); /* Optional: Change color of the numbers */
+}
+/* subscription css starts */
+ul.custom-checklist {
+  list-style: none; /* Remove default bullets */
+  padding: 0;
+}
+
+ul.custom-checklist li {
+  display: flex;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  margin-bottom: 10px;
+}
+
+ul.custom-checklist li::before {
+  content: '\2713'; /* Unicode for check mark */
+  color: rgb(0, 168, 28); /* Red color for the check mark */
+  font-size: 20px; /* Adjust size of the check mark */
+  margin-right: 10px;
+}
+/* subscription css ends */
+/* request form css starts */
+.flex-container_for_or {
+  display: flex;
+  flex-wrap: wrap;
+  text-align: center;
+}
+
+.flex-item_for_or-left {
+  margin-top: 30px;
+  flex: 45%;
+}
+
+.flex-item_for_or-center {
+  margin-top: 20px;
+  flex: 10%;
+}
+.flex-item_for_or-right {
+  flex: 45%;
+}
+/* request form css ends */
+/* Responsive layout - makes a one column-layout instead of a two-column layout */
+@media (max-width: 800px) {
+  .flex-item_for_or-right,.flex-item_for_or-center, .flex-item_for_or-left {
+    flex: 100%;
+  }
+}
+/*change text in index file*/
+.Text_change_container{ 
+  overflow: hidden;
+}
+.Text_change_container .changeText{
+  position: relative;
+  color: #4070F4;
+}
+.Text_change_container .changeText.first-text{
+  color: #000000;
+}
+.changeText.sec-text:before{
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #ffffff;
+  border-left: 2px solid #4070F4;
+  animation: animate 4s steps(12) infinite;
+}
+@keyframes animate{
+  40%, 60%{
+      left: calc(100% + 4px);
+  }
+  100%{
+      left: 0%;
+  }
+}
+/* change text in index file ends */
+
+.prevBtn{
+  float: left;
+}
+.nextBtn{
+  float: right;
+}
+.stepNumber{
+  float: right; 
+  font-size: medium;
+   color: black;
+}
+.stepInForm {
+  display: none;
+}
+.active {
+  display: block;
+}
+.error {
+  color: red;
+}
+
+/* login module css starts */
+.full-width-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 8px;
+  margin-bottom: 10px;
+}
+.profileImgCircle {
+  border-radius: 50%;
+  width: 150px;
+  /* Adjust the size as needed */
+  height: 150px;
+  /* Adjust the size as needed */
+  object-fit: cover;
+  /* Ensures the image covers the entire circle */
+}
+.plan-card {
+  margin: 10px;
+  width: 300px;
+
+}
+.plan-card.selected {
+  border: 2px solid blue; /* Add a border or any styling to indicate the selected plan */
+}
+.plan-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+/* login module css ends */
+.wordCount{
+float: right;
+}
+ .related_content{
+ background-color: #f0f0f0;
+  /* height: 180px; */
+  overflow-y: auto;
+  max-width: 810px;
+  /* Adjust the width as needed */
+  margin: auto auto 70px auto;
+
+ }
+ /* Custom styles */
+ .grid-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap:10px 0px;
+}
+.grid-container-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:10px 0px;
+}
+/* sub menu link of customer starts */
+.btnLink {
+  /* Default button styles */
+  background-color: #fbfbfc;
+  color: #000000;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  text-decoration: none;
+  display: inline-block;
+}
+
+/* Style for the active state of the button */
+.btnLink.active {
+  background-color: rgb(84, 177, 249);
+}
+
+/* sub menu link of customer ends */
+
+.required::after {
+  content: ' *';
+  color: red;
+
+}
+
+a {
+  text-decoration: none;
+}
+
+.flex-class {
+  display: flex;
+  justify-content: center;
+  max-height: 300px;
+  /* Adjust the height as needed */
+  overflow-y: auto;
+}
+
+#block_container {
+  justify-content: center;
+}
+
+#myRequests {
+  display: block;
+}
+
+.card_content {
+  margin: auto;
+  margin-top: 20px;
+  width: 100%;
+  max-width: 900px;
+}
+
+.body-block {
+  max-width: 810px;
+  /* Adjust the width as needed */
+  margin: auto;
+}
+
+.formcard {
+  max-width: 810px;
+  /* Adjust the width as needed */
+  margin: auto auto 80px auto;
+  padding: 20px;
+ 
+  /* Center the card horizontally */
+}
+
+.headings {
+  display: block;
+  text-align: center;
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+  font-size: x-large;
+}
+.headingFormField {
+  display: block;
+  text-align: left;
+  font-family: "Open Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-variation-settings:
+    "wdth" 100;
+  font-size: large;
+}
+.Descriptions{
+  font-size: small;
+  text-align: left;
+}
+.form-heading {
+  font-size: 26px;
+  font-weight: 500;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Align items vertically */
+}
+
+/*flex container*/
+.flex-container {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin: 0 -8px;
+}
+
+.flex-item-left {
+  padding: 10px;
+  flex: 50%;
+  text-align: left;
+}
+
+.flex-item-right {
+  padding: 10px;
+  flex: 50%;
+  text-align: left;
+}
+
+/*flex container*/
+.profile-table{
+  border-radius: 10px; /* Adjust the radius as needed */
+  overflow: hidden; /* Ensure corners are rounded */
+}
+/* #profile-table tr th{
+  border: 1px solid black;
+  border-collapse: collapse;
+  background-color: rgb(173, 225, 255);
+}
+#profile-table tr th:first-child{
+  border-top-left-radius: 0px;
+} */
+
+
+.table-container {
+  max-height: 800px;
+  overflow-y: auto;
+  overflow-x: auto;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+}
+
+table {
+  border-spacing: 0;
+  width: 100%;
+  display: table;
+}
+
+
+td {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 170px;
+}
+
+tr:first-child th:first-child {
+  border-top-left-radius: 16px;
+}
+
+tr:first-child th:last-child {
+  border-top-right-radius: 16px;
+}
+
+/* table{
+  border: 1px solid rgb(245, 25, 25);
+  border-radius: 20px;
+  border-collapse: collapse;
+  
+}  */
+
+/* alert box */
+.alert {
+  padding: 5px;
+}
+
+.closebtn {
+  margin-left: 15px;
+  color: rgb(0, 0, 0);
+  font-weight: bold;
+  float: right;
+  font-size: 22px;
+  line-height: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.closebtn:hover {
+  color: black;
+}
+
+/* alert box */
+
+/*chat container*/
+.message-container {
+  overflow-y: scroll;
+  max-height: 400px;
+  background-color: lightgray;
+  padding-top: 10px;
+}
+
+.message-card-head {
+  background-color: lightgray;
+  text-align: left;
+}
+
+
+.sent {
+  background-color: #d8fabd;
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 50%;
+  text-align: justify;
+  margin-left: 370px;
+
+}
+
+.received {
+  background-color: #E5E5EA;
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 50%;
+  text-align: justify;
+
+}
+
+.message-time {
+  font-size: 12px;
+  color: #999;
+}
+
+/*chat container*/
+
+.hrLine {
+  height: 2px;
+  border-width: 0;
+  color: gray;
+  background-color: rgb(0, 0, 0);
+}
+
+/* breadcrumb css starts */
+/* Basic breadcrumb styling */
+.breadcrumbs {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.breadcrumbs li {
+  display: inline;
+  font-size: large;
+  margin-right: 5px;
+}
+
+/* Styling for active breadcrumb */
+.breadcrumbs li:last-child {
+  font-weight: bold;
+  /* Change this to your desired style */
+  color: #97a7ae;
+  /* Change this to your desired color */
+}
+
+.breadcrumbs li:first-child {
+  font-weight: bold;
+  /* Change this to your desired style */
+  color: #070707;
+  /* Change this to your desired color */
+}
+
+/* Styling for breadcrumb links */
+.breadcrumbs li a {
+  text-decoration: none;
+  color: #000;
+  /* Change this to your desired color */
+}
+
+.breadcrumbs li a:hover {
+  text-decoration: underline;
+}
+
+/* breadcrumb css ends */
+
+/* Add images files starts*/
+.file-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.file-name {
+  margin-right: 10px;
+}
+
+.btn-delete {
+  background-color: #ff6347;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.topright {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.box2 {
+  position: relative;
+  display: inline-block;
+  /* border: 1px solid #000; */
+  border-radius: 20px;
+  margin: 10px;
+}
+
+.box2 img {
+  display: block;
+  width: 170px;
+  height: 170px;
+  border-radius: 20px;
+}
+
+.box1 img {
+  background-size: cover;
+}
+/* Add images files ends*/
+
+.Img-Input-hidden {
+  position: absolute;
+  left: -9999px;
+}
+input[type=radio]:checked + label>img {
+  border: 1px solid #fff;
+  box-shadow: 0 0 3px 3px #090;
+}
+
+
+.showfilebox{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+  padding: 10px 15px;
+  box-shadow: black 0px 0px 0px 1px,
+  burlywood 0px 0px 0px 1px inset;
+
+}
+
+.showfilebox .left{
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.filetype{
+  background: lightblue;
+  color: wheat;
+  padding: 5px 15px;
+  font-size: 20px;
+  text-transform: capitalize;
+  font-weight: 700;
+  border-radius: 3px;  
+}
+
+.left h3{
+  font-weight: 600;
+  font-size: 18px;
+  color: burlywood;
+  margin: 0;
+}
+
+.right span{
+  background: lightskyblue;
+  color: antiquewhite;
+  width: 25px;
+  height: 25px;
+  font-size: 25px;
+  line-height: 25px;
+  display: inline-block;
+  text-align: center;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+/* AD content css starts */
+/* Makes the animation pause on hover */
+.moving-text:hover{
+  animation-play-state: paused;
+}
+
+/* The animation */
+@keyframes marquee{
+  0%{transform: translateX(100%);}
+  100%{transform: translateX(-100%);}
+}
+
+/* media query to enable animation for only those who want it */
+@media (prefers-reduced-motion: no-preference) {
+  .moving-text{
+      animation: marquee 25s linear infinite;
+  }
+}
+/* AD content css ends */
+
+#searchInput {
+  background-image: url('Icon_images/magnifying-glass-solid.svg');
+  background-size: 25px;
+  background-position: 10px 10px;
+  background-repeat: no-repeat;
+  width: 85%;
+  font-size: 16px;
+  padding: 12px 20px 12px 40px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+
+/* Order step progress bar starts */
+.step {
+  position: relative;
+  min-height: 1em;
+  color: gray;
+}
+.title {
+  line-height: 1.5em;
+  font-weight: bold;
+}
+.caption {
+  font-size: 0.8em;
+}
+.step + .step {
+  margin-top: 1.5em
+}
+.step > div:first-child {
+  position: static;
+  height: 0;
+}
+.step > div:not(:first-child) {
+  margin-left: 1.5em;
+  padding-left: 1em;
+}
+/* Circle */
+.circle {
+  background: gray;
+  position: relative;
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 1.5em;
+  border-radius: 100%;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 0 0 3px #fff;
+}
+/* Vertical Line */
+.step {
+  position: relative;
+  min-height: 1em;
+  color: gray;
+}
+.title {
+  line-height: 1.5em;
+  font-weight: bold;
+}
+.caption {
+  font-size: 0.8em;
+}
+.step + .step {
+  margin-top: 1.5em
+}
+.step > div:first-child {
+  position: static;
+  height: 0;
+}
+.step > div:not(:first-child) {
+  margin-left: 1.5em;
+  padding-left: 1em;
+}
+/* Circle */
+.circle {
+  background: gray;
+  position: relative;
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 1.5em;
+  border-radius: 100%;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 0 0 3px #fff;
+}
+/* Vertical Line */
+.step {
+  position: relative;
+  min-height: 1em;
+  color: gray;
+}
+.title {
+  line-height: 1.5em;
+  font-weight: bold;
+}
+.caption {
+  font-size: 0.8em;
+}
+.step + .step {
+  margin-top: 1.5em
+}
+.step > div:first-child {
+  position: static;
+  height: 0;
+}
+.step > div:not(:first-child) {
+  margin-left: 1.5em;
+  padding-left: 1em;
+}
+/* Circle */
+.circle {
+  background: gray;
+  position: relative;
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 1.5em;
+  border-radius: 100%;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 0 0 3px #fff;
+}
+/* Vertical Line */
+
+.StepProgresswrapper {
+  width: 330px;
+  font-family: 'Helvetica';
+  font-size: 14px;
+}
+.StepProgress {
+  position: relative;
+  padding-left: 45px;
+  list-style: none;
+}
+.StepProgress::before {
+  display: inline-block;
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 15px;
+  width: 10px;
+  height: 100%;
+}
+.StepProgress-item {
+  position: relative;
+  counter-increment: list;
+}
+.StepProgress-item:not(:last-child) {
+  padding-bottom: 20px;
+}
+.StepProgress-item::before {
+  display: inline-block;
+  content: '';
+  position: absolute;
+  left: -30px;
+  height: 100%;
+  width: 10px;
+}
+.StepProgress-item::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: -37px;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #CCC;
+  border-radius: 50%;
+  background-color: #FFF;
+}
+.StepProgress-item.is-done::before {
+  border-left: 2px solid green;
+}
+.StepProgress-item.is-done::after {
+  content: "✔";
+  font-size: 13px;
+  color: #FFF;
+  text-align: center;
+  border: 2px solid green;
+  background-color: green;
+}
+.StepProgress-item.current::before {
+  border-left: 2px solid green;
+}
+.StepProgress-item.current::after {
+  content: counter(list);
+  padding-top: 1px;
+  width: 25px;
+  height: 25px;
+  top: -4px;
+  left: -40px;
+  font-size: 14px;
+  text-align: center;
+  color: green;
+  border: 2px solid green;
+  background-color: white;
+}
+.StepProgress strong {
+  display: block;
+}
+
+/* Order step progress bar ends */
+
+
+.stepper-wrapper {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+.stepper-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
+}
+
+.stepper-item::before {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ccc;
+  width: 100%;
+  top: 20px;
+  left: -50%;
+  z-index: 2;
+}
+
+.stepper-item::after {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #ccc;
+  width: 100%;
+  top: 20px;
+  left: 50%;
+  z-index: 2;
+}
+
+.stepper-item .step-counter {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #ccc;
+  margin-bottom: 6px;
+}
+
+.stepper-item.active {
+  font-weight: bold;
+}
+
+.stepper-item.completed .step-counter {
+  background-color: #4bb543;
+}
+
+.stepper-item.completed::after {
+  position: absolute;
+  content: "";
+  border-bottom: 2px solid #4bb543;
+  width: 100%;
+  top: 20px;
+  left: 50%;
+  z-index: 3;
+}
+
+.stepper-item:first-child::before {
+  content: none;
+}
+.stepper-item:last-child::after {
+  content: none;
+}
+
+/*Audio record CSS starts*/
+button{
+  border: none;
+  background: none;
+  appearance: none;
+  outline: none;
+  cursor: pointer;
+}
+
+
+main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem 1rem;
+  
+}
+
+.mic-toggle{
+  position: relative;
+  display: block;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  background-color: rgb(72, 243, 66);
+  margin-bottom: 4rem;
+}
+
+.mic-toggle:after,
+.mic-toggle:before{
+--pad:0rem;
+content:'';
+display:block;
+position:absolute;
+z-index:0;
+background-color: rgba(40, 231, 88, 0.2);
+top:var(--pad);
+bottom: var(--pad);
+left: var(--pad);
+right: var(--pad);
+border-radius: 50%;
+}
+.mic-toggle:after{
+  transition: 0.04s;
+}
+.mic-toggle:before{
+  transition: 0.2s;
+}
+
+.mic-toggle:hover:after{
+  --pad:-1rem;
+}
+.mic-toggle:hover:before{
+  --pad:-2rem;
+}
+
+.mic-toggle span{
+  position: relative;
+  z-index: 1;
+  color: #fff;
+  font-size: 4rem;
+
+}
+
+.mic-toggle.is-recording:after{
+  animation: smoothPadAfter 0.06s ease-in alternate-reverse forwards infinite;
+}
+.mic-toggle.is-recording:before{
+  animation: smoothPadBefore 0.06s ease-in alternate-reverse forwards infinite;
+}
+
+@keyframes smoothPadAfter{
+  0%{
+      top:-2rem;
+      bottom: -2rem;
+      left: -2rem;
+      right: -2rem;
+  }
+  100%{
+      top:-1rem;
+      bottom: -1rem;
+      left: -1rem;
+      right: -1rem;
+  }
+}
+
+@keyframes smoothPadBefore{
+  0%{
+      top:-1rem;
+      bottom: -1rem;
+      left: -1rem;
+      right: -1rem;
+  }
+  100%{
+      top:-0.5rem;
+      bottom: -0.5rem;
+      left: -0.5rem;
+      right: -0.5rem;
+  }
+}
+
+.playback{
+  margin-bottom: 1rem;
+  box-shadow: 0px 0px 1rem rgba(0 0 0 0.2);
+  border-radius: 999px;
+  /* margin-top: -55px;
+    margin-left: 43px; */
+}
+
+.is-hidden{
+  display: none;
+}
+
+/*Audio record CSS ends*/
+
+/*Video record CSS starts*/
+#main__main-container {
+  display: flex; 
+}
+#main__main-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;   
+}
+#main__video {
+  max-width: 800px;
+}
+#main__video-button {
+  background-color: green;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+}
+#main__video-button {
+  background-color: green;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 200px;
+  font-size: 2em;
+}
+
+#main__video-button {
+  background-color: green;
+  height: 200px;
+  width: 200px;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 200px;
+  font-size: 2em;
+  transition-property: box-shadow;
+  transition-duration: .3s;
+}
+#main__video-button:hover {
+  cursor: pointer;
+  box-shadow: gray 0 0 10px 10px;
+  transition-property: box-shadow;
+  transition-duration: .3s;
+}
+
+/*Video record CSS ends*/
+
+/* Advertisement content starts */
+.card-title{
+  text-align: left;
+  font-size: 20px;
+}
+
+.card-description{
+  text-align: justify;
+  font-size: 15px;
+  display: block;        /* Use a flexible box layout */
+  overflow: hidden;            /* Hide overflowing content */
+  text-overflow: ellipsis;     /* Add ellipsis at the end of the text */
+  line-height: 1.5;            /* Adjust line height for better spacing */
+  max-height: calc(1.5em * 3); /* Adjust max-height based on line height and number of lines */
+
+}
+.card {
+  display: flex;
+  flex-wrap: wrap;
+  background-color: #e7e5e5;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.column {
+  flex: 1;
+  min-width: 200px;
+  margin: 10px;
+  box-sizing: border-box;   
+}
+
+
+.column:last-child {
+  border-right: none;
+}
+
+@media (max-width: 768px) {
+  .column {
+      flex-basis: 100%;
+      border-right: none;
+      border-bottom: 1px solid #ddd;
+     
+  }
+  
+  .column:last-child {
+      border-bottom: none;
+  }
+  
+}
+
+#tag {
+  width: 106px;
+    height: 31px;
+    background: rgb(245, 17, 9);
+    position: absolute;
+    transform: rotate(0deg);
+    top: -18px;
+    left: -18px;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    line-height: 32px;
+    text-align: center;
+}
+/* Advertisement content ends */

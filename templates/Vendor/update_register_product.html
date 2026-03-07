@@ -1,0 +1,243 @@
+{% extends "base.html" %}
+{% block title %}Update Service Form{% endblock %}
+
+{% block navContent %}
+{% include "Common/navbar_content.html" %}
+{% endblock navContent %}
+
+{% block body %}
+{% include "Common/flashMsg.html" %}
+{% include "Vendor/sub_menu.html" %}
+
+<h3 class="form-heading">Product/Service details</h3>
+{% endblock body %}
+
+{% block card_content %}
+<div class="w3-container">
+  <div class="grid-container">
+    <div class="grid-item" style="text-align: left;">
+      <b>Date of service registration:</b> {{sd['timestamp']}}
+    </div>
+    <div class="grid-item" style="text-align: right;">
+      <b>Service Status: </b>{{sd.current_status}} &emsp;&emsp;<br>
+      <b>Advertisement Status: </b><label class="switch">
+        <input id="checkboxinp" type="checkbox">
+        <div class="slider round"></div>
+      </label> &emsp;&emsp;
+    </div>
+    
+    
+  </div>
+</div>
+<div class=" grid-item" style="text-align: center;">
+  <button class="w3-btn w3-round-xxlarge w3-indigo w3-medium"><a href="/matchingCustomers?sid={{sid}}">See
+      Matching Customers</a></button>
+</div>
+<form action="/updateProduct?sid={{sid}}" method="POST" enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <input type="text" name="allocatedReqID" value="{{sd.allocatedReqID}}" style="display: none;">
+
+  <p>
+    <label class="headingFormField required">
+      <img src="static\img\service.png" style="width:50px;" >
+      <b>Service Name</b></label>
+    <input class="w3-input" name="serviceName" type="text" placeholder="Enter service name"
+      value="{{sd['serviceName']}}" required />
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\features.png" style="width:50px;" >
+      <b>Specific Features</b></label>
+    <textarea rows="3" style="width: 100%" name="specificFeature" class="w3-input"
+      placeholder="Enter Specific features related to the product/service">{{sd['specificFeature']}}</textarea>
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\benefits.png" style="width:50px;" >
+      <b>Benefits of the service</b></label>
+    <textarea rows="3" style="width: 100%" name="benefits" class="w3-input"
+      placeholder="Enter benefits related to the product/service">{{sd['benefits']}}</textarea>
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\problem-solving.png" style="width:50px;" >
+      <b>The solution is best for</b></label>
+    <textarea rows="3" style="width: 100%" name="bestFor" class="w3-input"
+      placeholder="Enter specific use case or need">{{sd['bestFor']}}</textarea>
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\photo.png" style="width:50px;" >
+            <input type="file" id="addProductPics" name="addProductPics" multiple="true" accept="image/*" hidden>
+      <button type="button" class="w3-btn w3-orange w3-round-large w3-small">
+        <label for="addProductPics"><i class="fa-solid fa-upload"></i> Attach Service Image(s)</label>
+        <p>Select image that will set as a product image and save changes</p>
+      </button>
+      <input type="text" id="LenPrPics" name="LenPrPics" value="{{LenProductPics}}" hidden>
+    </label>
+
+    <input type="text" id="prevFiles" value="" class="w3-input" name="prevFiles" style="display: none;" >
+  <div style="text-align: left;">
+    <!-- <p><strong>Previous Files</strong></p> -->
+    <div id="dispPrevPics"></div>
+  </div>
+
+  <div style="text-align: left;">
+    <!-- <p><strong>Newly added files</strong></p> -->
+    <div id="wrapper" class="w3-row"></div>
+  </div>
+  </p>
+  
+
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\gps.png" style="width:50px;" >
+            <b>location</b></label>
+    <input class="w3-input" name="where" type="text" placeholder="Enter the location" value="{{sd['where']}}" />
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\info (1).png" style="width:50px;" >
+            <b>Our services and products info</b></label>
+    <textarea rows="3" class="w3-input" style="width: 100%" name="myServicesInfo"
+      placeholder="Enter any my services and products info">{{sd['myServicesInfo']}}</textarea>
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\img\file.png" style="width:50px;" >
+
+      <input type="file" id="additionalRelatedFiles" name="additionalRelatedFiles" accept=".pdf,.ppt,.pptx,.doc,.docx"
+        multiple="true" hidden>
+      <button type="button" class="w3-btn w3-orange w3-round-large w3-small">
+        <label for="additionalRelatedFiles"><i class="fa-solid fa-upload"></i> Add files </label>
+      </button>
+    </label>
+
+  </label>
+  <input type="text" id="LenAddPrFiles" name="LenAddPrFiles" value="{{LenAdditionalProductRelatedFiles}}" hidden>
+
+  <input type="text" id="addPrevFiles" value="" class="w3-input" name="addPrevFiles" style="display: none;">
+  <div style="text-align: left;">
+    <!-- <p><strong>Previous Files</strong></p> -->
+    <div id="dispAddPrevFiles"></div>
+  </div>
+
+  <div style="text-align: left;">
+    <!-- <p><strong>Newly added files</strong></p> -->
+    <div id="filewrapper" class="w3-row"></div>
+  </div>
+
+  <!-- <div style=" text-align: left;">
+    {% for item in sd['additionalProductRelatedFiles'] %}
+    <li>{{ item }} <a href="{{url_for('view_file_vendor',fname=item)}}" title="View file"><i
+          class="fa-solid fa-eye"></i></a></li>
+    {% endfor %}
+  </div> -->
+  </p>
+  <p>
+
+    <label class="headingFormField">
+      <img src="static\img\checklist (1).png" style="width:50px;" >
+      List Related Products
+
+    </label>
+  <p style="text-align: left;"><strong>Note: </strong>Regardless of whether you sell them or not. Type the words, separated by commas.</p>
+  <input class="w3-input" name="relatedProduct" type="text" placeholder="Enter Related Products"
+    value="{{sd['relatedProduct']}}" />
+  </p>
+  <p>
+    <label class="headingFormField">
+      <img src="static\uxWingIcons\current_status_icon.svg" alt="icon" class="w3-margin-right" style="width: 40px" />
+      <b>Update current status</b></label>
+  <div style=" text-align: left;">
+    <label for="status">Choose the current status:</label>
+    <select name="status" id="current_status" onchange='CheckStatus(this.value);'>
+      <option value="{{sd.current_status}}" id="new_status">{{sd.current_status}}</option>
+      <option value="Waiting for vendor responses">Waiting for vendor responses</option>
+      <option value="Review the progress">Review the progress</option>
+      <option value="Customer selects a vendor">Customer selects a vendor</option>
+      <option value="Vendor requests a preliminary visit">Vendor requests a preliminary visit</option>
+      <option value="Vendor completes a preliminary visit">Vendor completes a preliminary visit</option>
+      <option value="Others" id="oth">Others</option>
+    </select>
+    <div id="otherStatus" style='display:none;'>
+      <p>Please enter other status</p>
+      <input type="text" class="w3-input" name="otherStatus" onchange="othersInputValue(this.value);"
+        placeholder="Enter other status" maxlength="30" />
+    </div>
+  </div>
+  </p>
+
+  <label class="headingFormField">
+    <img src="static\img\advertisement.png" alt="icon" class="w3-margin-right" style="width: 40px" />
+    <b>Promote the service</b></label>
+    {% if AdPlaced=="No Projects" %}
+    <div class="w3-left">
+      <button class="w3-btn w3-hover-yellow w3-yellow w3-round-xxlarge ">
+        <a href="/advertisementForm?sid={{sid}}">Promote</a>
+      </button>
+     
+    </div><br>
+    {% else %}
+    {% if sid is in AdPlaced.keys() %}          
+     <p class="w3-left">This service is promoted</p><br>
+{% for key,value in AdPlaced.items() %}
+{% if key==sid %}
+<br><br>
+<div style="text-align: left; ">
+            <b>Advertisement duration: </b>{{value.AdDuration}}<br>
+            <b>Advertisement placed date: </b>{{value.ad_date}}<br>
+            <b>Advertisement expiry date: </b>{{value.expiry_date}}<br>
+            <b>Advertisement price: </b>{{value.price}}<br>
+</div>
+
+
+      {% endif %}
+{% endfor %}
+
+      {% else %}
+  <div class="w3-left">
+    <br>
+    <button class="w3-btn w3-hover-yellow w3-yellow w3-round-xxlarge ">
+      <a href="/advertisementForm?sid={{key}}">Promote</a>
+    </button>
+   
+  </div>
+  <br>
+  {% endif %}
+  {% endif %}
+<br>
+  <div class="w3-left">
+  <button class="w3-btn w3-hover-red w3-red w3-round-xxlarge "><a href="/deleteProduct?sid={{sid}}" title="Delete Product">Delete Service</a></button>
+</div><br><br>
+  <button class="w3-btn w3-green w3-block w3-round">Save Changes</button></p>
+</form>
+<!-- <button class="w3-btn w3-red w3-block w3-round"><a href="/deleteProduct?sid={{sid}}" title="Delete Product">Delete
+    Product</a></button> -->
+<!-- <button class="w3-btn w3-red w3-block w3-round">Reinitiate Service Form</a></button> -->
+<!--Request form ends-->
+
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    console.log("ready");
+    var checkboxinp = $("#checkboxinp");
+    $(".switch").click(function () {
+      console.log(checkboxinp.checked);
+      console.log(checkboxinp.data("on"));
+  });
+});
+  var LenPrPics = document.getElementById("LenPrPics");
+  var prPics = JSON.parse('{{ sd.ProductPics | tojson | safe}}');
+  var prevFiles = document.getElementById("prevFiles");
+  prevFiles.setAttribute("value", prPics);
+
+  var LenAddPrFiles = document.getElementById("LenAddPrFiles");
+  var addPrPics = JSON.parse('{{ sd.additionalProductRelatedFiles | tojson | safe}}');
+  var addPrevFiles = document.getElementById("addPrevFiles");
+  addPrevFiles.setAttribute("value", addPrPics);
+
+</script>
+<script src="static/addFileVendor.js">
+</script>
+{% endblock card_content%}

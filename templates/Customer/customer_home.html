@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}Customer Home{% endblock %}
+{% block navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent %}
+{% block body %} {% include "Customer/sub_menu.html" %}
+
+<h3 class="form-heading">Submit a request <img src="static\lordIcons\wired-flat-245-edit-document.gif" alt="Avatar"
+        class="w3-margin-right" style="width: 40px" />
+        <span id="stepNumberID" style="font-size: medium;">(1/8)</span>
+        <sup><i class="fa-regular fa-circle-question"
+            onclick="location.href='/infoOfHowToSubmitRequest'" title="info of how to submit request"></i></sup></h3>
+{% endblock body %}
+{% block card_content %}
+<input type="text" value="{{AccType}}" id="color-change-customer" style="display: none;">
+{% include "Customer/RequestForm.html" %}
+{% endblock card_content%}

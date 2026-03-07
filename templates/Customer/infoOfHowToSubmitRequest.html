@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}Customer Home{% endblock %}
+{% block navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent %}
+{% block body %} {% include "Customer/sub_menu.html" %}
+
+<h3 class="form-heading">Steps to submit request form 
+    <sup><i class="fa-regular fa-circle-question" onclick="location.href='/infoOfHowToSubmitRequest'"
+            title="Info of how to submit request"></i></sup>
+</h3>
+{% endblock body %}
+{% block card_content %}
+<div class="w3-left-align">
+    <ol type="1">
+        <li> <h3>Click on the Submit a request tab</h3>This will open up the form</li>
+        <li><h3>Fill up the required details</h3>* indicates mandatory field. It is required to fill</li>
+        <li><h3>Click on submit button</h3>It will submit the form and appear in All Request tab</li>
+    </ol>
+</div>
+{% endblock card_content%}

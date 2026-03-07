@@ -1,0 +1,114 @@
+{% extends 'base.html' %} {% block title %} Subscription {% endblock title %} {%
+block navContent %} {% include "Common/navbar_content.html" %} {% endblock
+navContent %} {% block body %} {% include "Common/profile_sub_menu.html" %} {%
+include "Common/flashMsg.html" %}
+<h3 class="form-heading">
+  Choose your plan &ensp;<i class="fa-solid fa-check"></i>
+</h3>
+
+{% endblock body %} {% block card_content %}
+
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+<input type="hidden" id="user_type" value="{{ current_user.type }}" />
+
+<div class="plan-container">
+  <div class="w3-third plan-card">
+    <div
+      class="w3-round-xlarge w3-card w3-container"
+      style="min-height: 460px"
+      data-plan="basic">
+      <h3>Basic</h3>
+      <h4>Monthly Price: $5</h4>
+      <br />
+      <ul class="custom-checklist" style="text-align: left">
+        <li>Get 10 matching customers per request</li>
+        <li>Can connect to customer via messaging platform that we provide</li>
+        <li>Can send audio recordings and files to customer</li>
+      </ul>
+
+      <form id="basic-plan-form">
+        <input type="hidden" name="plan" value="Basic Subscription" />
+        <input type="hidden" name="price" value="5" />
+      </form>
+    </div>
+  </div>
+
+  <div class="w3-third plan-card">
+    <div
+      class="w3-round-xlarge w3-card w3-container"
+      style="min-height: 460px"
+      plan="premium">
+      <h3>Premium</h3>
+      <h4>Monthly Price: $16</h4>
+      <br />
+      <ul class="custom-checklist" style="text-align: left">
+        <li>Get 30+ customers per request</li>
+        <li>Can connect to customer via messaging platform that we provide</li>
+        <li>Can send audio recordings and files to customer</li>
+        <li>Can send video recordings</li>
+        <li>Can advertise your business</li>
+      </ul>
+
+      <form id="premium-plan-form">
+        <input type="hidden" name="plan" value="Premium Subscription" />
+        <input type="hidden" name="price" value="16" />
+      </form>
+    </div>
+  </div>
+</div>
+<div class="next-step-container">
+  <button
+    type="submit"
+    onclick="goto_payment()"
+    class="w3-btn w3-green w3-round">
+    Next Step
+  </button>
+</div>
+
+<script>
+  // Get all plan cards
+  const planCards = document.querySelectorAll(".plan-card");
+
+  // Function to handle card selection
+  function selectCard(selectedCard) {
+    // Remove selected class from all plan cards
+    planCards.forEach((card) => {
+      card.classList.remove("selected");
+    });
+
+    // Add selected class to the clicked card
+    selectedCard.classList.add("selected");
+  }
+
+  // Add click event listener to each plan card
+  planCards.forEach((card) => {
+    card.addEventListener("click", function () {
+      selectCard(card);
+    });
+  });
+
+  function goto_payment() {
+    // Get the selected plan details
+    const selectedPlan = document.querySelector(".plan-card.selected form");
+    if (selectedPlan) {
+      const planName = selectedPlan.elements["plan"].value;
+      const planPrice = selectedPlan.elements["price"].value;
+
+      // Debugging: Log the selected plan details
+      console.log("Selected Plan:", planName);
+      console.log("Selected Price:", planPrice);
+
+      // Get the user type from the hidden input field
+      const userType = document.getElementById("user_type").value;
+
+      // Redirect to the payment picker page with the selected plan details
+      let paymentUrl = `/Common/payment?plan=${planName}&price=${planPrice}`;
+
+      window.location.href = paymentUrl;
+    } else {
+      alert("Please select a plan before proceeding to the next page.");
+    }
+  }
+</script>
+
+{% endblock card_content%}

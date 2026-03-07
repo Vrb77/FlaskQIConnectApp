@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+<title>Who Can Supply</title>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  <link rel="stylesheet" href="/static/css_file.css" />
+  <link rel="icon" type="image/x-icon" href="static/images/Message_icon2.svg">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <!-- Fonts-->
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <!-- select country -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+<style>
+  select:has(option:disabled:checked[hidden]) {
+  color: gray;
+}
+
+select option {
+  color: black;
+}
+</style>
+<body>
+  <!--Navbar Start-->
+  <div class="w3-top">
+    <div class="w3-bar w3-black" id="navbar">
+      <a class="w3-bar-item" href="/" style="font-size: 25px;">
+        <img src="{{ url_for('uploaded_file', filename= 'logo_qi.jpg') }}" alt="Default Image"
+          class="profile-image w3-border w3-round-xxlarge" width="40" height="40">
+        <b>WhoCanSupply.com</b>
+      </a>
+      {% if current_user.is_authenticated %}
+      {% include "Common/navbar_content.html" %}
+      {% else %}
+      {% include 'Common/navbar_without_login.html' %}
+      {% endif %}
+    </div>
+  </div>
+  <!--Navbar End-->
+
+<!-- First Slide starts -->
+<div class="w3-row" style="background-color: rgb(253, 253, 253);">
+  <div class="w3-half  w3-center" style="height:600px;">
+    <div class="w3-padding-64 ">
+      <h1 class="w3-padding-top-64 w3-center" style="text-shadow:1px 1px 0 #444"> 
+         <div class="Text_change_container">
+        <span class="changeText first-text">Find who can provide the </span><br>
+        <span class="changeText sec-text">Best Price</span>
+    </div>
+     for anything you need</h1>
+    <p class="w3-left-align" style="margin-left: 20px;">From industrial supplies to factory maintenance works and from residential needs to home improvement projects, whatever problem you are trying to solve, you can reach out to hundreds and thousands of product and service providers and find the right suppliers who can get your jobs done the best possible way. </p>
+  <br>
+
+    {% if current_user.is_authenticated %}
+    {% if session['userType'] == 'customer' %}
+    <button class="w3-btn w3-medium w3-green w3-round-xxlarge" ><a href="/customer_home">Get Started</a></button>
+    {% elif session['userType'] == 'vendor' %}
+    <button class="w3-btn w3-medium w3-green w3-round-xxlarge"><a href="/vendor_Get Started">Get Started</a></button>
+    {% endif %}
+    {% else %}
+    <button class="w3-btn w3-medium w3-green w3-round-xxlarge"><a href="/login">Get Started</a></button>
+    {% endif %}
+ 
+  </div>
+  
+  </div>
+  <div class="w3-half  w3-container" style="height:600px; ">
+    <div class="w3-center">
+      <div class="w3-content w3-section" style="max-height:500px;">
+        <img class="mySlides" src="static\img\hero_sec_back_2.jpg" id="rightImg" >
+       
+      </div>
+    </div>
+  </div>
+</div>
+<!-- First Slide ends -->
+
+<!-- Second Slide starts -->
+      <div class="w3-light-blue">
+        <h1 class="w3-padding-top-64 w3-center" style="text-shadow:1px 1px 0 #444">Let's make the world <img src="static\img\planet-earth_921490.png" style="width: 50px" />
+          a better place</h1>
+        <h3 class="w3-center" style="padding-bottom: 64px;">Let's eliminate inefficiencies in the world, with new technologies and leadership. </h3>
+      </div>
+
+<!-- Second Slide ends -->
+
+<!-- The Contact Section -->
+<div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
+  <h2 class="w3-wide w3-center">CONTACT</h2>
+  <p class="w3-opacity w3-center"><i>Got a technical issue? Want to send feedback? <br>Need details about our Business plan? Let us know.</i></p>
+  {% include "Common/flashMsg.html" %}
+  <div class="w3-row w3-padding-32">
+    <div class="w3-col m6 w3-large w3-margin-bottom">
+      <i class="fa-solid fa-location-dot fa-xl"></i> Pune<br><br>
+      <i class="fa-solid fa-phone fa-xl"></i> Phone: 1234567890<br><br>
+      <i class="fa-solid fa-envelope fa-xl"></i> Email: Support@gmail.com<br>
+    </div>
+    <div class="w3-col m6">
+      <form action="{{url_for('contact_us')}}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      
+        <div class="w3-row-padding" style="margin:0 -16px 8px -16px">
+          <div class="w3-half">
+            <input class="w3-input w3-border" type="text" placeholder="Name" required name="Name">
+          </div>
+          <div class="w3-half">
+            <input class="w3-input w3-border" type="text" placeholder="Email" required name="mail">
+          </div>
+        </div>
+        <div>
+          <select name="subject" class="w3-input w3-border" placeholder="Select Subject" id="subject" onchange='CheckSubject(this.value);'>
+            <option value="" selected disabled hidden>Select Subject</option>
+            <option value="Technical">Technical support</option>
+            <option value="Account">Account</option>
+            <option value="Product">Product/service related</option>
+            <option value="Billing">Billing related</option>
+            <option value="Order">Order & delivery related</option>
+            <option value="Complaint">Complaint </option>
+            <option value="Business">Feedback</option>
+            <option value="Others" id="oth">Others</option>
+          </select>
+          <div id="otherSubject" style='display:none;'>
+            <p>Please enter other subject</p>
+            <input type="text" class="w3-input w3-border" name="otherSubject" onchange="othersInputValue(this.value);"
+              placeholder="Enter other subject" maxlength="30" />
+          </div>
+        </div>
+        <br>
+        <input class="w3-input w3-border" type="tel" placeholder="Enter Phone" required name="phone"><br>
+        <textarea rows="6" class="w3-input w3-border" placeholder="Leave a message" required name="message"></textarea>
+
+        <button class="w3-btn w3-round-xxlarge w3-black w3-section w3-center" type="submit">SEND</button>
+      </form>
+    </div>
+  </div>
+  </div>
+  <!-- The Contact Section ends -->
+  <!--Footer Start-->
+  <div class="w3-black w3-center w3-bottom" id="footer">
+    {% if session['userType'] == 'customer' %}
+    {% block AD_content %}
+    <div id="get-all-content" class="w3-light-blue"></div>
+
+    <script>
+      fetch("{{ url_for('getAdvertisement') }}")
+        .then(response => response.text())
+        .then(data => {
+          console.log('adverti result', data);
+          document.getElementById('get-all-content').innerHTML = data;
+        });
+    </script>
+    {% endblock AD_content %}
+    {% endif %}
+    © Copyright 2024 WhoCanSupply - All Rights Reserved <u>TERMS & CONDITIONS</u>
+  </div>
+  <!--Footer End-->
+
+  <script src="/static/script.js"></script>
+  <script>
+    var myIndex = 0;
+    carousel();
+    
+    function carousel() {
+      var i;
+      var x = document.getElementsByClassName("mySlides");
+      for (i = 0; i < x.length; i++) {
+        x[i].style.display = "none";  
+      }
+      myIndex++;
+      if (myIndex > x.length) {myIndex = 1}    
+      x[myIndex-1].style.display = "block";  
+      setTimeout(carousel, 2000); // Change image every 2 seconds
+    }
+
+    function CheckSubject(val) {
+    var element = document.getElementById('otherSubject');
+    if (val == 'Others')
+      element.style.display = 'block';
+    else
+      element.style.display = 'none';
+  }
+
+  function othersInputValue(val) {
+    val != '' ? document.getElementById('oth').setAttribute("value", val) : document.getElementById('oth').setAttribute("value", "Others")
+  }
+
+  const text = document.querySelector(".sec-text");
+
+const textLoad = () => {
+    setTimeout(() => {
+        text.textContent = "Best Price";
+    }, 0);
+    setTimeout(() => {
+        text.textContent = "Best quality";
+    }, 4000);
+    setTimeout(() => {
+        text.textContent = "Instant Service";
+    }, 8000); //1s = 1000 milliseconds
+}
+
+textLoad();
+setInterval(textLoad, 12000);
+    </script>
+</body>
+
+</html>

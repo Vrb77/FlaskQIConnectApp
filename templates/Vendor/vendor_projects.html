@@ -1,0 +1,149 @@
+{% extends "base.html" %} {% block title %}Customer Home{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %}
+{% include "Vendor/sub_menu.html" %}
+
+<h3 class="form-heading">Projects ({{count}})</h3>
+{% endblock body %}
+{% block card_content %}
+{% if count==0 %}
+<center>
+  <h4>
+    No projects
+  </h4>
+</center>
+{% else %}
+<div class="w3-container table-container">
+  <table class="w3-border w3-round-xlarge w3-hoverable  w3-border-black" id="searchTable">
+    <thead>
+      <tr class="w3-grey sticky">
+        <th>Sr.No</th>
+        <th>Request Name</th>
+        <th>Order Date</th>
+        <th>Customer Name</th>
+        <th>Price</th>
+        <th>Contact</th>
+        <th>Link</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for key,value in myProjects.items() %}
+      <tr>
+        <td>{{loop.index}}</td>
+        <td>{{value.rid}}</td>
+        <td>
+          {{value.project_date}}
+        </td>
+        <td>
+          {% set url="getRequestDetails?request_id="+value.rid %}
+          <div class="customerName">
+            <input type="text" id="url" value="{{url}}" style=" display: none;">
+            <span class="customerNameHolder"></span>
+          </div>
+        </td>
+        <td>
+
+
+          <div class="price">
+            {{value.price}}
+          </div>
+        </td>
+        <td>
+          <a href="/messagingFromVendor?request_id={{value.rid}}&service_id={{value.sid}}"><i
+              class="fa-solid fa-comments"></i></a>
+        </td>
+        <td><a href="/view_project_det?email={{email}}&id={{key}}">View</a></td>
+      </tr>
+
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+<script>
+  $(document).ready(function () {
+    $('.customerName').each(function (index, element) {
+      console.log(index);
+      console.log(element);
+      var row = $(this);
+      console.log(row)
+      var url = element.children[0].value
+      console.log(url);
+      $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        contentType: "application/json",
+        success: function (data) {
+          let name = getUserName(data["from"]);
+          row.find('.customerNameHolder').text(name);
+        },
+        error: function (xhr, status, error) {
+          console.error(error);
+        }
+      });
+    })
+
+    $('.orderDate').each(function (index, element) {
+      console.log(index);
+      console.log(element);
+      var row = $(this);
+      console.log(row)
+      var url = element.children[0].value
+      console.log(url);
+      $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        contentType: "application/json",
+        success: function (data) {
+          row.find('.orderDateHolder').text(data["selectVendorServiceID"]["order_date"]);
+        },
+        error: function (xhr, status, error) {
+          console.error(error);
+        }
+      });
+    })
+
+    function getUserName(email) {
+      var jqXHR = $.ajax({
+        url: "getUserName?email=" + email,
+        type: 'GET',
+        dataType: 'json',
+        async: false,
+        contentType: "application/json",
+        success: function (data) {
+          console.log(data);
+
+        },
+        error: function (xhr, status, error) {
+          console.error(error);
+        }
+      });
+      return JSON.parse(jqXHR.responseText);
+    }
+    $('.price').each(function (index, element) {
+      console.log(index);
+      console.log(element);
+      var row = $(this);
+      console.log(row)
+      var url = element.children[0].value
+      console.log(url);
+      $.ajax({
+        url: url,
+        type: 'GET',
+        dataType: 'json',
+        contentType: "application/json",
+        success: function (data) {
+          console.log(data);
+          row.find('.priceHolder').text(data);
+        },
+        error: function (xhr, status, error) {
+          console.error(error);
+        }
+      });
+    })
+
+  })   
+</script>
+{% endblock card_content%}

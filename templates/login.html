@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %} Sign up {% endblock title %}
+
+{% block navContent %}
+{% include 'Common/navbar_without_login.html' %}
+{% endblock navContent %}
+
+{% block body %}
+{% include "Common/flashMsg.html" %}
+<h3 class="form-heading">Login <i class="fa-solid fa-right-to-bracket"></i></h3>
+{% endblock body %}
+{% block card_content %}
+<!-- User Form -->
+
+<form action="/login" method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+  <label for="email" class="headingFormField required"><lord-icon src="https://cdn.lordicon.com/nqisoomz.json" trigger="in"
+      delay="1500" state="in-unfold" colors="primary:#121331,secondary:#eeaa66,tertiary:#4bb3fd,quaternary:#3a3347"
+      style="width:40px;height:50px;top:20px;">
+    </lord-icon>
+    <b> Email</b></label><br>
+  <input class="w3-input" name="email" type="text" placeholder="Enter the email" required />
+  <p>
+    <label class="headingFormField required">
+      <lord-icon src="https://cdn.lordicon.com/zbbefawl.json" trigger="hover" style="width:40px;height:50px;top:20px">
+      </lord-icon>
+      <b> Password</b></label><br>
+    <input class="w3-input" name="pwd" type="password" placeholder="Enter the password" required />
+    <a href="/forgotpassword" class="w3-text-grey w3-hover-text-black" style="float: left;">Forgot password? </a>
+  </p>
+  <p class="w3-center">
+    <button class="w3-btn w3-green w3-block w3-round">Log In</button>
+  </p>
+</form>
+
+
+<p class="w3-margin-top ">
+  Don't have an account?
+<div class="w3-center">
+  <a href="/customers/createaccount" class="w3-hover-text-blue">Create Customer Account</a>&emsp;&emsp;&emsp;
+  <a href="/vendors/createaccount" class="w3-hover-text-blue">Create Vendor Account</a>
+</div>
+<!-- <div class="w3-cell w3-small w3-padding w3-margin-right">
+            <a href="/admin/createaccount"> Create Admin account</a>
+        </div> -->
+</p>
+{% endblock card_content%}

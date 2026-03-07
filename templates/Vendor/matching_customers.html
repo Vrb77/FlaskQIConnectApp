@@ -1,0 +1,227 @@
+{% extends "base.html" %} {% block title %}Vendor Home{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %} {% include "Common/flashMsg.html" %} {% include
+"Vendor/sub_menu.html" %}
+<h3 class="form-heading">Matching Customers ({{countMatchCustomer}})</h3>
+{% endblock body %} {% block card_content %}
+<!--Request details starts-->
+<center>
+  <a href="/updateProduct?sid={{sid}}"
+    ><button class="w3-btn w3-green w3-round">Go to Details</button></a
+  >
+  &emsp;&emsp;
+  <a href="/CustomerResponses?sid={{sid}}"
+    ><button class="w3-btn w3-green w3-round">See all responses</button></a
+  >
+</center>
+
+<!--Request details ends-->
+
+<hr class="hrLine" />
+
+<!--Table for matching customers starts-->
+
+{% if countMatchCustomer==0 %}
+<center>
+  <h4>No Matching Customers found</h4>
+</center>
+{% else %}
+<div class="w3-container table-container">
+  <table
+    class="w3-border w3-round-xlarge w3-hoverable w3-border-black"
+    id="matchCustTable">
+    <thead>
+      <tr class="w3-grey sticky">
+        <th>Sr.No</th>
+        <th>Customer mail id</th>
+        <th>Customer Name</th>
+        <th>Match %</th>
+        <th>Last message</th>
+        <th>Contact</th>
+      </tr>
+    </thead>
+
+    <tbody class="matchCustTable"></tbody>
+  </table>
+</div>
+{% endif %}
+
+<script>
+  $(document).ready(function () {
+    loadMatchingCustomerTable();
+    function loadMatchingCustomerTable() {
+      var data = JSON.parse('{{ matchCustomers | tojson | safe}}');
+      const matchCust = Object.keys(data);
+      const matchCustValue = Object.values(data);
+      var sid = JSON.parse('{{ sid | tojson | safe}}');
+      console.log("sid=", sid);
+      var tableEle = [];
+      for (let i = 0; i < matchCust.length; i++) {
+        $.ajax({
+          url: "/getRequestDetails?request_id=" + matchCust[i],
+          type: "GET",
+          dataType: "json",
+          async: false,
+          contentType: "application/json",
+          success: function (data) {
+            let name = getUserName(data["from"]);
+            let lastMsg = getLastMsg(matchCust[i], sid);
+            let id = matchCust[i] + "_" + sid;
+
+            fullData =
+              "<tr onclick=\"location.href ='/customer_profile?email=" +
+              data["from"] +
+              "&sid=" +
+              sid +
+              '\'"  id="' +
+              id +
+              '" data-adStatus="' +
+              data["adv_status"] +
+              '" >' +
+              "<td>" +
+              (i + 1) +
+              "</td>" +
+              "<td>" +
+              data["from"] +
+              "</td>" +
+              "<td>" +
+              name +
+              "</td>" +
+              "<td>" +
+              (matchCustValue[i] * 100).toFixed(2) +
+              "%</td>" +
+              "<td>" +
+              lastMsg +
+              "</td>" +
+              "<td>" +
+              '<a href="/messagingFromVendor?&request_id=' +
+              matchCust[i] +
+              "&service_id=" +
+              sid +
+              '"><i class="fa-solid fa-comments"></i></a>' +
+              "</td>" +
+              "</tr>";
+            // console.log("data",fullData);
+            tableEle.push(fullData);
+            $(".matchCustTable").html(tableEle);
+          },
+          error: function (xhr, status, error) {
+            console.error(error);
+          },
+        });
+      }
+      const table = document.getElementById("matchCustTable");
+      const rows = table.getElementsByTagName("tr");
+
+      for (let i = 0; i < rows.length; i++) {
+        console.log("row", rows[i]);
+        const customInfo = rows[i].getAttribute("data-adStatus");
+        if (customInfo == "true") {
+          rows[i].style.backgroundColor = "yellow";
+        }
+      }
+    }
+
+    // selectedByCust()
+    // function selectedByCust(){
+    //   var allocatedReqIDs = JSON.parse('{{ sd.allocatedReqIDs | tojson | safe}}');
+
+    //   var sid=JSON.parse('{{ sid | tojson | safe}}');
+    //   console.log("sid=",sid);
+    //   var tableEle=[];
+    //   for(let i=0;i<allocatedReqIDs.length;i++){
+    //   $.ajax({
+    //     url: "/getRequestDetails?request_id="+allocatedReqIDs[i],
+    //     type: 'GET',
+    //     dataType: 'json',
+    //     contentType: "application/json",
+    //     success: function (data) {
+    //       let name=getUserName(data["from"]);
+    //       let lastMsg=getLastMsg(allocatedReqIDs[i],sid);
+    //       fullData="<tr onclick=\"location.href ='/customer_profile?email="+data["from"]+"&sid="+sid+"'\"><td>"+(i+1)+"</td>"
+    //         +"<td>"+data["from"]+"</td>"
+    //         +"<td>"+name+"</td>"
+    //         +"<td>"+lastMsg+"</td>"
+    //         +"<td>" +"<a href=\"/messagingFromVendor?&request_id="+allocatedReqIDs[i]+"&service_id="+sid+"\"><i class=\"fa-solid fa-comments\"></i></a>"+"</td>"
+    //           +"</tr>";
+    //       console.log("data",fullData);
+    //       tableEle.push(fullData);
+    //       $(".selectedByCustomer").html(tableEle);
+    //     },
+    //     error: function (xhr, status, error) {
+    //       console.error(error);
+    //     }
+    //   });
+
+    // }
+    // }
+    // $('.customerReqDet').each(function (index, element) {
+    //   var row = $(this);
+    //   var url = element.children[0].value
+    //   // var url=document.getElementById('url').value
+    //   $.ajax({
+    //     url: url,
+    //     type: 'GET',
+    //     dataType: 'json',
+    //     contentType: "application/json",
+    //     success: function (data) {
+    //       row.find('.customerMailID').text(data['from']);
+    //       let email=data['from'];
+    //       let name=getUserName(email);
+    //       row.find('.customerName').text(name);
+    //     },
+    //     error: function (xhr, status, error) {
+    //       console.error(error);
+    //     }
+    //   });
+    // })
+
+    function getUserName(email) {
+      var jqXHR = $.ajax({
+        url: "/getUserName?email=" + email,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        contentType: "application/json",
+        success: function (data) {},
+        error: function (xhr, status, error) {
+          console.error(error);
+        },
+      });
+      return JSON.parse(jqXHR.responseText);
+    }
+
+    function getLastMsg(rid, sid) {
+      var jqXHR = $.ajax({
+        url: "/lastMessage?request_id=" + rid + "&service_id=" + sid,
+        type: "GET",
+        dataType: "json",
+        async: false,
+        contentType: "application/json",
+        success: function (data) {},
+        error: function (xhr, status, error) {
+          console.error(error);
+        },
+      });
+      return JSON.parse(jqXHR.responseText);
+    }
+    $(".lastMsg").each(function (index, element) {
+      var row = $(this);
+      var url = element.children[0].value;
+      // var url=document.getElementById('url').value
+      $.ajax({
+        url: url,
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          row.find(".LastMsgHolder").text(data);
+        },
+        error: function (xhr, status, error) {
+          console.error(error);
+        },
+      });
+    });
+  });
+</script>
+
+{% endblock card_content %}

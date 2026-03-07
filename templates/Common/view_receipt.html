@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %} Transaction History {% endblock title %}
+
+{% block navContent %} {% include "Common/navbar_content.html" %}
+{% endblock navContent %}
+
+{% block body %}
+{% include "Common/profile_sub_menu.html" %}
+{% include "Common/flashMsg.html" %}
+<h3 class="form-heading">Transaction Details <i class="fa-solid fa-money-bill-transfer"></i></h3>
+
+{% endblock body %}
+{% block card_content %}
+<div class="w3-container" style="text-align: left;">
+    <b>Customer Mail ID</b>: &emsp;{{session.email }}<br>
+                     <b>Order Name</b>: &emsp;{{ receipt_det.order_name }}<br>
+                     <b>Price</b>: &emsp;{{ receipt_det.total }}<br>
+                    <b>Payment Method</b>: &emsp;{{ receipt_det.payment_method }}<br>
+                    <b>Date</b>: &emsp;{{ receipt_det.date }}<br>
+                    <b>Time</b>: &emsp;{{ receipt_det.time }}<br>
+      
+
+    </div>
+
+{% endblock card_content%}

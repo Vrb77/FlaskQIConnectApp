@@ -1,0 +1,10 @@
+<div id="get-all-content" class="w3-light-blue"></div>
+
+    <script>
+        fetch("{{ url_for('getAdvertisement') }}")
+            .then(response => response.text())
+            .then(data => {
+              console.log('adverti result',data);
+                document.getElementById('get-all-content').innerHTML = data;
+            });
+    </script>

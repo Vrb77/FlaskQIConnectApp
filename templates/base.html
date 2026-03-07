@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<title>{% block title %}{% endblock %}</title>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css" />
+  <link rel="stylesheet" href="/static/css_file.css" />
+  <link rel="icon" type="image/x-icon" href="static/images/Message_icon2.svg">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <script src="https://cdn.lordicon.com/lordicon.js"></script>
+  <!-- Fonts-->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <!-- select country -->
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!--Navbar Start-->
+  <div class="w3-top">
+    <div class="w3-bar w3-black" id="navbar">
+      <a class="w3-bar-item" href="/" style="font-size: 25px;">
+        <img src="{{ url_for('uploaded_file', filename= 'logo_qi.jpg') }}" alt="Default Image"
+          class="profile-image w3-border w3-round-xxlarge" width="40" height="40">
+        <b>WhoCanSupply.com</b>
+      </a>
+
+      {% block navContent %} {% endblock navContent%}
+    </div>
+  </div>
+  <!--Navbar End-->
+  <div style="margin-top: 60px;">{% include "Common/breadcrumb.html" %}</div>
+  <!--Body content Start-->
+  <div class="w3-container w3-center body-block">
+
+    {% block body %}
+
+    {% endblock body %}
+  </div>
+
+  <div class="w3-card-4 w3-container w3-round-xlarge w3-center formcard w3-light-grey w3-border" id="card">
+    {% block card_content %} {% endblock card_content%}
+  </div>
+
+  <!--Body content End-->
+
+  {% block ad_content %}
+
+  {% endblock ad_content %}
+
+  <!--Footer Start-->
+  <div class="w3-black w3-center w3-bottom" id="footer">
+    {% if session['userType'] == 'customer' %}
+    {% block AD_content %}
+    <div id="get-all-content" class="w3-light-blue"></div>
+
+    <script>
+      fetch("{{ url_for('getAdvertisement') }}")
+        .then(response => response.text())
+        .then(data => {
+          // console.log('adverti result', data);
+          document.getElementById('get-all-content').innerHTML = data;
+         
+        });
+      </script>
+    {% endblock AD_content %}
+    {% endif %}
+    © Copyright 2024 WhoCanSupply - All Rights Reserved <u>TERMS & CONDITIONS</u>
+  </div>
+  <!--Footer End-->
+
+  <script src="/static/script.js"></script>
+</body>
+
+</html>

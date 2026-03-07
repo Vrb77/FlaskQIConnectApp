@@ -1,0 +1,374 @@
+<form
+  action="{{url_for('register_product_form')}}"
+  method="POST"
+  enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <input type="text" name="allocatedReqID" style="display: none" />
+
+  <!-- Step 1 -->
+  <div class="stepInForm active">
+    <span class="stepNumber" hidden>(1/9)</span>
+    <div id="nameError" class="error"></div>
+    <label class="headings required">
+      <img src="static\img\service.png" style="width: 50px" />
+      <b>Service Name</b></label
+    >
+    <p class="Descriptions">
+      Provides a clear and concise summary of the issue or challenge being
+      solve. Describe the service detail. E.g. we provice AC repair service
+    </p>
+    <input
+      class="w3-input"
+      id="serviceName"
+      name="serviceName"
+      type="text"
+      placeholder="Enter service name"
+      required />
+    <br />
+    <button
+      type="button"
+      id="nextBtn1"
+      class="nextBtn w3-btn w3-green w3-round-large">
+      Next
+    </button>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(2/9)</span><br />
+    <label class="headings">
+      <img src="static\img\features.png" style="width: 50px" />
+      <b>Specific Features</b></label
+    >
+    <p class="Descriptions">
+      Clearly define unique attributes, functionalities, or benefits that
+      distinguish the service from others in the market.
+    </p>
+    <textarea
+      rows="3"
+      style="width: 100%"
+      id="specificFeature"
+      name="specificFeature"
+      class="w3-input"
+      placeholder="Enter Specific features related to the product/service"></textarea>
+
+    <div id="specificFeatureError" class="error"></div>
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Back</button
+    >&emsp;
+
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next</button
+    >&emsp;
+  </div>
+
+  <!-- Step 3 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(3/9)</span><br />
+    <label class="headings">
+      <img src="static\img\benefits.png" style="width: 50px" />
+      <b>Benefits of the service</b></label
+    >
+    <p class="Descriptions">
+      List down highlights the key advantages and value that customers or users
+      will gain from utilizing the service.
+    </p>
+    <textarea
+      rows="3"
+      style="width: 100%"
+      id="benefits"
+      name="benefits"
+      class="w3-input"
+      placeholder="Enter benefits related to the product/service"></textarea>
+    <div id="benefitsError" class="error"></div>
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Back</button
+    >&emsp;
+
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next</button
+    >&emsp;
+  </div>
+
+  <!-- Step 4 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(4/9)</span><br />
+    <label class="headings">
+      <img src="static\img\problem-solving.png" style="width: 50px" />
+      <b>The solution is best for </b></label
+    >
+    <p class="Descriptions">
+      Describe why a particular solution or approach is the most suitable for a
+      specific service. This includes explaining how the solution meets the
+      service's unique needs, improves efficiency, addresses pain points,
+      enhances performance, and aligns with the overall goals of the service.
+    </p>
+    <textarea
+      rows="3"
+      style="width: 100%"
+      name="bestFor"
+      class="w3-input"
+      placeholder="Enter specific use case or need"></textarea>
+    <div id="bestForError" class="error"></div>
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Back
+    </button>
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next
+    </button>
+  </div>
+
+  <!-- Step 5 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(5/9)</span><br />
+    <label class="headings">
+      <img src="static\img\photo.png" style="width: 50px" />
+      <input
+        type="file"
+        id="addProductPics"
+        name="addProductPics"
+        multiple="true"
+        accept="image/*"
+        hidden />
+      <button
+        type="button"
+        class="w3-btn w3-orange w3-round-large w3-small w3-hover-orange">
+        <label for="addProductPics"
+          ><i class="fa-solid fa-upload"></i>&emsp;Attach Service
+          Image(s)</label
+        >
+      </button>
+      <input type="text" id="LenPrPics" name="LenPrPics" value="" hidden />
+
+      <p class="Descriptions">
+        Showcase your service with clear, professional images that highlight its
+        best features.
+        After upload image select the image to viewit as a product image.
+      </p>
+    </label>
+    <div id="wrapper" class="w3-row"></div>
+    <div id="addProductPicsError" class="error"></div>
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Back</button
+    >&emsp;
+
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next</button
+    >&emsp;
+  </div>
+
+  <!-- Step 6 -->
+
+  <!-- Step 7 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(6/9)</span><br />
+    <label class="headings">
+      <img src="static\img\gps.png" style="width: 50px" />
+      location
+    </label>
+    <p class="Descriptions">
+      Provide detailed information about the exact place where the service is
+      provided.
+    </p>
+    <input
+      class="w3-input"
+      name="where"
+      type="text"
+      placeholder="Enter the location" />
+    <div id="whereError" class="error"></div>
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Back</button
+    >&emsp;
+
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next</button
+    >&emsp;
+  </div>
+
+  <!-- Step 8 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(7/9)</span><br />
+    <label class="headings">
+      <img src="static\img\info (1).png" style="width: 50px" />
+      <b>Our services and products info</b></label
+    >
+    <p class="Descriptions">
+      Provides a detailed overview of the services and products offered to meet
+      customer needs.
+    </p>
+    <textarea
+      rows="3"
+      class="w3-input"
+      style="width: 100%"
+      name="myServicesInfo"
+      placeholder="Enter any my services and products info"></textarea>
+    <div id="myServicesInfoError" class="error"></div>
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Back</button
+    >&emsp;
+
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next</button
+    >&emsp;
+  </div>
+
+  <!-- Step 9 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(8/9)</span><br />
+    <label class="headings">
+      <img src="static\img\file.png" style="width: 50px" />
+      <input
+        type="file"
+        id="additionalRelatedFiles"
+        name="additionalRelatedFiles"
+        accept=".pdf,.ppt,.pptx,.doc,.docx"
+        multiple="true"
+        hidden />
+      <button type="button" class="w3-btn w3-orange w3-round-large w3-small">
+        <label for="additionalRelatedFiles"
+          ><i class="fa-solid fa-upload"></i>&emsp;Add files
+        </label>
+      </button>
+    </label>
+    <input
+      type="text"
+      id="LenAddPrFiles"
+      name="LenAddPrFiles"
+      value=""
+      hidden />
+    <p class="Descriptions">
+      Add an additional file related to the service to provide more information
+      to help the customer better understand the product/service.
+    </p>
+
+    <div id="filewrapper" class="w3-row"></div>
+    <div id="additionalRelatedFilesError" class="error"></div>
+    <br />
+
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Back</button
+    >&emsp;
+
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next</button
+    >&emsp;
+  </div>
+
+  <!-- Step 8 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(9/9)</span><br />
+    <label class="headings">
+      <img src="static\img\checklist (1).png" style="width: 50px" />
+      List Related Products
+    </label>
+    <p class="Descriptions">
+      Suggests a personalized approach to related product recommendations.
+    </p>
+
+    <p style="text-align: left">
+      <strong>Note: </strong>Regardless of whether you sell them or not. Type the words, separated by commas.
+    </p>
+    <input
+      class="w3-input"
+      name="relatedProduct"
+      type="text"
+      placeholder="Enter Related Products" />
+
+    <br />
+
+    <p>
+      <label for="status" hidden>Choose the status:</label>
+      <select name="status" id="current_status" hidden>
+        <option value="Active">Active</option>
+      </select>
+    </p>
+
+    <div id="relatedProductError" class="error"></div>
+    <br />
+
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Back</button
+    >&emsp;
+
+    <button type="submit" class="w3-btn w3-green w3-round" style="float: right">
+      Submit
+    </button>
+  </div>
+</form>
+<script src="static/addFileVendor.js"></script>
+<script src="/static/audioRecorder.js" type="text/javascript"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const steps = document.querySelectorAll(".stepInForm");
+    const prevBtns = document.querySelectorAll(".prevBtn");
+    const nextBtns = document.querySelectorAll(".nextBtn");
+    const skipBtns = document.querySelectorAll(".skipBtn");
+    let currentStep = 0;
+
+    function showStep(stepIndex) {
+      steps.forEach((step, index) => {
+        if (index === stepIndex) {
+          step.classList.add("active");
+        } else {
+          step.classList.remove("active");
+        }
+      });
+    }
+
+    function validateStep(stepIndex) {
+      let isValid = true;
+      switch (stepIndex) {
+        case 0:
+          if (!document.getElementById("serviceName").value.trim()) {
+            document.getElementById("nameError").textContent =
+              "Service Name is required.";
+            isValid = false;
+          } else {
+            document.getElementById("nameError").textContent = "";
+          }
+          break;
+      }
+      return isValid;
+    }
+
+    function nextStep() {
+      if (currentStep < steps.length - 1) {
+        if (validateStep(currentStep)) {
+          currentStep++;
+          showStep(currentStep);
+        }
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    }
+
+    document.getElementById("nextBtn1").addEventListener("click", nextStep);
+
+    prevBtns.forEach((btn, index) => {
+      btn.addEventListener("click", prevStep);
+    });
+
+    nextBtns.forEach((btn, index) => {
+      btn.addEventListener("click", nextStep);
+    });
+
+    skipBtns.forEach((btn, index) => {
+      btn.addEventListener("click", nextStep);
+    });
+
+    // Show the first step initially
+    showStep(currentStep);
+  });
+</script>

@@ -1,0 +1,47 @@
+{% extends "base.html" %} {% block title %}Customer Home{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %} {% include "Customer/sub_menu.html" %}
+
+<h3 class="form-heading">Delete Request</h3>
+{% endblock body %} {% block card_content %}
+<!--requests details starts-->
+<div style="text-align: left">
+  <h4><strong>Request Name: </strong>{{rd['i_need']}}</h4>
+  <h4><strong>Objective</strong>{{rd['objective']}}</h4>
+  <h4><strong>Specific requirements: </strong>{{rd['specifications']}}</h4>
+  <h4><strong>Location: </strong>{{rd['where']}}</h4>
+  <h4><strong>Date: </strong>{{rd['when']}}</h4>
+</div>
+<!--request details ends-->
+<hr class="hrLine" />
+<h2>Are you sure do you want to delete this request?</h2>
+
+<form action="/deleteRequest?rid={{rid}}" method="POST">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <button type="submit" class="w3-btn w3-red w3-block w3-round">Yes</button>
+</form>
+<br />
+
+<button
+  type="submit"
+  class="w3-btn w3-green w3-block w3-round"
+  onclick="location.href='/my_requests'">
+  No
+</button>
+<script>
+  //  id="deleteRequestButton" onclick="deleteReq('{{rid}}')"
+  //   /* deleteRequestButton starts */
+  //   function deleteReq(rid) {
+  //     url = "/deleteRequest?rid=" + rid ;
+  //     jQuery.ajax({
+  //       url: url,
+  //       type: "POST",
+  //       async: true,
+  //       success:
+  //       window.location='{{url_for('my_requests')}}',
+
+  //     });
+  //   }
+  //  /* deleteRequestButton ends */
+</script>
+{% endblock card_content%}

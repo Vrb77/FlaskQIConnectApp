@@ -1,0 +1,76 @@
+{% extends 'base.html' %} {% block title %} Change Password {% endblock title %}
+{% block navContent %} {% include "Common/navbar_content.html" %} {% endblock
+navContent %} {% block body %} {% include "Common/profile_sub_menu.html" %} {%
+include "Common/flashMsg.html" %}
+<h3 class="form-heading">
+  Security Information<img
+    src="{{ url_for('static', filename='images/security info.svg') }}"
+    style="margin-bottom: 10px; width: 40px" />
+</h3>
+
+{% endblock body %} {% block card_content %}
+
+<form action="/Common/securitysettings" method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+
+  <label for="email" class="headingFormField required"
+    ><img
+      src="{{ url_for('static', filename='images/email.svg') }}"
+      style="margin-right: 5px; margin-bottom: 5px; width: 20px" />Email:</label
+  >
+  <input
+    type="text"
+    class="w3-input"
+    id="email"
+    name="email"
+    value="{{email}}"
+    required /><br />
+
+  <label for="pswd" class="headingFormField required"
+    ><img
+      src="{{ url_for('static', filename='images/password.svg') }}"
+      style="margin-right: 3px; margin-bottom: 5px; width: 20px" />Old
+    Password:</label
+  >
+  <input
+    type="password"
+    class="w3-input"
+    id="pswd"
+    name="pswd"
+    value=""
+    required /><br />
+
+  <label for="pswd1" class="headingFormField required"
+    ><img
+      src="{{ url_for('static', filename='images/password.svg') }}"
+      style="margin-right: 3px; margin-bottom: 5px; width: 20px" />New
+    Password:</label
+  >
+  <input
+    type="password"
+    class="w3-input"
+    id="pswd1"
+    name="pswd1"
+    value=""
+    required /><br />
+
+  <label for="pswd2" class="headingFormField required"
+    ><img
+      src="{{ url_for('static', filename='images/password.svg') }}"
+      style="margin-right: 3px; margin-bottom: 5px; width: 20px" />Confirm
+    Password:</label
+  >
+  <input
+    type="password"
+    class="w3-input"
+    id="pswd2"
+    name="pswd2"
+    value=""
+    required /><br />
+
+  <button type="submit" class="w3-btn w3-green w3-block w3-round">
+    Change Password
+  </button>
+</form>
+
+{% endblock card_content%}

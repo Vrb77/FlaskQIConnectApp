@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %} Transaction History {% endblock title %}
+
+{% block navContent %} {% include "Common/navbar_content.html" %}
+{% endblock navContent %}
+
+{% block body %}
+{% include "Common/profile_sub_menu.html" %}
+{% include "Common/flashMsg.html" %}
+<h3 class="form-heading">Transaction History <i class="fa-solid fa-money-bill-transfer"></i></h3>
+
+{% endblock body %}
+{% block card_content %}
+<div class="w3-container">
+    <div id="myRequests">
+        {% if transactions=="No Transactions" %}
+        <h3>No Transactions</h3>
+        {% else %}
+        <table class="w3-table-all w3-hoverable w3-responsive table-container w3-round-xlarge  w3-border-black"
+            id="searchTable">
+            <thead class="sticky">
+                <tr class="w3-black">
+
+                    <th>Transaction ID</th>
+                    <th>Order Name</th>
+                    <th>Price</th>
+                    <th>Payment Method</th>
+                    <th>Date</th>
+                   <th>Download</th>
+                   
+                </tr>
+            </thead>
+            <tbody>
+                {% for key,value in transactions.items() %}
+                <tr onclick="location.href='/view_receipt?tran_key={{key}}'">
+                    <td>{{ key }}</td>
+                    <td>{{ value.order_name }}</td>
+                    <td>{{ value.total }}</td>
+                    <td>{{ value.payment_method }}</td>
+                    <td>{{ value.date }}</td>
+                    <td><a href="/generate-pdf?plan={{key}}&price={{value.total}}&order_name={{ value.order_name }}&payment_method={{ value.payment_method }}&order_date={{ value.date }}" download>Download(PDF)</a></td>
+                    
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</div>
+{% endblock card_content%}

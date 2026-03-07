@@ -1,0 +1,95 @@
+{% extends "base.html" %} {% block title %}Vendor Home{% endblock %} {% block
+navContent %} {% include "Common/navbar_content.html" %} {% endblock navContent
+%} {% block body %}
+{% include "Vendor/sub_menu.html" %}
+
+<h3 class="form-heading">View Project </h3>
+{% endblock body %}
+{% block card_content %}
+
+<div class="grid-container">
+  <div class="grid-item" style="text-align: left;">
+    <strong>Request ID:</strong>{{rid}} <br>
+    <strong>Service ID:</strong>{{sid}}<br>
+    <h3>Order Details</h3><br>
+    <strong>Order placed date:</strong>{{rd.selectVendorServiceID.order_date}}<br>
+    <strong>Request for:</strong>&emsp14;{{rd.i_need}}<br>
+    <strong>Price:</strong>
+    {{project.price}}
+    <br>
+    <strong>Customer Current Status:</strong>{{rd.current_status}}<br>
+    <strong>Vendor Current Status:</strong>{{sd.current_status}}<br>
+    <strong>Address:</strong>{{customer_address}}<br><br><br>
+
+    <strong>Order Summary</strong><br>
+    subtotal:{{project.price}}<br>
+    {%set serviceFee=(project.price)*0.05 %}
+    Service Fee(5%):{{serviceFee}}<br>
+    Grand Total:{{project.price + serviceFee}}
+    <br>
+
+    <strong>Order Updates</strong><br>
+
+
+    <div class="stepper-wrapper">
+      <div class="stepper-item completed">
+        <div class="step-counter">1</div>
+        <div class="step-name">Order Placed</div>
+      </div>
+      <div class="stepper-item completed">
+        <div class="step-counter">2</div>
+        <div class="step-name">{{rd.current_status}} </div>
+      </div>
+      <div class="stepper-item active" id="paymentStepProgress">
+        <div class="step-counter">3</div>
+        <div class="step-name" id="paymentStatus">{{project.payment_status}}</div>
+      </div>
+      <div class="stepper-item">
+        <div class="step-counter">4</div>
+        <div class="step-name">Order Completed</div>
+      </div>
+    </div>
+
+    <br><br>
+    {{customer_name}}&emsp14;&emsp14;<i class="fa-solid fa-phone"></i>
+
+    <br><br>
+
+    <i class="fa-solid fa-phone"></i> Help Center
+  </div>
+
+</div>
+
+
+<script>
+  $('.price').each(function (index, element) {
+    console.log(index);
+    console.log(element);
+    var row = $(this);
+    console.log(row)
+    var url = element.children[0].value
+    console.log(url);
+    $.ajax({
+      url: url,
+      type: 'GET',
+      dataType: 'json',
+      contentType: "application/json",
+      success: function (data) {
+        console.log(data);
+        row.find('.priceHolder').text(data);
+      },
+      error: function (xhr, status, error) {
+        console.error(error);
+      }
+    });
+  })
+
+  const paymentStatus = document.getElementById("paymentStatus").innerText
+  console.log("pay status", paymentStatus);
+  if (paymentStatus == "Paid") {
+    const paymentStepProgress = document.querySelector("#paymentStepProgress");
+    paymentStepProgress.classList.remove("active");
+    paymentStepProgress.classList.add("completed");
+  }
+</script>
+{% endblock card_content%}

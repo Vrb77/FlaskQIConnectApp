@@ -1,0 +1,444 @@
+<form
+  class="w3-container"
+  id="multiStepForm"
+  action="{{url_for('request_form')}}"
+  method="POST"
+  enctype="multipart/form-data">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+  <input
+    type="text"
+    name="closeButton"
+    value="Close Request"
+    class="w3-btn w3-hover-indigo w3-indigo w3-round-xxlarge"
+    id="closeReqBtn"
+    title="close the request"
+    style="display: none" />
+  <input type="text" name="selectVendorServiceID" style="display: none" />
+
+  <!-- Step 1 -->
+  <div class="stepInForm active">
+    <span class="stepNumber" hidden>(1/8)</span>
+
+    <label class="headings required">
+      <img src="static\img\search.png" style="width: 50px" />
+      <b>Problem Overview </b></label
+    >
+    <p class="Descriptions">
+      Provides a clear and concise summary of the issue or challenge being
+      addressed. Describe the problem you are facing. E.g. The AC is not cooling
+      properly and is making unusual noises or leaking water.
+    </p>
+    <textarea
+      class="w3-input"
+      id="i_need"
+      name="i_need"
+      rows="1"
+      style="width: 100%"
+      placeholder="Describe the issue you want to solve"
+      spellcheck="true"
+      required></textarea>
+    <br />
+    <div id="i_needError" class="error"></div>
+    <br />
+    <button type="button" id="nextBtn1" class="w3-btn w3-green w3-round-large">
+      Next
+    </button>
+  </div>
+  <!--step skip starts-->
+  <div class="stepInForm">
+    <div class="flex-container_for_or">
+      <div class="flex-item_for_or-left">
+        <button
+          type="button"
+          class="nextBtn w3-btn w3-green w3-round-large"
+          style="float: none">
+          Proceed to fill out the form
+        </button>
+        <p class="Descriptions">
+          (Our AI algorithm help you to find right vendor to achieve your goal)
+        </p>
+      </div>
+      <div class="flex-item_for_or-center"><h3>OR</h3></div>
+      <div class="flex-item_for_or-right">
+        <!--audio code starts-->
+        <label class="headings"
+          ><img
+            src="static\img\rec-button.png"
+            style="width: 50px" />Record</label
+        >
+        <p class="Descriptions">
+          You can record your audio to mention what you want,Tap Below button to
+          Record <i class="fa-solid fa-arrow-down"></i>
+        </p>
+        <div class="">
+          <p style="display: block; align-items: center">
+            <button
+              type="button"
+              onclick="document.getElementById('RecordAudio').style.display='block'"
+              title="Start recording audio"
+              id="microphoneBtn">
+              <i class="fa-solid fa-microphone fa-2xl"></i>
+            </button>
+          </p>
+          <div id="playAudio" style="display: none">
+            <audio class="playbackPreview" controls></audio>
+            <button class="w3-red" id="audioFileClear" type="button">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+          </div>
+          <input type="file" id="audioBlob" name="AudioFile" hidden />
+          <div id="RecordAudio" class="w3-modal">
+            <div class="w3-modal-content w3-pale-blue">
+              <div class="w3-container">
+                <span
+                  onclick="document.getElementById('RecordAudio').style.display='none'"
+                  class="w3-btn w3-display-topright"
+                  >&times;</span
+                >
+                <h2>Record Audio</h2>
+                <main>
+                  <button type="button" class="mic-toggle" id="mic">
+                    <span><i class="fa-solid fa-microphone fa-2xs"></i></span>
+                  </button>
+                  <p><i>Tap to Record or Stop</i></p>
+                  <audio class="playback" controls></audio>
+
+                  <button
+                    class="w3-btn w3-hover-green w3-green w3-round-xxlarge w3-right"
+                    id="sendRecording"
+                    type="button"
+                    onclick="document.getElementById('RecordAudio').style.display='none';
+                 document.getElementById('playAudio').style.display='';"
+                    disabled>
+                    Send Recording
+                  </button>
+                </main>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- flex_container_for_or div -->
+    <br /><br />
+    <!--audio code ends-->
+    <div id="microphoneError" class="error"></div>
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Previous</button
+    >&emsp;
+
+    <button type="submit" class="w3-btn w3-green w3-round" style="float: right">
+      Submit Request
+    </button>
+  </div>
+  <!--step skip ends-->
+  <!-- Step 2 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(2/8)</span><br />
+    <label class="headings">
+      <img src="static\img\target.png" style="width: 50px" />
+      <b>Purpose</b>
+    </label>
+    <p class="Descriptions">
+      Clearly define the specific goal or outcome you aim to accomplish.
+    </p>
+    <textarea
+      rows="3"
+      class="w3-input"
+      style="width: 100%"
+      name="objective"
+      spellcheck="true"
+      placeholder="Describe the purpose you want to achieve"></textarea>
+    <div id="objectiveError" class="error"></div>
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Previous</button
+    >&emsp;
+
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next</button
+    >&emsp;
+  </div>
+
+  <!-- Step 3 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(3/8)</span><br />
+    <label class="headings">
+      <img src="static\img\photo.png" style="width: 50px" />
+
+      <input
+        type="file"
+        id="AddPics"
+        name="AddPics"
+        multiple="true"
+        accept="image/*"
+        hidden />
+      <button
+        type="button"
+        class="w3-btn w3-orange w3-round-large w3-small w3-hover-orange"
+        id="uploadBtn">
+        <label for="AddPics"
+          >Attach Photos &emsp;<i
+            class="fa-solid fa-circle-chevron-up fa-sm"></i
+        ></label>
+      </button>
+      <input type="text" id="LenPics" name="LenPics" value="" hidden />
+      <p class="Descriptions">
+        Upload relevant photos for your problem (e.g. If your air conditioning
+        system needs repair, please upload photos that clearly show the specific
+        areas where it is not functioning properly.)
+      </p>
+      <!-- <ul style="text-align: left;">
+                    <li>Only image files are accepted.</li>
+                    <li>File size should be less than 2MB</li>
+                    <li>Maximum 5 files can be uploaded</li>
+                  </ul> -->
+    </label>
+    <div id="wrapper" class="w3-row"></div>
+
+    <div id="AddPicsError" class="error"></div>
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Previous</button
+    >&emsp;
+
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next</button
+    >&emsp;
+  </div>
+
+  <!-- Step 5 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(5/8)</span><br />
+    <label class="headings">
+      <img src="static\img\calendar.png" style="width: 50px" />
+      <b>Preferred Date for Service Request</b></label
+    >
+    <p class="Descriptions">
+      Please specify the date on which you would like to receive the service.
+      Ensure to select a date that is convenient for you, allowing enough time
+      for preparation and scheduling.
+    </p>
+    <input
+      class="w3-input datepicker"
+      name="when"
+      type="date"
+      placeholder="Enter the date when you need this service" />
+    <p>OR</p>
+    <label class="headings">
+      <img src="static\img\calendar.png" style="width: 50px" />
+      <b>Timeframe</b></label
+    >
+    <p class="Descriptions">
+      Please specify the timeframe on which you would like to receive the
+      service.(E.g. In the next week)
+    </p>
+    <input
+      class="w3-input"
+      name="tentativeWhen"
+      type="text"
+      placeholder="Enter the timeframe when you need this service" />
+
+    <div id="whenError" class="error"></div>
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Previous
+    </button>
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next
+    </button>
+  </div>
+
+  <!-- Step 6 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(6/8)</span><br />
+    <label class="headings">
+      <img src="static\img\gps.png" style="width: 50px" />
+      <b>Location for Service Delivery</b></label
+    >
+    <p class="Descriptions">
+      Provide detailed information about the exact place where they would like
+      the requested service to be performed. This could include the address,
+      city, or specific site, ensuring that the service provider can efficiently
+      reach the designated area and fulfill the request accurately.
+    </p>
+    <input
+      class="w3-input"
+      name="where"
+      type="text"
+      placeholder="Enter Your Desired Service Location" />
+
+    <div id="whereError" class="error"></div>
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Previous</button
+    >&emsp;
+
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next</button
+    >&emsp;
+  </div>
+
+  <!-- Step 7 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(7/8)</span><br />
+    <label class="headings">
+      <img src="static\img\checklist.png" style="width: 50px" />
+      <b>Specific requirements</b></label
+    >
+    <p class="Descriptions">
+      The request should include specific details to ensure clear understanding
+      and successful fulfillment.
+    </p>
+    <textarea
+      rows="3"
+      class="w3-input"
+      style="width: 100%"
+      spellcheck="true"
+      name="specifications"
+      placeholder="Please provide detailed specifications for the request."></textarea>
+    <div id="specificationsError" class="error"></div>
+    <br />
+
+    <label class="headings">
+      <img src="static\img\file.png" style="width: 50px" />
+      <input
+        type="file"
+        id="additionalFiles"
+        name="additionalFiles"
+        accept=".pdf,.ppt,.pptx,.doc,.docx"
+        multiple="true"
+        hidden />
+      <button type="button" class="w3-btn w3-orange w3-round-large w3-small">
+        <label for="additionalFiles"
+          >Add files &emsp;<i class="fa-solid fa-arrow-up fa-sm"></i
+        ></label>
+      </button>
+    </label>
+    <input type="text" id="LenAddFiles" name="LenAddFiles" value="" hidden />
+    <p class="Descriptions">
+      Add an additional file related to the request to provide more information
+      to help the vendor better understand the problem.
+    </p>
+
+    <div id="filewrapper" class="w3-row"></div>
+
+    <div id="additionalFilesError" class="error"></div>
+
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Previous</button
+    >&emsp;
+
+    <button type="button" class="nextBtn w3-btn w3-green w3-round-large">
+      Next</button
+    >&emsp;
+  </div>
+
+  <!-- Step 8 -->
+  <div class="stepInForm">
+    <span class="stepNumber" hidden>(8/8)</span><br />
+    <label class="headings">
+      <img src="static\img\info.png" style="width: 50px" />
+      <b>Additional Information</b></label
+    >
+    <p class="Descriptions">
+      Include any other relevant details that can assist in fulfilling your
+      request.
+    </p>
+    <textarea
+      rows="3"
+      class="w3-input"
+      style="width: 100%"
+      spellcheck="true"
+      name="additionalInfo"
+      placeholder="Enter additional information"></textarea>
+    <div id="additionalInfoError" class="error"></div>
+
+    <p>
+      <label for="status" hidden>Choose the status:</label>
+      <select name="status" id="current_status" hidden>
+        <option value="Active">Active</option>
+      </select>
+    </p>
+    <input type="text" name="adv_status" value="false" style="display: none" />
+    <br />
+    <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">
+      Previous
+    </button>
+    <button type="submit" class="w3-btn w3-green w3-round" style="float: right">
+      Submit Request
+    </button>
+  </div>
+</form>
+
+<script src="static/addFile.js"></script>
+<script src="/static/audioRecorder.js" type="text/javascript"></script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const steps = document.querySelectorAll(".stepInForm");
+    const prevBtns = document.querySelectorAll(".prevBtn");
+    const nextBtns = document.querySelectorAll(".nextBtn");
+    const skipBtns = document.querySelectorAll(".skipBtn");
+    let currentStep = 0;
+
+    function showStep(stepIndex) {
+      steps.forEach((step, index) => {
+        if (index === stepIndex) {
+          step.classList.add("active");
+        } else {
+          step.classList.remove("active");
+        }
+      });
+    }
+
+    function validateStep(stepIndex) {
+      let isValid = true;
+      switch (stepIndex) {
+        case 0:
+          if (!document.getElementById("i_need").value.trim()) {
+            document.getElementById("i_needError").textContent =
+              "Looking for field is required.";
+            isValid = false;
+          } else {
+            document.getElementById("i_needError").textContent = "";
+          }
+          break;
+      }
+      return isValid;
+    }
+
+    function nextStep() {
+      if (currentStep < steps.length - 1) {
+        if (validateStep(currentStep)) {
+          currentStep++;
+          showStep(currentStep);
+        }
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        showStep(currentStep);
+      }
+    }
+
+    document.getElementById("nextBtn1").addEventListener("click", nextStep);
+
+    prevBtns.forEach((btn, index) => {
+      btn.addEventListener("click", prevStep);
+    });
+
+    nextBtns.forEach((btn, index) => {
+      btn.addEventListener("click", nextStep);
+    });
+
+    skipBtns.forEach((btn, index) => {
+      btn.addEventListener("click", nextStep);
+    });
+
+    // Show the first step initially
+    showStep(currentStep);
+  });
+</script>

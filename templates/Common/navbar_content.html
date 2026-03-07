@@ -1,0 +1,68 @@
+<div class="w3-right w3-hide-small">
+  {% if session['userType'] == 'customer' %}
+  <div style="padding-top: 16px;" class="w3-bar-item w3-hover-red"><a href="/customer_home">Home</a></div>
+  {% elif session['userType'] == 'vendor' %}
+  <div style="padding-top: 16px;" class="w3-bar-item w3-hover-red"><a href="/vendor_home">Home</a></div>
+
+  {% endif %}
+  <div class="w3-dropdown-hover w3-hover-red">
+    <button class="w3-btn">
+      {% if session['userType'] == 'vendor' %}
+      <i class="fa-solid fa-shop fa-xl"></i>
+      {% endif %}
+      <img src="{{ url_for('uploaded_file', filename= session['userProfileImg']) }}" alt="Default Image"
+        class="profile-image w3-border w3-round-xxlarge" width="40" height="40">
+      </i>{{session['email']}}</button>
+    <div class="w3-dropdown-content w3-bar-block  w3-card-4">
+      {% if session['userType'] == 'vendor' and current_user.is_authenticated %}
+      <a href="/Common/profilesettings" class="w3-bar-item w3-btn w3-hover-grey">Settings <i class="fa-solid fa-gear"></i></a>
+      <a href="/notifications" class="w3-bar-item w3-btn w3-hover-grey">Notifications <i class="fa-solid fa-bell"></i></a>
+      <!-- <a href="/adRegisterProduct" class="w3-bar-item w3-btn">Promote Service <i
+          class="fa-solid fa-rectangle-ad"></i></a> -->
+      <a href="/contact_us" class="w3-bar-item w3-btn w3-hover-grey">Contact Us <i class="fa-solid fa-paper-plane"></i></a>
+      <a href="/logout" class="w3-bar-item w3-btn w3-hover-grey">Logout <i class="fa-solid fa-right-from-bracket"></i></a>
+      {% else %}
+      <a href="/Common/profilesettings" class="w3-bar-item w3-btn w3-hover-grey">Settings <i class="fa-solid fa-gear"></i></a>
+      <a href="/logout" class="w3-bar-item w3-btn w3-hover-grey">Logout <i class="fa-solid fa-right-from-bracket"></i></a>
+      <a href="/contact_us" class="w3-bar-item w3-btn w3-hover-grey">Contact Us <i class="fa-solid fa-paper-plane"></i></a>
+
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<a href="javascript:void(0)" class="w3-bar-item w3-btn w3-right w3-hide-large w3-hide-medium"
+  onclick="navItem()" id="barsIcon">&#9776;</a>
+
+<div id="navItem" class="w3-bar-block w3-hide w3-hide-large w3-hide-medium">
+  {% if session['userType'] == 'customer' %}
+  <div style="padding-top: 16px;" class="w3-bar-item w3-btn"><a href="/customer_home">Home</a></div>
+  {% elif session['userType'] == 'vendor' %}
+  <div style="padding-top: 16px;" class="w3-bar-item w3-btn" ><a href="/vendor_home">Home</a></div>
+  
+  {% endif %}
+  <div class="w3-dropdown-hover  w3-hover-red">
+    <button class="w3-btn">
+      {% if session['userType'] == 'vendor' %}
+      <i class="fa-solid fa-shop fa-xl"></i>
+      {% endif %}
+      <img src="{{ url_for('uploaded_file', filename= session['userProfileImg']) }}" alt="Default Image"
+        class="profile-image w3-border w3-round-xxlarge" width="40" height="40">
+      {{session['email']}}</button>
+    <div class="w3-dropdown-content w3-bar-block  w3-card-4">
+      {% if session['userType'] == 'vendor' and current_user.is_authenticated %}
+      <a href="/Common/profilesettings" class="w3-bar-item w3-btn w3-hover-grey">Settings<i class="fa-solid fa-gear"></i></a>
+      <a href="/notifications" class="w3-bar-item w3-btn w3-hover-grey">Notifications <i class="fa-solid fa-bell"></i></a>
+      <!-- <a href="/adRegisterProduct" class="w3-bar-item w3-btn">Promote Service <i
+          class="fa-solid fa-rectangle-ad"></i></a> -->
+      <a href="/contact_us" class="w3-bar-item w3-btn w3-hover-grey">Contact Us <i class="fa-solid fa-paper-plane"></i></a>
+      <a href="/logout" class="w3-bar-item w3-btn w3-hover-grey">Logout <i class="fa-solid fa-right-from-bracket"></i></a>
+      {% else %}
+      <a href="/Common/profilesettings" class="w3-bar-item w3-btn w3-hover-grey">Settings</a>
+      <a href="/logout" class="w3-bar-item w3-btn w3-hover-grey">Logout <i class="fa-solid fa-right-from-bracket"></i></a>
+      <a href="/contact_us" class="w3-bar-item w3-btn w3-hover-grey">Contact Us <i class="fa-solid fa-paper-plane"></i></a>
+
+      {% endif %}
+    </div>
+  </div>
+</div>

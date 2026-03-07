@@ -1,0 +1,482 @@
+{% extends 'base.html' %}
+{% block title %} Add vendor info or skip {% endblock title %}
+
+{% block navContent %}
+{% include 'Common/navbar_without_login.html' %}
+{% endblock navContent %}
+
+{% block body %}
+{% include "Common/flashMsg.html" %}
+<h3 class="form-heading">Fill Profile Information<img
+        src="{{ url_for('static', filename='images/fill profile info.svg') }}" style="margin-left: 10px;width:40px">
+</h3>
+{% endblock body %}
+
+{% block card_content %}
+<form action="/process_fill_profile_info" id="myForm" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <!-- Step 1 -->
+    <div class="stepInForm active">
+        <span class="stepNumber">1/3</span><br>
+
+        <label for="firstname" class="headingFormField required">
+            <img src="{{ url_for('static', filename='images/customer icon1.svg') }}"
+                style="margin-right: 5px; margin-bottom: 5px; width:30px">
+            First Name:</label>
+        <input type="text" class="w3-input" placeholder="Enter First Name" id="firstname" name="firstname" required>
+        <br> <!-- Add a line break for better spacing -->
+
+        <label for="lastname" class="headingFormField required">
+            <img src="{{ url_for('static', filename='images/customer icon1.svg') }}"
+                style="margin-right: 5px; margin-bottom: 5px; width:30px">
+            Last Name:</label>
+        <input type="text" class="w3-input" placeholder="Enter Last Name" id="lastname" name="lastname" required>
+        <br> <!-- Add a line break for better spacing -->
+        <div id="nameError" class="error"></div>
+        <button type="button" id="nextBtn1" class="w3-btn w3-green w3-round-large">Next</button>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="stepInForm">
+        <span class="stepNumber">2/3</span><br>
+        <label for="phone" class="headingFormField required"><img
+                src="{{ url_for('static', filename='images/phone.svg') }}"
+                style="margin-right: 5px; margin-bottom: 5px; width:30px">Phone Number:</label>
+        <input type="tel" id="phone" class="w3-input" class="full-width-input" id="phone" name="phone" required>
+        <br> <!-- Add a line break for better spacing -->
+
+        <label for="street" class="headingFormField required"><img
+                src="{{ url_for('static', filename='images/address1.svg') }}"
+                style="margin-right: 5px; margin-bottom: 5px; width:30px">Address:</label>
+        <input type="text" class="w3-input" placeholder="Enter Address" id="street" name="street" required>
+        <br> <!-- Add a line break for better spacing -->
+
+        <label for="country" class="headingFormField required"><img
+                src="{{ url_for('static', filename='images/country.svg') }}"
+                style="margin-right: 5px; margin-bottom: 5px; width:30px">Country:</label>
+        <select class="form-select country full-width-input" id="country" name="country"
+            aria-label="Default select example" onchange="loadStates()">
+            <option selected>Select Country</option>
+        </select>
+        <br><br> <!-- Add a line break for better spacing -->
+
+        <label for="state" class="headingFormField required"><img
+                src="{{ url_for('static', filename='images/state1.svg') }}"
+                style="margin-right: 5px; margin-bottom: 5px; width:30px">State:</label>
+        <select class="form-select state full-width-input" id="state" name="state" aria-label="Default select example"
+            onchange="loadCities()">
+            <option selected>Select State</option>
+        </select>
+        <br><br> <!-- Add a line break for better spacing -->
+
+        <label for="city" class="headingFormField required"><img
+                src="{{ url_for('static', filename='images/city1.svg') }}"
+                style="margin-right: 5px; margin-bottom: 5px; width:30px">City:</label>
+        <select class="form-select city full-width-input" id="city" name="city" aria-label="Default select example">
+            <option selected>Select City</option>
+        </select>
+        <br><br> <!-- Add a line break for better spacing -->
+
+        <label for="zip" class="headingFormField"><img src="{{ url_for('static', filename='images/zip.svg') }}"
+                style="margin-right: 5px; margin-bottom: 5px; width:30px">Zip/ Pincode:</label>
+        <input type="text" class="w3-input" id="zip" placeholder="Enter Zip/ Pincode" name="zip" required>
+        <br> <!-- Add a line break for better spacing -->
+
+        <div id="addressError" class="error"></div>
+        <br>
+        <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">Back</button>&emsp;
+
+        <button type="button" class="nextBtn w3-btn w3-green w3-round-large"
+            style="float: right;">Next</button>&emsp;
+    </div>
+
+    <!-- Step 3 -->
+    <div class="stepInForm">
+        <span class="stepNumber">3/3</span><br>
+        <label for="image" class="headingFormField"><i class="fa-solid fa-image fa-xl"
+                style="margin-right: 5px;"></i>Upload Profile Photo</label>
+        <input type="file" class="w3-input" id="image" name="image">
+        <br> <!-- Add a line break for better spacing -->
+
+        <div id="imageError" class="error"></div>
+        <button type="button" class="prevBtn w3-btn w3-indigo w3-round-large">Back</button>
+
+        {% if user_type=="vendor" %}
+        <button href="/process_fill_business_info" type="submit" class="w3-btn w3-green w3-round-large"
+            style="float: right;">Submit Profile Information</button>
+        {% elif user_type=="customer" %}
+        <button href="/login" type="submit" class="w3-btn w3-green w3-round-large" style="float: right;">Submit
+            Profile Information</button>
+        {% endif %}
+    </div>
+
+</form>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/intlTelInput.min.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"></script> -->
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/css/intlTelInput.css">
+
+<script>
+    // Initialize the plugin
+    const phoneInput = document.querySelector('#phone');
+    var countryData = null;
+    const iti = window.intlTelInput(phoneInput, {
+        // Options
+
+        loadUtilsOnInit: "https://cdn.jsdelivr.net/npm/intl-tel-input@24.6.0/build/js/utils.js",
+        strictMode: true,
+        autoFormat: true,
+        initialCountry: "in",
+        nationalMode: false,
+        // preferredCountries: ['in'], // Set India as the preferred country
+        separateDialCode: true,
+        onlyCountries: ["in",'us'],
+    });
+     // Fetch and load country, state, and city data
+     var config = {
+        cUrl: 'https://api.countrystatecity.in/v1/countries',
+        ckey: 'NHhvOEcyWk50N2Vna3VFTE00bFp3MjFKR0ZEOUhkZlg4RTk1MlJlaA=='
+    };
+
+    var countrySelect = document.querySelector('.country'),
+        stateSelect = document.querySelector('.state'),
+        citySelect = document.querySelector('.city');
+
+
+    // Add event listener when country changes in phone input
+    phoneInput.addEventListener("countrychange", function () {
+        
+        countryData = iti.getSelectedCountryData();
+        const countryIso = countryData.iso2.toUpperCase();
+        console.log("Phone country changed to:", countryIso);
+
+        // Automatically select the corresponding country in the dropdown
+       
+
+        for (let option of countrySelect.options) {
+            if (option.value === countryIso) {
+
+                countrySelect.value = countryIso;
+                countryNameInput.value = countryData.name;
+                loadStates();  // Update the state dropdown
+                break;
+            }
+        }
+    });
+
+    const countryNameInput = document.createElement('input');
+    countryNameInput.type = 'hidden';
+    countryNameInput.name = 'countryName';
+    countrySelect.parentNode.appendChild(countryNameInput);
+
+    const stateNameInput = document.createElement('input');
+    stateNameInput.type = 'hidden';
+    stateNameInput.name = 'stateName';
+    stateSelect.parentNode.appendChild(stateNameInput);
+
+    const cityNameInput = document.createElement('input');
+    cityNameInput.type = 'hidden';
+    cityNameInput.name = 'cityName';
+    citySelect.parentNode.appendChild(cityNameInput);
+
+    function loadCountries() {
+        let apiEndPoint = config.cUrl;
+
+        fetch(apiEndPoint, { headers: { "X-CSCAPI-KEY": config.ckey } })
+            .then(Response => Response.json())
+            .then(data => {
+                 // Specify the countries you want to keep (using iso2 codes here)
+    const specificCountries = ['US', 'IN']; // USA, India, Canada
+
+// Filter the data to only include these countries
+const filteredCountries = data.filter(country => specificCountries.includes(country.iso2));
+
+// Populate the dropdown
+const dropdown = document.getElementById('country');
+filteredCountries.forEach(country => {
+                    const option = document.createElement('option');
+                    option.value = country.iso2;
+                    option.textContent = country.name;
+                    dropdown.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error loading countries:', error));
+        console.log("country Name in load country", countrySelect.value);
+        stateSelect.disabled = true;
+        citySelect.disabled = true;
+        stateSelect.style.pointerEvents = 'none';
+        citySelect.style.pointerEvents = 'none';
+    }
+
+    function loadStates() {
+        stateSelect.disabled = false;
+        citySelect.disabled = true;
+        stateSelect.style.pointerEvents = 'auto';
+        citySelect.style.pointerEvents = 'none';
+
+        const selectedCountryCode = countrySelect.value;
+        stateSelect.innerHTML = '<option value="">Select State</option>';
+        citySelect.innerHTML = '<option value="">Select City</option>';
+
+        fetch(`${config.cUrl}/${selectedCountryCode}/states`, { headers: { "X-CSCAPI-KEY": config.ckey } })
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(state => {
+                    const option = document.createElement('option');
+                    option.value = state.iso2;
+                    option.textContent = state.name;
+                    stateSelect.appendChild(option);
+                });
+               
+            })
+            .catch(error => console.error('Error loading states:', error));
+
+            
+    }
+
+    function loadCities() {
+        citySelect.disabled = false;
+        citySelect.style.pointerEvents = 'auto';
+
+        const selectedCountryCode = countrySelect.value;
+        const selectedStateCode = stateSelect.value;
+        citySelect.innerHTML = '<option value="">Select City</option>';
+
+        fetch(`${config.cUrl}/${selectedCountryCode}/states/${selectedStateCode}/cities`, { headers: { "X-CSCAPI-KEY": config.ckey } })
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(city => {
+                    const option = document.createElement('option');
+                    option.value = city.name;
+                    option.textContent = city.name;
+                    citySelect.appendChild(option);
+                });
+              
+            });
+    }
+
+
+    // Sync hidden input fields with country, state, and city selections
+    countrySelect.addEventListener('change', () => {
+        const selectedOption = countrySelect.options[countrySelect.selectedIndex];
+        countryNameInput.value = selectedOption.textContent;
+        iti.setCountry(selectedOption.value);
+        loadStates();
+    });
+
+    stateSelect.addEventListener('change', () => {
+        const selectedOption = stateSelect.options[stateSelect.selectedIndex];
+        stateNameInput.value = selectedOption.textContent;
+        loadCities();
+    });
+
+    citySelect.addEventListener('change', () => {
+        const selectedOption = citySelect.options[citySelect.selectedIndex];
+        cityNameInput.value = selectedOption.textContent;
+    });
+
+    loadCountries();
+
+    // ZIP Code validation function without API using regular expressions
+    function validateZipCode(country, zipCode) {
+        let regex;
+
+        switch (country) {
+            case 'US': // United States ZIP code: 5 digits or 5 digits + hyphen + 4 digits (e.g., 12345 or 12345-6789)
+                regex = /^\d{5}(-\d{4})?$/;
+                break;
+
+            case 'CA': // Canada ZIP code: Letter-number-letter space number-letter-number (e.g., K1A 0B1)
+                regex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+                break;
+
+            case 'DE': // Germany ZIP code: 5 digits (e.g., 12345)
+                regex = /^\d{5}$/;
+                break;
+
+            case 'IN': // India PIN code: 6 digits (e.g., 110001)
+                regex = /^\d{6}$/;
+                break;
+
+            // Add more countries and their postal code patterns if needed
+
+            default:
+                return false; // Invalid country
+        }
+
+        return regex.test(zipCode); // Test the ZIP code against the regex for the selected country
+    }
+
+
+</script>
+<script>
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const steps = document.querySelectorAll(".stepInForm");
+        const prevBtns = document.querySelectorAll(".prevBtn");
+        const nextBtns = document.querySelectorAll(".nextBtn");
+        const skipBtns = document.querySelectorAll(".skipBtn");
+        let currentStep = 0;
+
+        function showStep(stepIndex) {
+            steps.forEach((step, index) => {
+                if (index === stepIndex) {
+                    step.classList.add("active");
+                } else {
+                    step.classList.remove("active");
+                }
+            });
+        }
+
+        // ZIP Code validation function without API using regular expressions
+        function validateZipCode(country, zipCode) {
+            let regex;
+
+            switch (country) {
+                case 'US': // United States ZIP code: 5 digits or 5 digits + hyphen + 4 digits (e.g., 12345 or 12345-6789)
+                    regex = /^\d{5}(-\d{4})?$/;
+                    break;
+
+                case 'CA': // Canada ZIP code: Letter-number-letter space number-letter-number (e.g., K1A 0B1)
+                    regex = /^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/;
+                    break;
+
+                case 'DE': // Germany ZIP code: 5 digits (e.g., 12345)
+                    regex = /^\d{5}$/;
+                    break;
+
+                case 'IN': // India PIN code: 6 digits (e.g., 110001)
+                    regex = /^\d{6}$/;
+                    break;
+
+                // Add more countries and their postal code patterns if needed
+
+                default:
+                    return false; // Invalid country
+            }
+
+            return regex.test(zipCode); // Test the ZIP code against the regex for the selected country
+        }
+        function validateStep(stepIndex) {
+            let isValid = true;
+            switch (stepIndex) {
+                case 0:
+                    if (!document.getElementById("firstname").value.trim()) {
+                        document.getElementById("nameError").textContent = "First name is required.";
+                        isValid = false;
+                    }
+                    else if (!document.getElementById("lastname").value.trim()) {
+                        document.getElementById("nameError").textContent = "Last name is required.";
+                        isValid = false;
+                    }
+                    else {
+                        document.getElementById("nameError").textContent = "";
+                    }
+
+                    break;
+                case 1:
+                    if (!iti.isValidNumber()) {
+                        document.getElementById("addressError").textContent = "phone number is invalid";
+                        console.log(document.getElementById("country").value)
+                        isValid = false;
+                    }
+                    else if (!document.getElementById("street").value.trim()) {
+                        document.getElementById("addressError").textContent = "Address is required.";
+                        isValid = false;
+                    }
+                    else if (document.getElementById("country").value.trim() == "Select Country") {
+                        document.getElementById("addressError").textContent = "country is required.";
+                        isValid = false;
+                    }
+                    else if (!document.getElementById("state").value.trim()) {
+                        document.getElementById("addressError").textContent = "state is required.";
+                        isValid = false;
+                    }
+
+                    else if (!document.getElementById("city").value.trim()) {
+                        document.getElementById("addressError").textContent = "city is required.";
+                        isValid = false;
+                    }
+                    else if (!document.getElementById("zip").value.trim()) {
+                        document.getElementById("addressError").textContent = "zip code is required.";
+                        isValid = false;
+                    }
+                    else if (document.getElementById("zip").value.trim()) {
+
+                        const country = document.getElementById("country").value
+                        console.log("for zip code country value", country)
+                        const zipCode = document.getElementById('zip').value;
+                        console.log("zip code value", zipCode)
+                        const errorMessage = document.getElementById('addressError');
+                        if (country == "Select Country") {
+                            errorMessage.textContent = "Country is required";
+                        }
+                      const zipCountry=document.getElementById("country").value.trim()
+                        // Call the ZIP code validation function based on the country
+                        if( zipCountry=="IN" || zipCountry=="US" || zipCountry=="CA" || zipCountry=="DE"){
+                            isValid = validateZipCode(country, zipCode);
+                        console.log("zip is valid or not", isValid);
+                        if (isValid) {
+
+                            errorMessage.textContent = ""; // Clear error message
+                            isValid = true;
+                        } else {
+                            errorMessage.textContent = "Invalid ZIP code for the selected country.";
+                            isValid = false;
+                        }
+                    }
+
+                    }
+                    else {
+                        document.getElementById("addressError").textContent = "";
+                    }
+                    break;
+                case 2:
+                    if (!document.getElementById("image").value.trim()) {
+                        document.getElementById("imageError").textContent = "Image is required.";
+                        isValid = false;
+                    } else {
+                        document.getElementById("imageError").textContent = "";
+                    }
+                    break;
+
+
+            }
+            return isValid;
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                if (validateStep(currentStep)) {
+                    currentStep++;
+                    showStep(currentStep);
+                }
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+
+        document.getElementById("nextBtn1").addEventListener("click", nextStep);
+
+        prevBtns.forEach((btn, index) => {
+            btn.addEventListener("click", prevStep);
+        });
+
+        nextBtns.forEach((btn, index) => {
+            btn.addEventListener("click", nextStep);
+        });
+
+        skipBtns.forEach((btn, index) => {
+            btn.addEventListener("click", nextStep);
+        });
+
+        // Show the first step initially
+        showStep(currentStep);
+    });
+</script>
+{% endblock card_content%}

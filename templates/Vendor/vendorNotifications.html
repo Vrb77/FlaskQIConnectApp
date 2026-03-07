@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Vendor Home{% endblock %}
+{% block navContent %}
+{% include "Common/navbar_content.html" %}
+{% endblock navContent %}
+{% block body %}
+<h2>Notifications</h2>
+{% endblock body %}
+{% block card_content %}
+{% if count==0 %}
+<h3>No Notifications</h3>
+{% else %}
+{% for key,value in allNotifications %}
+<div class="w3-left">
+    {{value.notificationStr}}<span onclick="location.href='/deleteNotification?notificationID={{key}}'"><i
+            class="fa-solid fa-circle-xmark fa-lg" style="color: #ff0000;"></i></span>
+
+</div><br>
+<div class="w3-left w3-opacity">{{value.notify_date}}</div><br>
+{% endfor %}
+{% endif %}
+{% endblock card_content%}

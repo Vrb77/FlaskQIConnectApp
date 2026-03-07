@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %} Profile {% endblock title %}
+
+{% block navContent %}
+{% include 'Common/navbar_without_login.html' %}
+{% endblock navContent %}
+
+{% block body %}
+{% include "Common/flashMsg.html" %}
+<h3 class="form-heading">Create Profile Information or Skip<img
+        src="{{ url_for('static', filename='images/Add profile info1.svg') }}" style="margin-left: 10px;width:40px">
+</h3>
+{% endblock body %}
+
+{% block card_content %}
+<form id="profileForm" action="/process_profile_info" method="post">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <!-- Replace radio buttons with buttons -->
+    <button type="button" class="w3-btn w3-green w3-block w3-round"
+        onclick="location.href='/process_profile_info' ">Create Profile</button><br>
+    <button type="button" class="w3-btn w3-green w3-block w3-round" onclick="location.href='/login'">Skip for now &
+        Go to Login</button>
+</form>
+{% endblock card_content%}

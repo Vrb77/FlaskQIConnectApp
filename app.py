@@ -42,6 +42,28 @@ import pycountry
 from flask_login import login_user
 from geoloc import get_country_from_ip  # Import the function we just created
 
+# ---------------------------------------------------------------------------
+# Cloudinary setup — stores all uploaded files permanently in the cloud
+# ---------------------------------------------------------------------------
+import cloudinary
+import cloudinary.uploader
+
+cloudinary.config(
+    cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key    = os.getenv("CLOUDINARY_API_KEY"),
+    api_secret = os.getenv("CLOUDINARY_API_SECRET"),
+    secure     = True
+)
+
+def upload_to_cloudinary(file_obj, folder="general"):
+    """Upload a file object to Cloudinary and return the secure URL."""
+    try:
+        result = cloudinary.uploader.upload(file_obj, folder=folder)
+        return result['secure_url']
+    except Exception as e:
+        logging.error(f"Cloudinary upload failed: {e}")
+        return None
+
 app = flask.Flask(__name__)
 
 # app.secret_key = 'super secret string'  # Change this!
@@ -191,22 +213,21 @@ def request_form():
         print("Audio file")
         print("saveAudio",audio)
         if(audio.filename!=''):
-            file_name = secure_filename(audio.filename)
-            audio.save(os.path.join(app.config['UPLOAD_FILES_CUSTOMERS'],file_name))
+            audioFile = upload_to_cloudinary(audio, folder="customer_audio") or audio.filename
 
         PicsFiles=[]
         if(addPics[0].filename!=''):
-            for file in addPics:              
-                file_name = secure_filename(file.filename)
-                PicsFiles.append(file_name)
-                file.save(os.path.join(app.config['UPLOAD_FILES_CUSTOMERS'],file_name))
-        
+            for file in addPics:
+                url = upload_to_cloudinary(file, folder="customer_pics")
+                if url:
+                    PicsFiles.append(url)
+
         AdditionalFiles=[]
         if(additionalFiles[0].filename!=''):
-            for file in additionalFiles:           
-                file_name = secure_filename(file.filename)
-                AdditionalFiles.append(file_name)
-                file.save(os.path.join(app.config['UPLOAD_FILES_CUSTOMERS'],file_name))
+            for file in additionalFiles:
+                url = upload_to_cloudinary(file, folder="customer_files")
+                if url:
+                    AdditionalFiles.append(url)
         DB.add_request(email,i_need,PicsFiles,objective,specification,where,when,tentativeWhen,additionalInfo,AdditionalFiles,current_status,closeRequest,selectVendorServiceID,audioFile,adv_status)
         flash('Request added Successfully. Vendors will review your request & approach you soon! Till then you will find more details here')
         return redirect(f'/my_requests')
@@ -317,22 +338,21 @@ def update_request_form():
             selectVendorServiceID=""
 
         if(audio.filename!=''):
-            file_name = secure_filename(audio.filename)
-            audio.save(os.path.join(app.config['UPLOAD_FILES_CUSTOMERS'],file_name))
+            audioFile = upload_to_cloudinary(audio, folder="customer_audio") or audio.filename
 
         addPicsfiles=[]
         if(addPics[0].filename!=''):
-            for file in addPics:  
-                file_name = secure_filename(file.filename)
-                addPicsfiles.append(file_name)
-                file.save(os.path.join(app.config['UPLOAD_FILES_CUSTOMERS'],file_name))
+            for file in addPics:
+                url = upload_to_cloudinary(file, folder="customer_pics")
+                if url:
+                    addPicsfiles.append(url)
         print('addPicsfiles',addPicsfiles)
         updateAdditionalFiles=[]
         if(additionalFiles[0].filename!=''):
-            for file in additionalFiles:  
-                file_name = secure_filename(file.filename)
-                updateAdditionalFiles.append(file_name)
-                file.save(os.path.join(app.config['UPLOAD_FILES_CUSTOMERS'],file_name))
+            for file in additionalFiles:
+                url = upload_to_cloudinary(file, folder="customer_files")
+                if url:
+                    updateAdditionalFiles.append(url)
 
         if(rd['PicsFiles']==[''] or PrevPics==[''] ):
             res_list=addPicsfiles
@@ -624,17 +644,20 @@ def register_product_form():
         ProductPics=[]
         if(addProductPics[0].filename!=''):
             for file in addProductPics:
-                file_name=secure_filename(file.filename)
-                ProductPics.append(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FILES_VENDORS'],file_name))
+                url = upload_to_cloudinary(file, folder="vendor_product_pics")
+                if url:
+                    ProductPics.append(url)
+            # Use first uploaded pic as selected image if none chosen
+            if selectedPrImg is None and ProductPics:
+                selectedPrImg = ProductPics[0]
 
         additionalProductRelatedFiles=[]
         if(additionalRelatedFiles[0].filename!=''):
             for file in additionalRelatedFiles:
-                file_name=secure_filename(file.filename)
-                additionalProductRelatedFiles.append(file_name)
-                file.save(os.path.join(app.config['UPLOAD_FILES_VENDORS'],file_name))
- 
+                url = upload_to_cloudinary(file, folder="vendor_product_files")
+                if url:
+                    additionalProductRelatedFiles.append(url)
+
         DB.add_registerService_form(email,serviceName,specificFeature,benefits,bestFor,relatedProduct,where,additionalProductRelatedFiles,ProductPics,myServicesInfo,selectedPrImg,allocatedReqIDs,current_status) 
         flash('Product/service added')         
         return redirect(f'/my_products')
@@ -741,16 +764,18 @@ def update_product_form():
         ProductPics=[]
         if(addProductPics[0].filename!=''):
             for file in addProductPics:
-                file_name=secure_filename(file.filename)
-                ProductPics.append(file.filename)
-                file.save(os.path.join(app.config['UPLOAD_FILES_VENDORS'],file_name))
-       
+                url = upload_to_cloudinary(file, folder="vendor_product_pics")
+                if url:
+                    ProductPics.append(url)
+            if selectedPrImg is None and ProductPics:
+                selectedPrImg = ProductPics[0]
+
         additionalProductRelatedFiles=[]
         if(additionalRelatedFiles[0].filename!=''):
             for file in additionalRelatedFiles:
-                file_name=secure_filename(file.filename)
-                additionalProductRelatedFiles.append(file_name)
-                file.save(os.path.join(app.config['UPLOAD_FILES_VENDORS'],file_name))
+                url = upload_to_cloudinary(file, folder="vendor_product_files")
+                if url:
+                    additionalProductRelatedFiles.append(url)
         if(sd['ProductPics']==[''] or PrevPicFiles==[''] ):
             res_list=ProductPics
         else:
@@ -997,21 +1022,17 @@ def displayMessages():
         video=request.files['VideoFile']
         print("saveVideo",video)
        
-        if(audio.filename!=''):   
-            file_name = secure_filename(audio.filename)
-            audio.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+        audioFile_name = audio.filename
+        if(audio.filename!=''):
+            audioFile_name = upload_to_cloudinary(audio, folder="messages_audio") or audio.filename
 
-        if(video.filename!=''):   
-                    file_name = secure_filename(video.filename)
-                    video.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
-      
-        if(sendfile.filename!=''):   
-            file_name = secure_filename(sendfile.filename)
-            sendfile.save(os.path.join(app.config['UPLOAD_FOLDER'], file_name))
+        videoFile_name = video.filename
+        if(video.filename!=''):
+            videoFile_name = upload_to_cloudinary(video, folder="messages_video") or video.filename
 
-        sendfile_name=sendfile.filename
-        audioFile_name=audio.filename
-        videoFile_name=video.filename
+        sendfile_name = sendfile.filename
+        if(sendfile.filename!=''):
+            sendfile_name = upload_to_cloudinary(sendfile, folder="messages_files") or sendfile.filename
        
         DB.addMessage(To,From,message,sendfile_name,request_id,service_id,audioFile_name,videoFile_name)
         msg=DB.getMessages(request_id,service_id)
@@ -1498,19 +1519,19 @@ def process_fill_profile_info():
         currency_code = country_currencies.get(country_name)
 
         if image.filename == '':
-            filename="default_user_img.jpg"
+            filename = "default_user_img.jpg"
         else:
-            # Ensure the filename is secure
-            filename = secure_filename(image.filename)
-            # Add user's email as part of the filename
-            user_email = session.get('email')  # Assuming user's email is stored in the session
-            if user_email:
-                filename = f"{user_email}_{filename}"
-            else:
+            user_email = session.get('email')
+            if not user_email:
                 flash('User email not found in the session. Please try again.', category='error')
-                return redirect(url_for('fill_profile_info'))  # Redirect to the profile filling page
-            # Save the uploaded image to the uploads folder
-            image.save(os.path.join(app.config['UPLOAD_FOLDER_profile'], filename))
+                return redirect(url_for('fill_profile_info'))
+            # Upload to Cloudinary — permanent cloud storage
+            cloudinary_url = upload_to_cloudinary(image, folder="profile_pics")
+            if cloudinary_url:
+                filename = cloudinary_url
+            else:
+                flash('Image upload failed. Please try again.', category='error')
+                return redirect(url_for('fill_profile_info'))
 
         # Print the filename for debugging
         print("Filename:", filename)
@@ -1538,9 +1559,12 @@ def process_fill_profile_info():
 
     return render_template("Common/fill_profile_info.html")
 
-@app.route('/uploads/<filename>')
+@app.route('/uploads/<path:filename>')
 def uploaded_file(filename):
-    print(filename)
+    # If it's already a full Cloudinary URL stored in DB, redirect directly
+    if filename.startswith('http'):
+        return flask.redirect(filename)
+    # Fallback: serve from local folder (for old/default images)
     return send_from_directory(app.config['UPLOAD_FOLDER_profile'], filename)
 
 @app.route('/business_info')
